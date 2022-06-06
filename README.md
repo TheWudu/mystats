@@ -3,7 +3,7 @@ Small rails application to render stats nicely
 
 # Usage
 
-Use mongo_cpp to import sessions to the database.
+Use [mongo_cpp](https://github.com/TheWudu/mongo_cpp/) to import sessions to the database.
 
 Start rails 
 
