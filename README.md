@@ -17,4 +17,7 @@ and visit
 http://localhost:3000/charts/index
 ```
 
+You should see something like this:
 
+![stats01](./doc/20220606_stats01.png)
+![stats02](./doc/20220606_stats02.png)
