@@ -1,5 +1,11 @@
 class ChartsController < ApplicationController
   def index
+    @chart_params = {
+      year:     params[:year],
+      group_by: params[:group_by],
+      sport_type_id: params[:sport_type_id]
+    }
+    
   end
 
   def cnt_per_weekday
@@ -46,7 +52,7 @@ class ChartsController < ApplicationController
 
   def cnt_per_weekday_data
     query = sessions.aggregate([ 
-      { "$match" => { year: { "$in" => years }, sport_type_id: 1 } }, 
+      { "$match" => matcher }, 
       { "$addFields" => { weekday: { "$dayOfWeek" => "$start_time" } } }, 
       { "$group" => { _id: "$weekday", cnt: { "$sum" => 1 } } },
       { "$sort" => { _id: 1 } }
@@ -61,8 +67,8 @@ class ChartsController < ApplicationController
 
   def data_per_year(attr)
     data = sessions.aggregate([ 
-      { "$match" => { sport_type_id: { "$in" => [1] } } }, 
-      { "$group" => { _id: "$year", 
+      { "$match" => matcher }, 
+      { "$group" => { _id: group_by, 
           overall_distance: { "$sum" => "$distance" },
           overall_duration: { "$sum" => "$duration" },
           overall_elevation_gain: { "$sum" => "$elevation_gain" },
@@ -70,16 +76,19 @@ class ChartsController < ApplicationController
       { "$sort" => { _id: 1 } }
     ]).to_a
     data.each_with_object({}) do |d, h|
-      h[d["_id"]] = d[attr]
+      key = d["_id"].values.join("-")
+      h[key] = d[attr]
     end
   end
 
   def distance_bucket_data
     data = sessions.aggregate([
-      { "$match" => { year: { "$in" => years }, sport_type_id: 1 } }, 
+      { "$match" => matcher }, 
+      { "$match" => { distance: { "$gt" => 0 } } },
       { "$bucket" => { 
           groupBy: "$distance", 
           boundaries: [0,5000,10000,20000,100_000], 
+          default: "no distance",
           output: { 
             total: { "$sum" => 1 }, 
             avg_distance: { "$avg" => "$distance" }, 
@@ -97,7 +106,7 @@ class ChartsController < ApplicationController
 
   def hour_per_day_data
     data = sessions.aggregate([ 
-      { "$match" => { year: { "$in" => years }, sport_type_id: { "$in" => [1] } } }, 
+      { "$match" => matcher }, 
       { "$addFields" => { timezone: { "$ifNull" => [ "$timezone", "UTC" ] } } },
       { "$addFields" => { hour: { "$hour" => { date: "$start_time", timezone: "$timezone" } } } }, 
       { "$group" => { _id: "$hour", count: { "$sum" => 1 } } },
@@ -112,8 +121,25 @@ class ChartsController < ApplicationController
 
 
   def years
-    [Time.now.year]
+    params[:year]&.split(",")&.map(&:to_i)
   end
+
+  def group_by
+    (params[:group_by]&.split(",") || ["year"]).each_with_object({}) do |v,h|
+      h[v] = "$#{v}"
+    end
+  end
+
+  def sport_type_ids
+    params[:sport_type_id]&.split(",")&.map(&:to_i)
+  end
+
+  def matcher
+    m = {}
+    m.merge!(year: { "$in" => years }) if years && !years.empty?
+    m.merge!(sport_type_id: { "$in" => sport_type_ids }) if sport_type_ids && !sport_type_ids.empty?
+    m
+  end 
 
   def mongo
     @mongo ||= Mongo::Client.new([ '127.0.0.1:27017' ], :database => 'mydb').database
