@@ -1,18 +1,18 @@
 
 <div class="flexbox">
 <div class="chart">
-<%= bar_chart charts_distance_per_year_path(@chart_params), xtitle: "distance [km]", ytitle: "year", thousands: ".",  colors: ["#99f", "#0bb", "#0ff"] %>
+<%= bar_chart charts_distance_per_year_path(@chart_params), xtitle: "distance [km]", ytitle: @chart_params[:group_by], thousands: ".",  colors: ["#99f", "#0bb", "#0ff"] %>
 </div>
 <div class="chart">
-<%= bar_chart charts_duration_per_year_path(@chart_params), xtitle: "duration [s]", ytitle: "year" %>
+<%= bar_chart charts_duration_per_year_path(@chart_params), xtitle: "duration [s]", ytitle: @chart_params[:group_by] %>
 </div>
 <div class="chart">
-<%= bar_chart charts_elevation_per_year_path(@chart_params), xtitle: "elevation [m]", ytitle: "year" %>
+<%= bar_chart charts_elevation_per_year_path(@chart_params), xtitle: "elevation [m]", ytitle: @chart_params[:group_by]  %>
 </div>
 </div>
 <div class="flexbox">
 <div class="chart">
-<%= column_chart charts_cnt_per_year_path(@chart_params), xtitle: "count", ytitle: "year" %>
+<%= column_chart charts_cnt_per_year_path(@chart_params), xtitle: "count", ytitle: @chart_params[:group_by] %>
 </div>
 
 <div class="chart">
