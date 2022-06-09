@@ -5,7 +5,9 @@ class ChartsController < ApplicationController
       group_by: params[:group_by],
       sport_type_id: params[:sport_type_id]
     }
-    
+
+    @possible_years = possible_years
+    @possible_sport_types = possible_sport_types
   end
 
   def cnt_per_weekday
@@ -49,6 +51,22 @@ class ChartsController < ApplicationController
     6 => "Friday",
     7 => "Saturday"
   }
+
+  def possible_years
+    query = sessions.aggregate([ 
+      { "$group" => { _id: "$year", cnt: { "$sum": 1 }  } },
+      { "$sort" => { _id: 1 } }
+    ]) 
+    query.map { |d| d["_id"] }
+  end
+  
+  def possible_sport_types
+    query = sessions.aggregate([ 
+      { "$group" => { _id: "$sport_type_id", cnt: { "$sum": 1 }  } },
+      { "$sort" => { _id: 1 } }
+    ]) 
+    query.map { |d| d["_id"] }
+  end
 
   def cnt_per_weekday_data
     query = sessions.aggregate([ 

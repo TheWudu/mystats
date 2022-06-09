@@ -1,3 +1,39 @@
+<div class="flexbox">
+
+<div>
+<% @possible_years.each do |year| 
+    color = "#ABABAB"
+    params = @chart_params.dup
+    selected_years = params[:year]&.split(",") || []
+    params[:year] = if selected_years.include?(year.to_s)
+      color = "#4CAF50"
+      selected_years - [year.to_s]
+    else
+      color = "#bbbbbb"
+      selected_years + [year.to_s]
+    end.flatten.join(',')
+%>
+<%= link_to(year, charts_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+<% end %>
+</div>
+
+<div>
+<% @possible_sport_types.each do |sport| 
+    color = "#ABABAB"
+    params = @chart_params.dup
+    selected_sports = params[:sport_type_id]&.split(",") || []
+    params[:sport_type_id] = if selected_sports.include?(sport.to_s)
+      color = "#00AF50"
+      selected_sports - [sport.to_s]
+    else
+      color = "#bbbbbb"
+      selected_sports + [sport.to_s]
+    end.flatten.join(',')
+%>
+<%= link_to(sport, charts_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+<% end %>
+</div>
+</div>
 
 <div class="flexbox">
 <div class="chart">
