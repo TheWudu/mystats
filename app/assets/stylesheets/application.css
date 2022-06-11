@@ -28,10 +28,14 @@
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
-  padding: 10px 24px;
+  padding: 8px 16px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 12px;
   border-radius: 12px;
+}
+
+div {
+  padding: 5px 0px 5px 0px; /* top right bottom left **/ 
 }
