@@ -65,10 +65,12 @@ deselected_color = "#bbbbbb"
 <table style="width:100%">
   <tr>
     <th style="width:20%">id</th>
-    <th style="width:20%">started</th>
+    <th style="width:15%">started</th>
     <th style="width:10%">sport</th>
     <th style="width:10%">distance [km]</th>
-    <th style="width:40%">notes</th>
+    <th style="width:10%">duration [hh:mm]</th>
+    <th style="width:10%">elevation gain/loss</th>
+    <th style="width:35%">notes</th>
   </tr>
 <% @sessions.each do |session| %>
   <tr>
@@ -76,6 +78,8 @@ deselected_color = "#bbbbbb"
     <td><%= session["start_time"] %></td>
     <td><%= session["sport"] %></td>
     <td><%= session["distance"] %></td>
+    <td><%= session["duration"] %></td>
+    <td><%= session["elevation"] %></td>
     <td><%= session["notes"] %></td>
   </tr>
 <% end %>
