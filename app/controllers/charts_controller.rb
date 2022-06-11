@@ -3,8 +3,9 @@ require "repositories/statistics/mongo_db"
 class ChartsController < ApplicationController
   def index
     @chart_params = {
-      year:     params[:year],
-      group_by: params[:group_by],
+      year:          params[:year],
+      month:         params[:month],
+      group_by:      params[:group_by],
       sport_type_id: params[:sport_type_id]
     }
 
@@ -45,21 +46,11 @@ class ChartsController < ApplicationController
   end
 
   def statistics
-    @statistics ||= Repositories::Statistics::MongoDb.new(years, sport_type_ids, group_by)
+    @statistics ||= Repositories::Statistics::MongoDb.new(
+      years:          years, 
+      sport_type_ids: sport_type_ids, 
+      group_by:       group_by
+    )
   end
 
-  def years
-    params[:year]&.split(",")&.map(&:to_i)
-  end
-
-  def group_by
-    (params[:group_by]&.split(",") || ["year"]).each_with_object({}) do |v,h|
-      h[v] = "$#{v}"
-    end
-  end
-
-  def sport_type_ids
-    params[:sport_type_id]&.split(",")&.map(&:to_i)
-  end
- 
 end

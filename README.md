@@ -11,23 +11,34 @@ Start rails
 rails s
 ```
 
-and visit
+## Pages
+
+### Statistics
+
+To view statistics visit
 
 ```
-http://localhost:3000/charts/index
+http://localhost:3000/charts
 ```
-
-# Output
 
 You should see something like this, depending on your data and your filters:
 
 ![stats01](./doc/20220606_stats01.png)
 ![stats02](./doc/20220606_stats02.png)
 
+### Sessions
+
+To view sessions overview visit
+
+```
+http://localhost:3000/sessions
+```
+
 # Supported Filters
 
-Currently following filters are supported (if applicable for the chart)
+Currently following filters are supported (if applicable for the chart or sessions)
 
 * *year*, e.g. `year=2020,2021,2022` for the last 3 years
+* *month*, e.g. `month=1,2,7` for the january, feburary, july
 * *sport_type_id*, e.g. `sport_type_id=1,19` for running and walking
 * *group_by*, e.g. `group_by=year,month` or `group_by=sport_type_id`, defaults to `year`

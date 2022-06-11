@@ -1,71 +1,74 @@
-<div padding:10px>
 <%
 selected_color   = "#81d99a"
 deselected_color = "#bbbbbb"
 %>
-<% @possible_years.each do |year| 
-    params = @chart_params.dup
-    selected_years = params[:year]&.split(",") || []
-    params[:year] = if selected_years.include?(year.to_s)
-      color = selected_color
-      selected_years - [year.to_s]
-    else
-      color = deselected_color
-      selected_years + [year.to_s]
-    end.flatten.join(',')
-      
-    color = selected_color if selected_years.empty?
-%>
-<%= link_to(year, charts_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
-<% end %>
+
+<div>
+  <% @possible_years.each do |year| 
+      params = @chart_params.dup
+      selected_years = params[:year]&.split(",") || []
+      params[:year] = if selected_years.include?(year.to_s)
+        color = selected_color
+        selected_years - [year.to_s]
+      else
+        color = deselected_color
+        selected_years + [year.to_s]
+      end.flatten.join(',')
+        
+      color = selected_color if selected_years.empty?
+  %>
+    <%= link_to(year, charts_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+  <% end %>
 </div>
 
 <div>
-<% @possible_sport_types.each do |id, name| 
-    params = @chart_params.dup
-    selected_sports = params[:sport_type_id]&.split(",") || []
-    params[:sport_type_id] = if selected_sports.include?(id.to_s)
-      color = selected_color
-      selected_sports - [id.to_s]
-    else
-      color = deselected_color
-      selected_sports + [id.to_s]
-    end.flatten.join(',')
+  <% @possible_sport_types.each do |id, name| 
+      params = @chart_params.dup
+      selected_sports = params[:sport_type_id]&.split(",") || []
+      params[:sport_type_id] = if selected_sports.include?(id.to_s)
+        color = selected_color
+        selected_sports - [id.to_s]
+      else
+        color = deselected_color
+        selected_sports + [id.to_s]
+      end.flatten.join(',')
 
-    color = selected_color if selected_sports.empty?
-%>
-<%= link_to(name, charts_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
-<% end %>
+      color = selected_color if selected_sports.empty?
+  %>
+    <%= link_to(name, charts_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+  <% end %>
 </div>
 
 <div class="flexbox">
-<div class="chart">
-<%= bar_chart charts_distance_per_year_path(@chart_params), xtitle: "distance [km]", ytitle: @chart_params[:group_by], thousands: ".",  colors: ["#99f", "#0bb", "#0ff"] %>
+  <div class="chart">
+    <%= bar_chart charts_distance_per_year_path(@chart_params), xtitle: "distance [km]", ytitle: @chart_params[:group_by], thousands: "." %>
+  </div>
+
+  <div class="chart">
+    <%= bar_chart charts_duration_per_year_path(@chart_params), xtitle: "duration [s]", ytitle: @chart_params[:group_by] %>
+  </div>
+
+  <div class="chart">
+    <%= bar_chart charts_elevation_per_year_path(@chart_params), xtitle: "elevation [m]", ytitle: @chart_params[:group_by]  %>
+  </div>
 </div>
-<div class="chart">
-<%= bar_chart charts_duration_per_year_path(@chart_params), xtitle: "duration [s]", ytitle: @chart_params[:group_by] %>
-</div>
-<div class="chart">
-<%= bar_chart charts_elevation_per_year_path(@chart_params), xtitle: "elevation [m]", ytitle: @chart_params[:group_by]  %>
-</div>
-</div>
+
 <div class="flexbox">
-<div class="chart">
-<%= column_chart charts_cnt_per_year_path(@chart_params), xtitle: "count", ytitle: @chart_params[:group_by] %>
+  <div class="chart">
+    <%= column_chart charts_cnt_per_year_path(@chart_params), xtitle: "count", ytitle: @chart_params[:group_by] %>
+  </div>
+
+  <div class="chart">
+    <%= pie_chart charts_distance_buckets_path(@chart_params), name: "Buckets" %>
+  </div>
 </div>
 
-<div class="chart">
-<%= pie_chart charts_distance_buckets_path(@chart_params), name: "Buckets" %>
-</div>
-</div>
 <div class="flexbox">
+  <div class="chart">
+    <%= line_chart charts_cnt_per_weekday_path(@chart_params) %>
+  </div>
 
-<div class="chart">
-  <%= line_chart charts_cnt_per_weekday_path(@chart_params) %>
-</div>
-<div class="chart">
-  <%= area_chart charts_hour_per_day_path(@chart_params) %>
-</div>
-
-
+  <div class="chart">
+    <%= area_chart charts_hour_per_day_path(@chart_params) %>
+  </div>
 </div>

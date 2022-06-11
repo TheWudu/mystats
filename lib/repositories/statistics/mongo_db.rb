@@ -1,9 +1,12 @@
+require "connections/mongo_db"
+require "sport_type"
+
 module Repositories
   module Statistics
     class MongoDb
       attr_accessor :years, :sport_type_ids, :group_by
 
-      def initialize(years, sport_type_ids, group_by)
+      def initialize(years:, sport_type_ids:, group_by:)
         self.years = years
         self.sport_type_ids = sport_type_ids
         self.group_by = group_by
@@ -23,7 +26,7 @@ module Repositories
           { "$sort" => { _id: 1 } }
         ]) 
         query.each_with_object({}) do |d, h| 
-          h[d["_id"]] = SPORT_TYPE_MAPPING[d["_id"]]
+          h[d["_id"]] = SportType.for(id: d["_id"])
         end
       end
   
@@ -105,41 +108,9 @@ module Repositories
         m
       end 
   
-      def mongo
-        self.class.mongo
-      end
-
-      def self.mongo
-        @mongo ||= ::Mongo::Client.new([ '127.0.0.1:27017' ], :database => 'mydb').database
-      end
-      
       def sessions
-        @sessions ||= mongo[:sessions]
+        @sessions ||= Connections::MongoDb.connection[:sessions]
       end
-  
-      SPORT_TYPE_MAPPING = {
-         1 => "running",
-         3 => "cycling",
-         4 => "mountain-biking",
-         5 => "other",
-         7 => "hiking",
-         9 => "skiing",
-        18 => "swimming",
-        19 => "walking",
-        22 => "race-cycling",
-        26 => "yoga",
-        31 => "pilates",
-        32 => "climbing",
-        34 => "strength-training",
-        54 => "ice-skating",
-        55 => "sledding",
-        69 => "crossfit",
-        70 => "dancing",
-        71 => "ice-hockey",
-        74 => "gymnastics",
-        81 => "training",
-        91 => "body-weight training"
-      }
   
       MONGO_WEEKDAY_IDX_TO_NAME = {
         1 => "Sunday",

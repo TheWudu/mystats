@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   get 'charts/distance_buckets'
   get 'charts/hour_per_day'
 
+  get 'sessions/index'
+
+  get 'charts', to: 'charts#index'
+  get 'sessions', to: 'sessions#index'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

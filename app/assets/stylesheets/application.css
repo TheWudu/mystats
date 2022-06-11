@@ -39,3 +39,27 @@
 div {
   padding: 5px 0px 5px 0px; /* top right bottom left **/ 
 }
+
+.center {
+  margin: auto;
+  width: 50%;
+  border: none; /* 3px dotted green; */
+  padding: 10px;
+}
+
+th, td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #D6EEEE;
+}
+
+tr:hover {background-color: #76d7c4;}
+
+td {
+  font-size: 14px;
+}
