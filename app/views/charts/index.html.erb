@@ -17,7 +17,7 @@ deselected_color = "#bbbbbb"
         
       color = selected_color if selected_years.empty?
   %>
-    <%= link_to(year, charts_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+    <%= link_to(year, charts_path(params), { class: "button", style: "background-color:#{color}" }) %>
   <% end %>
 </div>
 
@@ -35,7 +35,7 @@ deselected_color = "#bbbbbb"
 
       color = selected_color if selected_sports.empty?
   %>
-    <%= link_to(name, charts_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+    <%= link_to(name, charts_path(params), { class: "button", style: "background-color:#{color}" }) %>
   <% end %>
 </div>
 
@@ -55,7 +55,7 @@ deselected_color = "#bbbbbb"
 
 <div class="flexbox">
   <div class="chart">
-    <%= column_chart charts_cnt_per_year_path(@chart_params), xtitle: "count", ytitle: @chart_params[:group_by] %>
+    <%= column_chart charts_cnt_per_year_path(@chart_params), xtitle: @chart_params[:group_by], ytitle: "count" %>
   </div>
 
   <div class="chart">

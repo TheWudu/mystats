@@ -19,7 +19,7 @@ deselected_color = "#bbbbbb"
         
       color = selected_color if selected_years.empty?
   %>
-    <%= link_to(year, sessions_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+    <%= link_to(year, sessions_path(params), { class: "button", style: "background-color:#{color}" }) %>
   <% end %>
 </div>
 
@@ -37,7 +37,7 @@ deselected_color = "#bbbbbb"
 
       color = selected_color if selected_month.empty?
   %>
-    <%= link_to(month, sessions_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+    <%= link_to(month, sessions_path(params), { class: "button", style: "background-color:#{color}" }) %>
   <% end %>
 </div>
 
@@ -56,7 +56,7 @@ deselected_color = "#bbbbbb"
 
       color = selected_color if selected_sports.empty?
   %>
-    <%= link_to(name, sessions_index_path(params), { class: "button", style: "background-color:#{color}" }) %>
+    <%= link_to(name, sessions_path(params), { class: "button", style: "background-color:#{color}" }) %>
   <% end %>
 </div>
 </div>

@@ -34,6 +34,10 @@ To view sessions overview visit
 http://localhost:3000/sessions
 ```
 
+You should see something like this, depending on your data and your filters:
+
+![sessions01](./doc/20220611_sessions01.png)
+
 # Supported Filters
 
 Currently following filters are supported (if applicable for the chart or sessions)
