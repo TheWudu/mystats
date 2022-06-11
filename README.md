@@ -23,8 +23,8 @@ http://localhost:3000/charts
 
 You should see something like this, depending on your data and your filters:
 
-![stats01](./doc/20220606_stats01.png)
-![stats02](./doc/20220606_stats02.png)
+![stats01](./doc/20220611_stats01.png)
+![stats02](./doc/20220611_stats02.png)
 
 ### Sessions
 
