@@ -1,7 +1,10 @@
 require "awesome_print"
 require "time"
+require "tzinfo"
 require "pry"
 require "geokit"
+#require "repositories/cities/mongo_db"
+require_relative "../repositories/cities/mongo_db"
 
 require_relative "xml"
 
@@ -18,19 +21,31 @@ module Parser
     def parse
       tracks.map do |track|
         stats = calculate_track(track)
+        timezone = timezone_for(track[:points].first)
 
         stats.merge({
           notes:       track[:name],
           sport_type:  track[:type],
           start_time:  track[:points].first[:time],
           end_time:    track[:points].last[:time],
-          timezone:    nil,
-          start_time_timezone_offset: nil,
+          duration:    track[:points].last[:time] - track[:points].first[:time] - stats[:pause],
+          timezone:    timezone,
+          start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]),
         })
       end
     end
 
     private
+
+    def timezone_for(point)
+      city = Repositories::Cities::MongoDb.new.nearest(lat: point[:lat].to_f, lng: point[:lon].to_f)
+      return city[:timezone] if city
+      "UTC"
+    end
+
+    def timezone_offset(timezone, time)
+      TZInfo::Timezone.get(timezone).to_local(time).utc_offset
+    end
 
     def calculate_track(track)
       Geokit::default_units = :meters
@@ -39,7 +54,6 @@ module Parser
         elevation_gain: 0,
         elevation_loss: 0,
         distance:       0,
-        duration:       0,
         pause:          0
       }
 
@@ -47,7 +61,7 @@ module Parser
       track[:points][1..-1].each do |cur_point|
         calc_elevation(cur_point, prev_point, stats)
         calc_distance(cur_point, prev_point, stats)
-        calc_duration(cur_point, prev_point, stats)
+        calc_pause(cur_point, prev_point, stats)
         prev_point = cur_point
       end
 
@@ -63,8 +77,13 @@ module Parser
       end
     end
 
-    def calc_duration(cur_point, prev_point, stats)
-      stats[:duration] += cur_point[:time].to_f - prev_point[:time].to_f
+    PAUSE_THRESHOLD = 30
+
+    def calc_pause(cur_point, prev_point, stats)
+      duration = cur_point[:time].to_f - prev_point[:time].to_f
+      if duration > PAUSE_THRESHOLD
+        stats[:pause] += duration
+      end
     end
 
     def calc_distance(cur_point, prev_point, stats)

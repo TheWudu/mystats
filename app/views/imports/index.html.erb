@@ -1,0 +1,5 @@
+<%= form_with url: "/imports/create", multipart: true do |form| %>
+  <%= file_field_tag :input %>
+  <%= form.submit "Import" %>
+<% end %>
+

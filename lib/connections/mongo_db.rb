@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "mongo"
+
 module Connections
   class MongoDb
     def self.connection

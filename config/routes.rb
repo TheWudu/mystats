@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get 'charts', to: 'charts#index'
   get 'sessions', to: 'sessions#index'
 
+  get 'imports', to: 'imports#index'
+  post 'imports/create'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
