@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'repositories/sessions/mongo_db'
-require 'sport_type'
-require "parser/gpx"
+require 'use_cases/session/import'
 
 class ImportsController < ApplicationController
   def index
@@ -10,8 +8,9 @@ class ImportsController < ApplicationController
 
   def create
     data = params["input"].read
-    @session = Parser::Gpx.new(data: data).parse
-ap session
-    
+    UseCases::Session::Import.new(data: data).run
+
+    # redirect_to sessions_index_path
+    render :index
   end
 end

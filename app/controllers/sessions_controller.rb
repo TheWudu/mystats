@@ -19,7 +19,11 @@ class SessionsController < ApplicationController
     @possible_years       = statistics.possible_years
     @possible_sport_types = statistics.possible_sport_types
 
-    @sessions = sessions_repo.fetch.map do |session|
+    @sessions = sessions_repo.fetch(
+        years: years,
+        months: months,
+        sport_type_ids: sport_type_ids
+      ).map do |session|
       session.merge(
         start_time: session['start_time'].in_time_zone(session['timezone']),
         sport: SportType.for(id: session['sport_type_id']),
@@ -31,11 +35,7 @@ class SessionsController < ApplicationController
   end
 
   def sessions_repo
-    @sessions_repo ||= Repositories::Sessions::MongoDb.new(
-      years: years,
-      months: months,
-      sport_type_ids: sport_type_ids
-    )
+    Repositories::Sessions::MongoDb.new
   end
 
   def group_by

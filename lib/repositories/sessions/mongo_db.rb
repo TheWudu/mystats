@@ -5,21 +5,23 @@ require 'connections/mongo_db'
 module Repositories
   module Sessions
     class MongoDb
-      attr_accessor :years, :months, :sport_type_ids
+      def fetch(years:, months:, sport_type_ids:)
+        matcher = build_matcher(years: years, months: months, sport_type_ids: sport_type_ids)
 
-      def initialize(years:, months:, sport_type_ids:)
-        self.years = years
-        self.months = months
-        self.sport_type_ids = sport_type_ids
+        sessions.find(matcher).sort({ start_time: -1 }).to_a
+      end
+        
+      def find(start_time: , sport_type_id: )
+        sessions.find({ start_time: start_time, sport_type_id: sport_type_id }).first
       end
 
-      def fetch
-        sessions.find(matcher).sort({ start_time: -1 }).to_a
+      def insert(session:)
+ap session
       end
 
       private
 
-      def matcher # rubocop:disable Metrics/AbcSize
+      def build_matcher(years: nil, months: nil, sport_type_ids: nil) # rubocop:disable Metrics/AbcSize
         m = {}
         m.merge!(year: { '$in' => years }) if years && !years.empty?
         m.merge!(month: { '$in' => months }) if months && !months.empty?
