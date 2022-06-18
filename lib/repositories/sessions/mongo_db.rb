@@ -10,13 +10,13 @@ module Repositories
 
         sessions.find(matcher).sort({ start_time: -1 }).to_a
       end
-        
-      def find(start_time: , sport_type_id: )
+
+      def find(start_time:, sport_type_id:)
         sessions.find({ start_time: start_time, sport_type_id: sport_type_id }).first
       end
-      
-      def exists?(start_time: , sport_type_id: )
-        sessions.count({ start_time: start_time, sport_type_id: sport_type_id }) > 0 
+
+      def exists?(start_time:, sport_type_id:)
+        sessions.count({ start_time: start_time, sport_type_id: sport_type_id }).positive?
       end
 
       def insert(session:)
@@ -27,12 +27,12 @@ module Repositories
 
       def prepare_for_write(session)
         session.merge(
-          year:  session[:start_time].year,
+          year: session[:start_time].year,
           month: session[:start_time].month
         )
       end
 
-      def build_matcher(years: nil, months: nil, sport_type_ids: nil) # rubocop:disable Metrics/AbcSize
+      def build_matcher(years: nil, months: nil, sport_type_ids: nil)
         m = {}
         m.merge!(year: { '$in' => years }) if years && !years.empty?
         m.merge!(month: { '$in' => months }) if months && !months.empty?

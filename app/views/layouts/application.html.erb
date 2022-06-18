@@ -11,6 +11,23 @@
   </head>
 
   <body>
+
+<% 
+  selected_color = "#FF1200"
+  deselected_color = "#4CAF50"
+
+  colors = Hash.new(deselected_color)  
+  colors[params[:controller]] = selected_color
+%>
+
+
+    <div class="textbox">
+    MyStats 
+    <%= link_to("Charts", charts_path, { class: "button", style: "background-color:#{colors["charts"]}" }) %>
+    <%= link_to("Sessions", sessions_path, { class: "button", style: "background-color:#{colors["sessions"]}" }) %>
+    <%= link_to("Import", imports_path, { class: "button",  style: "background-color:#{colors["imports"]}"}) %>
+    </div>
+    <p>
     <%= yield %>
   </body>
 </html>

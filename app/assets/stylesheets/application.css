@@ -36,6 +36,15 @@
   border-radius: 12px;
 }
 
+.text {
+  font-size: 14px;
+}
+
+.textbox {
+  padding: 16px;
+  border: 3px dotted green;
+}
+
 div {
   padding: 5px 0px 5px 0px; /* top right bottom left **/ 
 }

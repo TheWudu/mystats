@@ -5,7 +5,7 @@ require 'repositories/sessions/mongo_db'
 require 'sport_type'
 
 class SessionsController < ApplicationController
-  def index # rubocop:disable Metrics/AbcSize
+  def index # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     params.reverse_merge!(
       month: Time.now.month.to_s,
       year: Time.now.year.to_s
@@ -20,10 +20,10 @@ class SessionsController < ApplicationController
     @possible_sport_types = statistics.possible_sport_types
 
     @sessions = sessions_repo.fetch(
-        years: years,
-        months: months,
-        sport_type_ids: sport_type_ids
-      ).map do |session|
+      years: years,
+      months: months,
+      sport_type_ids: sport_type_ids
+    ).map do |session|
       session.merge(
         start_time: session['start_time'].in_time_zone(session['timezone']),
         sport: SportType.for(id: session['sport_type_id']),

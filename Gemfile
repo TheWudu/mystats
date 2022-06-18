@@ -51,8 +51,8 @@ end
 ##
 ##
 gem 'chartkick'
+gem 'geokit'
 gem 'mongo'
-gem "geokit"
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]

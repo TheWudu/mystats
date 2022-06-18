@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Parser
   class Xml
     attr_accessor :data
@@ -10,7 +12,7 @@ module Parser
       ary = []
 
       current_tag = next_tag(data, 0)
-      raise ArgumentError.new("xml is not the first tag") unless current_tag[:tag] == "?xml"
+      raise ArgumentError, 'xml is not the first tag' unless current_tag[:tag] == '?xml'
 
       current_tag = next_tag(data, current_tag[:end_at])
       handle_tag(current_tag, ary)
@@ -18,42 +20,42 @@ module Parser
       ary
     end
 
-    def handle_tag(tag, ary)
+    def handle_tag(tag, ary) # rubocop:disable Metrics/AbcSize
       offset = tag[:end_at]
       loop do
         current_tag = next_tag(data, offset)
         return unless current_tag
 
         if end_current_tag?(current_tag, tag)
-          d = data[offset..current_tag[:start_at]-1].strip
+          d = data[offset..current_tag[:start_at] - 1].strip
           tag[:data] = d unless d.empty?
           ary << tag
-          return (current_tag[:end_at])  # to update offset in loop
+          return (current_tag[:end_at]) # to update offset in loop
         end
 
         tag[:tags] ||= []
         offset = handle_tag(current_tag, tag[:tags])
-        
+
         break if offset >= data.size
       end
-      return data.size
+      data.size
     end
 
     def end_current_tag?(current_tag, tag)
-       current_tag[:tag].start_with?("/") && current_tag[:tag][1..-1] == tag[:tag]
+      current_tag[:tag].start_with?('/') && current_tag[:tag][1..] == tag[:tag]
     end
 
-    def meta(str) 
+    def meta(str) # rubocop:disable Metrics/AbcSize
       return unless str
       return if str.empty?
 
       h = {}
-      sa = str.split(/"/).collect { |x| x.strip }
-      splits = (1..sa.length).zip(sa).collect { |i,x| (i&1).zero? ? x : x.split }.flatten
+      sa = str.split(/"/).collect(&:strip)
+      splits = (1..sa.length).zip(sa).collect { |i, x| (i & 1).zero? ? x : x.split }.flatten
 
-      for i in 0..(splits.size/2 - 1) do
-        k = splits[i*2].gsub("=", "")
-        v = splits[i*2+1]
+      (0..(splits.size / 2 - 1)).each do |i|
+        k = splits[i * 2].gsub('=', '')
+        v = splits[i * 2 + 1]
         h[k.to_sym] = v
       end
       h
@@ -65,25 +67,28 @@ module Parser
     end
 
     def build_tag(data, opening, closing)
-      tag_data = data[opening..closing-1]
+      tag_data = data[opening..closing - 1]
 
-      current_tag = tag_data.split(" ").first.gsub("<","").gsub(">","")
-      tag_meta    = meta(tag_data.split(" ", 2)[1])
+      current_tag = tag_data.split(' ').first.gsub('<', '').gsub('>', '')
+      tag_meta    = meta(tag_data.split(' ', 2)[1])
 
-      { tag: current_tag, meta: tag_meta, start_at: opening, end_at: closing+1 }.compact
+      { tag: current_tag, meta: tag_meta, start_at: opening, end_at: closing + 1 }.compact
     end
 
     def find_tag_borders(data, offset)
-      opening = find_tag(data, offset, "<")
+      opening = find_tag(data, offset, '<')
       return unless opening
-      closing = find_tag(data, opening, ">")
+
+      closing = find_tag(data, opening, '>')
       return unless closing
+
       [opening, closing]
     end
 
     def find_tag(data, offset, char)
-      pos = data[offset..-1] =~ /#{char}/
+      pos = data[offset..] =~ /#{char}/
       return nil unless pos
+
       pos.to_i + offset
     end
   end

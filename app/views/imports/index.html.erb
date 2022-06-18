@@ -1,7 +1,17 @@
-<%= form_with url: "/imports/create", multipart: true do |form| %>
-  <%= file_field_tag :input %>
-  <%= form.submit "Import" %>
-<% end %>
+
+<div class="textbox" style="width:50%;margin:auto">
+  <div class="text">
+    Import sessions, supporting GPX only:
+  </div>
+
+  <div style="padding-left:10px">
+  <%= form_with url: "/imports/create", multipart: true do |form| %>
+    <%= file_field_tag :input %>
+    <p/>
+    <%= form.submit "Import" %>
+  <% end %>
+  </div>
+</div>
 
 
 

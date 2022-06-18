@@ -1,9 +1,10 @@
-require "parser/gpx"
+# frozen_string_literal: true
+
+require 'parser/gpx'
 
 module UseCases
   module Session
     class Import
-
       attr_reader :data
 
       def initialize(data:)
@@ -13,6 +14,7 @@ module UseCases
       def run
         sessions.each do |session|
           next if exists?(session)
+
           store(session)
         end
       end
@@ -32,7 +34,7 @@ module UseCases
 
       def exists?(session)
         session_repo.exists?(
-          start_time: session[:start_time], 
+          start_time: session[:start_time],
           sport_type_id: session[:sport_type_id]
         )
       end
