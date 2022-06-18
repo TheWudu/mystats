@@ -26,11 +26,13 @@ module Parser
         stats.merge({
           notes:       track[:name],
           sport_type:  track[:type],
+          sport_type_id: SportType.for(name: track[:type]),
           start_time:  track[:points].first[:time],
           end_time:    track[:points].last[:time],
-          duration:    track[:points].last[:time] - track[:points].first[:time] - stats[:pause],
+          duration:    (track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000,
+          pause:       stats[:pause] * 1000,
           timezone:    timezone,
-          start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]),
+          start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time])
         })
       end
     end
@@ -65,7 +67,7 @@ module Parser
         prev_point = cur_point
       end
 
-      stats
+      stats.transform_values!(&:to_i)
     end
 
     def calc_elevation(cur_point, prev_point, stats)
@@ -124,10 +126,10 @@ module Parser
 end
 
 
-data = File.read("/home/martin/coding/mongo_cpp/data/gpx/activity_8987491399.gpx")
-# data = File.read("test.gpx")
-
-ap Parser::Gpx.new(data: data).parse
+# data = File.read("/home/martin/coding/mongo_cpp/data/gpx/activity_8987491399.gpx")
+# # data = File.read("test.gpx")
+# 
+# ap Parser::Gpx.new(data: data).parse
  
 
 

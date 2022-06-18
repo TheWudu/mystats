@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 class SportType
-  def self.for(id:)
-    SPORT_TYPE_MAPPING[id]
+  def self.for(id: nil, name: nil)
+    raise ArgumentError unless id || name
+
+    if id
+      SPORT_TYPE_MAPPING[id]
+    elsif name
+      SPORT_TYPE_MAPPING.key(name)
+    end
   end
 
   SPORT_TYPE_MAPPING = {

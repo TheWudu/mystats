@@ -14,12 +14,23 @@ module Repositories
       def find(start_time: , sport_type_id: )
         sessions.find({ start_time: start_time, sport_type_id: sport_type_id }).first
       end
+      
+      def exists?(start_time: , sport_type_id: )
+        sessions.count({ start_time: start_time, sport_type_id: sport_type_id }) > 0 
+      end
 
       def insert(session:)
-ap session
+        sessions.insert_one(prepare_for_write(session))
       end
 
       private
+
+      def prepare_for_write(session)
+        session.merge(
+          year:  session[:start_time].year,
+          month: session[:start_time].month
+        )
+      end
 
       def build_matcher(years: nil, months: nil, sport_type_ids: nil) # rubocop:disable Metrics/AbcSize
         m = {}

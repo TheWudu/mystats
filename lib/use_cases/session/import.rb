@@ -12,7 +12,6 @@ module UseCases
 
       def run
         sessions.each do |session|
-ap session
           next if exists?(session)
           store(session)
         end
@@ -28,12 +27,14 @@ ap session
       end
 
       def store(session)
-ap "store #{session}"
         session_repo.insert(session: session)
       end
 
       def exists?(session)
-        !!session_repo.find(start_time: session[:start_time], sport_type_id: session[:sport_type_id])
+        session_repo.exists?(
+          start_time: session[:start_time], 
+          sport_type_id: session[:sport_type_id]
+        )
       end
 
       def session_repo
