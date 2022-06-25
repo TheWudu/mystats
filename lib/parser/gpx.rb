@@ -103,12 +103,22 @@ module Parser
             trkseg[:tags].select { |t| t[:tag] == 'trkpt' }.map do |trkpt|
               trkpt[:meta].merge(
                 time: Time.parse(from_tags(trkpt, 'time')),
-                ele: from_tags(trkpt, 'ele').to_f
+                ele: refined_elevation(from_tags(trkpt, 'ele').to_f, trkpt[:meta])
               )
             end
           end.flatten
         }
       end
+    end
+
+    def refined_elevation(ele, meta)
+      lat = meta[:lat]
+      lng = meta[:lon]
+
+      return ele unless lat && lng
+
+      elevation = HgtReader.new.elevation(lat.to_f, lng.to_f)
+      elevation
     end
 
     def from_tags(tag, type)

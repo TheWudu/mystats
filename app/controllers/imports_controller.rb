@@ -9,7 +9,6 @@ class ImportsController < ApplicationController
     data = params['input'].read
     UseCases::Session::Import.new(data: data).run
 
-    # redirect_to sessions_index_path
-    render :index
+    redirect_to sessions_index_path
   end
 end
