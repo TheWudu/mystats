@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   get 'charts', to: 'charts#index'
   get 'sessions', to: 'sessions#index'
+  get 'sessions/search', to: 'sessions#search'
 
   get 'imports', to: 'imports#index'
   post 'imports/create'

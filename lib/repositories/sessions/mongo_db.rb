@@ -5,8 +5,9 @@ require 'connections/mongo_db'
 module Repositories
   module Sessions
     class MongoDb
-      def fetch(years:, months:, sport_type_ids:)
+      def fetch(years:, months:, sport_type_ids:, text: nil)
         matcher = build_matcher(years: years, months: months, sport_type_ids: sport_type_ids)
+        matcher.merge!(text_filter(text)) unless text.blank?
 
         sessions.find(matcher).sort({ start_time: -1 }).to_a
       end
@@ -21,6 +22,16 @@ module Repositories
 
       def insert(session:)
         sessions.insert_one(prepare_for_write(session))
+      end
+
+      def text_filter(text)
+        { '$text' =>
+          {
+            '$search' => text,
+            # "$language" => <string>,
+            '$caseSensitive' => false
+            # "$diacriticSensitive" => <boolean>
+          } }
       end
 
       private

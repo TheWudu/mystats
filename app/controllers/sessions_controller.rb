@@ -5,21 +5,17 @@ require 'repositories/sessions/mongo_db'
 require 'sport_type'
 
 class SessionsController < ApplicationController
-  def index # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    params.reverse_merge!(
-      month: Time.now.month.to_s,
-      year: Time.now.year.to_s
-    )
-    @session_params = {
-      year: params[:year],
-      month: params[:month],
-      sport_type_id: params[:sport_type_id]
-    }
+  before_action :filter_params
 
+  def filter_params
+    @session_params       = session_params
     @possible_years       = statistics.possible_years
     @possible_sport_types = statistics.possible_sport_types
+  end
 
+  def index # rubocop:disable Metrics/AbcSize
     @sessions = sessions_repo.fetch(
+      text: params[:text],
       years: years,
       months: months,
       sport_type_ids: sport_type_ids
@@ -32,6 +28,19 @@ class SessionsController < ApplicationController
         elevation: format_elevation(session['elevation_gain'], session['elevation_loss'])
       )
     end
+  end
+
+  def session_params
+    params.reverse_merge!(
+      month: Time.now.month.to_s,
+      year: Time.now.year.to_s
+    )
+    {
+      year: params[:year],
+      month: params[:month],
+      sport_type_id: params[:sport_type_id],
+      text: params[:text]
+    }
   end
 
   def sessions_repo

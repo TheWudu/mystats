@@ -117,8 +117,7 @@ module Parser
 
       return ele unless lat && lng
 
-      elevation = HgtReader.new.elevation(lat.to_f, lng.to_f)
-      elevation
+      HgtReader.new.elevation(lat.to_f, lng.to_f)
     end
 
     def from_tags(tag, type)

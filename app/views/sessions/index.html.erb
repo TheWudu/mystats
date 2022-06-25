@@ -59,6 +59,18 @@ deselected_color = "#bbbbbb"
     <%= link_to(name, sessions_path(params), { class: "button", style: "background-color:#{color}" }) %>
   <% end %>
 </div>
+
+<div>
+<%= form_with url: "/sessions", method: :get do |form| %>
+  <%= form.hidden_field :year, value: @session_params[:year] %>
+  <%= form.hidden_field :month, value: @session_params[:month] %>
+  <%= form.hidden_field :sport_type_id, value: @session_params[:sport_type_id] %>
+  <%= form.label :text, "Search for notes: " %>
+  <%= form.text_field :text, value: @session_params[:text] %>
+  <%= form.submit "Search" %>
+<% end %>
+
+</div>
 </div>
 
 <div class="center" style="width:90%">
