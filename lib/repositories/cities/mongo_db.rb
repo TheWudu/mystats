@@ -10,6 +10,15 @@ module Repositories
 
       attr_accessor :years, :months, :sport_type_ids
 
+      def fetch(name: nil, latitude: nil, longitude: nil, timezone: nil)
+        matcher = {}
+        matcher.merge!(matcher(latitude, longitude)) unless latitude.blank? && longitude.blank?
+        matcher.merge!(name: name) unless name.blank?
+        matcher.merge!(timezone: timezone) unless timezone.blank?
+
+        cities.find(matcher).limit(500).to_a
+      end
+
       def nearest(lat:, lng:)
         cities.find(matcher(lat, lng)).limit(1).first
       end
@@ -65,7 +74,7 @@ module Repositories
         {
           'location' => {
             '$geoNear' => {
-              '$geometry' => { "type": 'Point', coordinates: [lng, lat] },
+              '$geometry' => { "type": 'Point', coordinates: [lng.to_f, lat.to_f] },
               '$maxDistance' => MAX_DISTANCE
             }
           }

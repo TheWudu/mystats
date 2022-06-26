@@ -1,0 +1,33 @@
+
+</div>
+<div class="center" style="width:70%">
+<table style="width:100%">
+  <tr>
+    <th style="width:20%">id</th>
+    <th style="width:30%">name</th>
+    <th style="width:20%">latitude</th>
+    <th style="width:20%">longitude</th>
+    <th style="width:10%">timezone</th>
+  </tr>
+
+<tr>
+<%= form_with url: "/cities", method: :get do |form| %>
+  <td><%= form.submit "Search" %></td>
+  <td><%= form.text_field :name, value: params[:name] %></td>
+  <td><%= form.text_field :latitude, value: params[:latitude] %></td>
+  <td><%= form.text_field :longitude, value: params[:longitude]  %></td>
+  <td><%= form.text_field :timezone, value: params[:timezone] %></td>
+</tr>
+<% end %>
+
+<% @cities.each do |city| %>
+  <tr>
+    <td><%= city["_id"] %></td>
+    <td><%= city["name"] %></td>
+    <td><%= city.dig("location", "coordinates")[1] %></td>
+    <td><%= city.dig("location", "coordinates")[0] %></td>
+    <td><%= city["timezone"] %></td>
+  </tr>
+<% end %>
+</table>
+</div>
