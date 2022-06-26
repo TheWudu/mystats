@@ -12,15 +12,15 @@ module Repositories
 
       def fetch(name: nil, latitude: nil, longitude: nil, timezone: nil)
         matcher = {}
-        matcher.merge!(matcher(latitude, longitude)) unless latitude.blank? && longitude.blank?
-        matcher.merge!(name: name) unless name.blank?
+        matcher.merge!(geo_matcher(latitude, longitude, 50_000)) unless latitude.blank? && longitude.blank?
+        matcher.merge!(name: /#{name}/) unless name.blank?
         matcher.merge!(timezone: timezone) unless timezone.blank?
 
         cities.find(matcher).limit(500).to_a
       end
 
       def nearest(lat:, lng:)
-        cities.find(matcher(lat, lng)).limit(1).first
+        cities.find(geo_matcher(lat, lng)).limit(1).first
       end
 
       def exist?(name)
@@ -70,12 +70,12 @@ module Repositories
         }
       end
 
-      def matcher(lat, lng)
+      def geo_matcher(lat, lng, max_dist = MAX_DISTANCE)
         {
           'location' => {
             '$geoNear' => {
               '$geometry' => { "type": 'Point', coordinates: [lng.to_f, lat.to_f] },
-              '$maxDistance' => MAX_DISTANCE
+              '$maxDistance' => max_dist
             }
           }
         }
