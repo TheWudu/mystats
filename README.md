@@ -38,6 +38,18 @@ You should see something like this, depending on your data and your filters:
 
 ![sessions01](./doc/20220627_sessions01.png)
 
+### Import
+
+To import gpx files to the database, you now can also import it via the
+web application. Visit
+
+```
+http://localhost:3000/import
+```
+
+Browse for the file and press import. It will upload the gpx file,
+read and parse the content, refine the elevation using srtm3 data (if available)
+and store it to the database.
 
 ### Cities
 
