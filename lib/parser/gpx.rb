@@ -29,15 +29,27 @@ module Parser
                       sport_type_id: SportType.for(name: track[:type]),
                       start_time: track[:points].first[:time],
                       end_time: track[:points].last[:time],
-                      duration: (track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000,
-                      pause: stats[:pause] * 1000,
+                      duration: ((track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000).to_i,
+                      pause: (stats[:pause] * 1000).to_i,
                       timezone: timezone,
-                      start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time])
+                      start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]).to_i,
+                      trace: trace_from_track(track)
                     })
       end
     end
 
     private
+
+    def trace_from_track(track)
+      track[:points].map do |p|
+        {
+          time: p[:time],
+          lat: p[:lat],
+          lng: p[:lon],
+          ele: p[:ele]
+        }
+      end
+    end
 
     def timezone_for(point)
       city = Repositories::Cities::MongoDb.new.nearest(lat: point[:lat].to_f, lng: point[:lon].to_f)
