@@ -16,6 +16,10 @@ module Repositories
         sessions.find({ start_time: start_time, sport_type_id: sport_type_id }).first
       end
 
+      def find_by_id(id:)
+        sessions.find({ id: id }).first
+      end
+
       def exists?(start_time:, sport_type_id:)
         sessions.count({ start_time: start_time, sport_type_id: sport_type_id }).positive?
       end
