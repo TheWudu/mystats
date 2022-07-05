@@ -53,6 +53,9 @@ end
 gem 'chartkick'
 gem 'geokit'
 gem 'mongo'
+gem "fast-polylines"
+gem 'jquery-rails'
+gem "flot-rails"
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]

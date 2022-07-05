@@ -3,3 +3,8 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "chartkick"
 import "Chart.bundle"
+
+//= require jquery
+//= require jquery_ujs
+//= require jquery.flot
+//= require jquery.flot.resize

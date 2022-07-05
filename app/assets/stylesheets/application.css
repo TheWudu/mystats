@@ -63,6 +63,13 @@ th, td {
   padding-right: 10px;
 }
 
+.smalltd {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
 tr:nth-child(even) {
   background-color: #D6EEEE;
 }
@@ -71,4 +78,10 @@ tr:hover {background-color: #76d7c4;}
 
 td {
   font-size: 14px;
+}
+
+#block-div, #block2-div{
+  float: left;
+  margin: 0px;
+  width: 25%;
 }
