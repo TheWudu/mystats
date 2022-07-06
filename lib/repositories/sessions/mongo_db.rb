@@ -9,23 +9,43 @@ module Repositories
         matcher = build_matcher(years: years, months: months, sport_type_ids: sport_type_ids)
         matcher.merge!(text_filter(text)) unless text.blank?
 
-        sessions.find(matcher).sort({ start_time: -1 }).to_a
+        collection.find(matcher).sort({ start_time: -1 }).to_a
       end
 
       def find(start_time:, sport_type_id:)
-        sessions.find({ start_time: start_time, sport_type_id: sport_type_id }).first
+        sessions = collection.find({ start_time: start_time, sport_type_id: sport_type_id })
+        return unless sessions.count == 1
+        to_model(sessions.first)
       end
 
       def find_by_id(id:)
-        sessions.find({ id: id }).first
+        sessions = collection.find({ id: id })
+        return unless sessions.count == 1
+        to_model(sessions.first)
+      end
+
+      def find_with_traces
+        collection.find({ trace: { "$exists" => true } })
+          .sort( { start_time: -1 }).map do |session|
+          to_model(session)
+        end
       end
 
       def exists?(start_time:, sport_type_id:)
-        sessions.count({ start_time: start_time, sport_type_id: sport_type_id }).positive?
+        collection.count({ start_time: start_time, sport_type_id: sport_type_id }).positive?
       end
 
       def insert(session:)
-        sessions.insert_one(prepare_for_write(session))
+        collection.insert_one(prepare_for_write(session))
+      end
+
+      private
+
+      def to_model(session)
+        session_model = session.merge({
+          selector_text: "#{session["id"]} - #{session["start_time"]} - #{session["distance"]}"
+        })
+        OpenStruct.new(session_model)
       end
 
       def text_filter(text)
@@ -55,8 +75,8 @@ module Repositories
         m
       end
 
-      def sessions
-        @sessions ||= Connections::MongoDb.connection[:sessions]
+      def collection 
+        @collection ||= Connections::MongoDb.connection[:sessions]
       end
     end
   end

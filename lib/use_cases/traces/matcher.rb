@@ -17,9 +17,6 @@ module UseCases
         self.block_size  = block_size&.to_i || BLOCK_SIZE_IN_METERS
         self.max_diff    = max_diff&.to_i || MAX_DIFF
         self.min_overlap = min_overlap&.to_f || MIN_OVERLAP
-ap self.block_size
-ap self.max_diff
-ap self.min_overlap
       end
 
       def analyse
