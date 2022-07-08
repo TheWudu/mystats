@@ -24,7 +24,7 @@
       var d2 = <%= @matcher.blocks2 %>;
       var d3 = <%= @matcher.orig1 %>;
       var d4 = <%= @matcher.orig2 %>;
-      
+
       var plot = $.plot("#placeholder", [ 
         { data: d1, label: "blocks1", points: { symbol: "square" } }, 
         { data: d2, label: "blocks2", points: { symbol: "circle" } },
@@ -77,7 +77,7 @@
         if (item) {
           var x = item.datapoint[0].toFixed(2),
            y = item.datapoint[1].toFixed(2);
-           $("#tooltip").html(item.series.label + " of " + x + " = " + y).css({top: item.pageY+5, left: item.pageX+5}).fadeIn(200);
+           $("#tooltip").html(item.series.label + " (" + x + " / " + y + ")").css({top: item.pageY+5, left: item.pageX+5}).fadeIn(200);
         } else {
           $("#tooltip").stop().hide();
         }
@@ -169,7 +169,7 @@
         </tr>
         <tr>
           <td>Match rate:</td>
-          <td colpsan=2><%= @matcher.match_in_percent %></td>
+          <td colpsan=2><%= @matcher.match_in_percent %> %</td>
         </tr>
       </table>
     </div>

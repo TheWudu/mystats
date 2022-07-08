@@ -26,7 +26,7 @@ module UseCases
         self.orig2   = trace2.map { |p| blockify(p, 1) }
 
         diffs = find_matches_v2
-        self.match_in_percent = (diffs.count(true).to_f / diffs.count) 
+        self.match_in_percent = ((diffs.count(true).to_f / diffs.count)  * 100).round(2)
       end
 
       def find_matches_v2
@@ -67,8 +67,8 @@ module UseCases
 
       def blockify(point, bs = self.block_size)
         [
-          (calc(point["lng"].to_f).to_i / bs).to_i * bs, 
-          (calc(point["lat"].to_f).to_i / bs).to_i * bs
+          (calc(point["lng"].to_f).to_i / bs).to_i * bs + bs/2, 
+          (calc(point["lat"].to_f).to_i / bs).to_i * bs + bs/2
         ]
       end
 
