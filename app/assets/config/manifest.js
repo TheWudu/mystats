@@ -4,5 +4,18 @@
 //= link_tree ../../../vendor/javascript .js
 
 //= link jquery.js
+//= link jquery.event.drag.js
+//= link jquery.mousewheel.js
 //= link jquery.flot.js
 //= link jquery.flot.resize.js
+//= link jquery.flot.symbol.js
+//= link jquery.flot.navigate.js
+//= link jquery.flot.hover.js
+//= link jquery.flot.selection.js
+//= link jquery.flot.saturated.js
+//= link jquery.flot.browser.js
+//= link jquery.flot.drawSeries.js
+//= link jquery.flot.uiConstants.js
+//= link jquery.flot.navigate.js
+//= link jquery.flot.touchNavigate.js
+//= link jquery.flot.touch.js

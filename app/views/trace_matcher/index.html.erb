@@ -1,6 +1,20 @@
 <% content_for :for_head do -%>
   <%= javascript_include_tag('jquery.js') %>
+  <%= javascript_include_tag('jquery.event.drag.js') %>
+  <%= javascript_include_tag('jquery.mousewheel.js') %>
+  <%= javascript_include_tag('jquery.canvaswrapper.js') %>
+  <%= javascript_include_tag('jquery.colorhelpers.js') %>
   <%= javascript_include_tag('jquery.flot.js') %>
+  <%= javascript_include_tag('jquery.flot.symbol.js') %>
+  <%= javascript_include_tag('jquery.flot.saturated.js') %>
+  <%= javascript_include_tag('jquery.flot.browser.js') %>
+  <%= javascript_include_tag('jquery.flot.drawSeries.js') %>
+  <%= javascript_include_tag('jquery.flot.uiConstants.js') %>
+  <%= javascript_include_tag('jquery.flot.navigate.js') %>
+  <%= javascript_include_tag('jquery.flot.touchNavigate.js') %>
+  <%= javascript_include_tag('jquery.flot.hover.js') %>
+  <%= javascript_include_tag('jquery.flot.touch.js') %>
+  <%= javascript_include_tag('jquery.flot.selection.js') %>
 
 	<script type="text/javascript">
 
@@ -8,17 +22,86 @@
 
       var d1 = <%= @matcher.blocks1 %>;
       var d2 = <%= @matcher.blocks2 %>;
+      var d3 = <%= @matcher.orig1 %>;
+      var d4 = <%= @matcher.orig2 %>;
+      
+      var plot = $.plot("#placeholder", [ 
+        { data: d1, label: "blocks1", points: { symbol: "square" } }, 
+        { data: d2, label: "blocks2", points: { symbol: "circle" } },
+        { data: d3, label: "orig1",   points: { symbol: "square", radius: 1 } },
+        { data: d4, label: "orig2",   points: { symbol: "circle", radius: 1 } }
+      ],
+      {
+        series: {
+          points: {
+             show: true,
+             radius: <%= @match_params[:block_size].to_i / 2 %>,
+             lineWidth: 2
+          }
+        },
+      	grid: {
+        	hoverable: true
+        },
+        xaxis: {
+          // zoomRange: [0, 10000],
+          gridLines: true
+        },
+        yaxis: {
+          // zoomRange: [0, 10000],
+          gridLines: true,
+          autoScale: 'exact'
+        },
+        zoom: {
+          interactive: true
+        },
+      });
 
-      $.plot("#placeholder", [ d1, d2 ]);
+      $("<div id='tooltip'></div>").css({
+        position: "absolute",
+        display: "none",
+        border: "1px solid #fdd",
+        padding: "2px", "background-color": "#fee",
+        opacity: 0.80
+      }).appendTo("body");
+
+      $("#placeholder").bind("plothover", function (event, pos, item) {
+        if (!pos.x || !pos.y) {
+          return;
+        }
+
+        // if ($("#enablePosition:checked").length > 0) {
+        //   var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
+        //   $("#hoverdata").text(str);
+        // }
+
+        if (item) {
+          var x = item.datapoint[0].toFixed(2),
+           y = item.datapoint[1].toFixed(2);
+           $("#tooltip").html(item.series.label + " of " + x + " = " + y).css({top: item.pageY+5, left: item.pageX+5}).fadeIn(200);
+        } else {
+          $("#tooltip").stop().hide();
+        }
+      });
+    
+      $("#placeholder").bind("plothovercleanup", function (event, pos, item) {
+        $("#tooltip").hide();
+      });
+    
+      $("#placeholder").bind("plotclick", function (event, pos, item) {
+        if (item) {
+          $("#clickdata").text(" - click point " + item.dataIndex + " in " + item.series.label);
+          plot.highlight(item.series, item.datapoint);
+        }
+      });
     };
 
     // Window.onload = function() {  
     //   plotmygraph();
     // };
 
-    document.addEventListener("DOMContentLoaded", function() {
-      plotmygraph();
-    });
+    // document.addEventListener("DOMContentLoaded", function() {
+    //   plotmygraph();
+    // });
 
     // $(document).ready( function () {
     //   plotmygraph()
