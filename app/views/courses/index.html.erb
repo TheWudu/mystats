@@ -1,0 +1,18 @@
+<div class="center" style="width:90%">
+  <table class="normaltable" style="width:100%">
+    <tr>
+      <th style="width:20%">id</th>
+      <th style="width:50%">name</th>
+      <th style="width:20%">distance</th>
+      <th style="width:10%">session#</th>
+    </tr>
+    <% @courses.each do |course| %>
+      <tr>
+        <td><%= course["id"] %></td>
+        <td><%= course["name"] %></td>
+        <td><%= course["distance"] %></td>
+        <td><%= course["session_ids"]&.count %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
