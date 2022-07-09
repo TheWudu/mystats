@@ -124,7 +124,7 @@
         </tr>
         <tr>
           <td><%= form.label :text, "min overlap: " %></td>
-          <td><%= form.number_field :min_overlap, value: @match_params[:min_overlap], in: 0.0..1.0, step: 0.01 %></td>
+          <td><%= form.number_field :min_overlap, value: @match_params[:min_overlap], in: 0..100, step: 1 %></td>
         </tr>
       </table>
     </div>

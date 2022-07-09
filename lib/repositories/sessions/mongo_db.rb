@@ -15,18 +15,20 @@ module Repositories
       def find(start_time:, sport_type_id:)
         sessions = collection.find({ start_time: start_time, sport_type_id: sport_type_id })
         return unless sessions.count == 1
+
         to_model(sessions.first)
       end
 
       def find_by_id(id:)
         sessions = collection.find({ id: id })
         return unless sessions.count == 1
+
         to_model(sessions.first)
       end
 
       def find_with_traces
-        collection.find({ trace: { "$exists" => true } })
-          .sort( { start_time: -1 }).map do |session|
+        collection.find({ trace: { '$exists' => true } })
+                  .sort({ start_time: -1 }).map do |session|
           to_model(session)
         end
       end
@@ -43,8 +45,8 @@ module Repositories
 
       def to_model(session)
         session_model = session.merge({
-          selector_text: "#{session["id"]} - #{session["start_time"]} - #{session["distance"]}"
-        })
+                                        selector_text: "#{session['id']} - #{session['start_time']} - #{session['distance']}"
+                                      })
         OpenStruct.new(session_model)
       end
 
@@ -57,8 +59,6 @@ module Repositories
             # "$diacriticSensitive" => <boolean>
           } }
       end
-
-      private
 
       def prepare_for_write(session)
         session.merge(
@@ -75,7 +75,7 @@ module Repositories
         m
       end
 
-      def collection 
+      def collection
         @collection ||= Connections::MongoDb.connection[:sessions]
       end
     end

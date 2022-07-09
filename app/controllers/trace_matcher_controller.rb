@@ -5,15 +5,15 @@ require 'use_cases/traces/matcher'
 class TraceMatcherController < ApplicationController
   def index
     @matcher = UseCases::Traces::Matcher.new(
-      trace1:     trace1, 
-      trace2:     trace2,
+      trace1: trace1,
+      trace2: trace2,
       block_size: block_size,
-      max_diff:   max_diff,
+      max_diff: max_diff,
       min_overlap: min_overlap
     )
     @matcher.analyse
     @match_params = {
-      block_size: params[:block_size] || UseCases::Traces::Matcher::BLOCK_SIZE_IN_METERS ,
+      block_size: params[:block_size] || UseCases::Traces::Matcher::BLOCK_SIZE_IN_METERS,
       min_overlap: params[:min_overlap] || UseCases::Traces::Matcher::MIN_OVERLAP,
       max_diff: params[:max_diff] || UseCases::Traces::Matcher::MAX_DIFF,
       session1: session1_id,
@@ -34,13 +34,13 @@ class TraceMatcherController < ApplicationController
   def max_diff
     params[:max_diff].blank? ? nil : params[:max_diff]
   end
-  
+
   def session1_id
-    params[:session1] || "8cda6b14-9dda-4564-ab75-d87cbd0d641d"
+    params[:session1] || '8cda6b14-9dda-4564-ab75-d87cbd0d641d'
   end
 
   def session2_id
-    params[:session2] || "cf8fae76-3c18-458f-9066-d859dfd73cac"
+    params[:session2] || 'cf8fae76-3c18-458f-9066-d859dfd73cac'
   end
 
   def session1
@@ -58,5 +58,4 @@ class TraceMatcherController < ApplicationController
   def trace2
     @trace2 ||= session2[:trace]
   end
-
 end
