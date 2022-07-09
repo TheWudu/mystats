@@ -26,6 +26,26 @@ module Repositories
         to_model(sessions.first)
       end
 
+      def find_by_ids(ids:)
+        sessions = collection.find({ id: { '$in' => ids } })
+        sessions.map do |session|
+          to_model(session)
+        end
+      end
+
+      def where(opts = {})
+        query = {}
+        if opts['distance.between']
+          query.merge!({ distance: { '$gte' => opts['distance.between'].first,
+                                     '$lte' => opts['distance.between'].second } })
+        end
+        query.merge!({ id: { '$nin' => opts['id.not_in'] } }) if opts['id.not_in']
+        query.merge!({ trace: { '$exists' => opts['trace.exists'] } }) if opts['trace.exists']
+        collection.find(query).map do |session|
+          to_model(session)
+        end
+      end
+
       def find_with_traces
         collection.find({ trace: { '$exists' => true } })
                   .sort({ start_time: -1 }).map do |session|

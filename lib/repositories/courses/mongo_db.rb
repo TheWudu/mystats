@@ -5,9 +5,12 @@ require 'connections/mongo_db'
 module Repositories
   module Courses
     class MongoDb
-
       def fetch
-        collection.find({}).sort({name: 1}).to_a
+        collection.find({}).sort({ name: 1 }).to_a
+      end
+
+      def find(id:)
+        collection.find({ id: id }).first
       end
 
       def insert(course:)

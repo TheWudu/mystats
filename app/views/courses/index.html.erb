@@ -8,7 +8,7 @@
     </tr>
     <% @courses.each do |course| %>
       <tr>
-        <td><%= course["id"] %></td>
+        <td><%= link_to(course["id"], courses_show_path(id: course["id"])) %></td>
         <td><%= course["name"] %></td>
         <td><%= course["distance"] %></td>
         <td><%= course["session_ids"]&.count %></td>

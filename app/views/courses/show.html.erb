@@ -1,0 +1,73 @@
+<div class="center" style="width:90%">
+  <table class="normaltable" style="width:100%">
+    <tr>
+      <td style="width:20%">id</td>       <td><%= @course["id"] %></td>
+    </tr>
+    <tr>
+      <td style="width:50%">name</td>     <td><%= @course["name"] %></td>
+    </tr>
+    <tr>
+      <td style="width:20%">distance</td> <td><%= @course["distance"] %></td>
+    </tr>
+    <tr>
+      <td style="width:10%">session#</td> <td><%= @course["session_ids"]&.count %></td>
+    </tr>
+  </table>
+
+  <p>
+  <div>
+    Assigned Sessions: <p/>
+  <% if @assigned_sessions.count > 0 %>
+    <table class="normaltable" style="width:100%">
+      <tr>
+        <th style="width:20%">id</th>
+        <th style="width:15%">started</th>
+        <th style="width:10%">sport</th>
+        <th style="width:10%">distance [km]</th>
+        <th style="width:10%">duration [hh:mm]</th>
+        <th style="width:10%">elevation gain/loss</th>
+        <th style="width:35%">notes</th>
+      </tr>
+    <% @assigned_sessions.each do |session| %>
+      <tr>
+        <td><%= session.id %></td>
+        <td><%= session.start_time %></td>
+        <td><%= session.sport %></td>
+        <td><%= session.distance %></td>
+        <td><%= session.duration %></td>
+        <td><%= session.elevation %></td>
+        <td><%= session.notes %></td>
+      </tr>
+    <% end %>
+    </table>
+  <% end %>
+  </div>
+    
+  <div>
+    Matching Sessions: <p/>
+  <% if @matching_sessions.count > 0 %>
+    <table class="normaltable" style="width:100%">
+      <tr>
+        <th style="width:20%">id</th>
+        <th style="width:15%">started</th>
+        <th style="width:10%">sport</th>
+        <th style="width:10%">distance [km]</th>
+        <th style="width:10%">duration [hh:mm]</th>
+        <th style="width:10%">elevation gain/loss</th>
+        <th style="width:35%">notes</th>
+      </tr>
+      <% @matching_sessions.each do |session| %>
+        <tr>
+          <td><%= session.id %></td>
+          <td><%= session.start_time %></td>
+          <td><%= session.sport %></td>
+          <td><%= session.distance %></td>
+          <td><%= session.duration %></td>
+          <td><%= session.elevation %></td>
+          <td><%= session.notes %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+  </div>
+</div>

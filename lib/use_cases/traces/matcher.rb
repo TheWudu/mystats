@@ -12,7 +12,7 @@ module UseCases
       attr_accessor :trace1, :trace2, :blocks1, :blocks2, :match_in_percent,
                     :block_size, :max_diff, :min_overlap, :orig1, :orig2
 
-      def initialize(trace1:, trace2:, block_size:, max_diff:, min_overlap:)
+      def initialize(trace1:, trace2:, block_size: nil, max_diff: nil, min_overlap: nil)
         self.trace1 = trace1
         self.trace2 = trace2
         self.block_size  = block_size&.to_i || BLOCK_SIZE_IN_METERS
