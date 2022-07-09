@@ -14,7 +14,7 @@ class CoursesController < ApplicationController
     @matching_sessions = matching_sessions(@course)
   end
 
-  def new_course; end
+  def new; end
 
   def create_from_session
     UseCases::Course::AddFromSession.new(session: sport_session, name: params[:name]).run
