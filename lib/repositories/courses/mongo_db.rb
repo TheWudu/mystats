@@ -24,6 +24,15 @@ module Repositories
         collection.find(id: course.id).update_one(prepare_for_write(course))
       end
 
+      def session_ids
+        collection.aggregate([
+          { "$unwind"  => "$session_ids" },
+          { "$project" => { _id: "$session_ids" } },
+        ]).map do |doc|
+          doc["_id"]
+        end
+      end
+
       private
 
       def to_model(doc)

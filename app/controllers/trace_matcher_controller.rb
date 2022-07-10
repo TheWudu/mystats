@@ -12,6 +12,7 @@ class TraceMatcherController < ApplicationController
       min_overlap: min_overlap
     )
     @matcher.analyse
+
     @match_params = {
       block_size: params[:block_size] || UseCases::Traces::Matcher::BLOCK_SIZE_IN_METERS,
       min_overlap: params[:min_overlap] || UseCases::Traces::Matcher::MIN_OVERLAP,
@@ -36,26 +37,26 @@ class TraceMatcherController < ApplicationController
   end
 
   def session1_id
-    params[:session1] || '8cda6b14-9dda-4564-ab75-d87cbd0d641d'
+    params[:session1]
   end
 
   def session2_id
-    params[:session2] || 'cf8fae76-3c18-458f-9066-d859dfd73cac'
+    params[:session2]
   end
 
   def session1
-    @session1 ||= OpenStruct.new(Repositories::Sessions::MongoDb.new.find_by_id(id: session1_id))
+    @session1 ||= Repositories::Sessions::MongoDb.new.find_by_id(id: session1_id)
   end
 
   def trace1
-    @trace1 ||= session1[:trace]
+    @trace1 ||= session1&.trace
   end
 
   def session2
-    @session2 ||= OpenStruct.new(Repositories::Sessions::MongoDb.new.find_by_id(id: session2_id))
+    @session2 ||= Repositories::Sessions::MongoDb.new.find_by_id(id: session2_id)
   end
 
   def trace2
-    @trace2 ||= session2[:trace]
+    @trace2 ||= session2&.trace
   end
 end

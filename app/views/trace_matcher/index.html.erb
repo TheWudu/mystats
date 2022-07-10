@@ -150,18 +150,18 @@
         </tr>
         <tr>
           <td>Distance</td>
-          <td><%= @session1[:distance] %></td>
-          <td><%= @session2[:distance] %></td>
+          <td><%= @session1&.distance %></td>
+          <td><%= @session2&.distance %></td>
         </tr>
         <tr>
           <td>Trace count</td>
-          <td><%= @matcher.trace1.count %></td>
-          <td><%= @matcher.trace2.count %></td>
+          <td><%= @matcher.trace1&.count %></td>
+          <td><%= @matcher.trace2&.count %></td>
         </tr>
         <tr>
           <td>Blocks count</td>
-          <td><%= @matcher.blocks1.count %></td>
-          <td><%= @matcher.blocks2.count %></td>
+          <td><%= @matcher.blocks1&.count %></td>
+          <td><%= @matcher.blocks2&.count %></td>
         </tr>
         <tr>
           <td>Match?</td>

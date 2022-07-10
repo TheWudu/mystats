@@ -21,7 +21,7 @@ module Repositories
 
       def find_by_id(id:)
         sessions = collection.find({ id: id })
-        return unless sessions.count == 1
+        return nil unless sessions.count == 1
 
         to_model(sessions.first)
       end
@@ -46,8 +46,11 @@ module Repositories
         end
       end
 
-      def find_with_traces
-        collection.find({ trace: { '$exists' => true } })
+      def find_with_traces(opts = {})
+        query = { trace: { '$exists' => true } }
+        query.merge!(id: { "$nin" => opts["id.not_in"] } ) if opts["id.not_in"]
+ap query
+        collection.find(query)
                   .sort({ start_time: -1 }).map do |session|
           to_model(session)
         end

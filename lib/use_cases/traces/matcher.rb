@@ -21,6 +21,7 @@ module UseCases
       end
 
       def analyse
+        return unless trace1 || trace2
         self.blocks1 = trace1.map { |p| blockify(p) }.uniq
         self.blocks2 = trace2.map { |p| blockify(p) }.uniq
         self.orig1   = trace1.map { |p| blockify(p, 1) }
@@ -43,6 +44,7 @@ module UseCases
       end
 
       def matching?
+        return false unless match_in_percent
         match_in_percent > min_overlap
       end
 

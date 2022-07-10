@@ -14,7 +14,13 @@ class CoursesController < ApplicationController
     @matching_sessions = matching_sessions(@course)
   end
 
-  def new; end
+  def new
+    @possible_sessions = Repositories::Sessions::MongoDb.new.find_with_traces("id.not_in" => session_ids_from_courses)
+  end
+
+  def session_ids_from_courses
+    Repositories::Courses::MongoDb.new.session_ids
+  end
 
   def create_from_session
     UseCases::Course::AddFromSession.new(session: sport_session, name: params[:name]).run
