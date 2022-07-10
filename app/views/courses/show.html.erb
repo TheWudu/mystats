@@ -33,10 +33,10 @@
       <tr>
         <td><%= session.id %></td>
         <td><%= session.start_time %></td>
-        <td><%= session.sport %></td>
+        <td><%= session.sport_type %></td>
         <td><%= session.distance %></td>
         <td><%= session.duration %></td>
-        <td><%= session.elevation %></td>
+        <td><%= session.elevation_gain %> / <%= session.elevation_loss %></td>
         <td><%= session.notes %></td>
         <td><%= link_to("remove", 
             course_session_path(course_id: @course.id, id: session.id), 
@@ -59,18 +59,22 @@
         <th style="width:10%">distance [km]</th>
         <th style="width:10%">duration [hh:mm]</th>
         <th style="width:10%">elevation gain/loss</th>
-        <th style="width:30%">notes</th>
+        <th style="width:25%">notes</th>
+        <th style="width:5%">match rate</th>
         <th style="width:5%">&nbsp;</th>
       </tr>
-      <% @matching_sessions.each do |session| %>
+      <% @matching_sessions.each do |hash|
+         session = hash[:session]
+      %>
         <tr>
           <td><%= session.id %></td>
           <td><%= session.start_time %></td>
-          <td><%= session.sport %></td>
+          <td><%= session.sport_type %></td>
           <td><%= session.distance %></td>
           <td><%= session.duration %></td>
-          <td><%= session.elevation %></td>
+          <td><%= session.elevation_gain %> / <%= session.elevation_loss %></td>
           <td><%= session.notes %></td>
+          <td><%= hash[:match_rate] %></td>
           <td><%= link_to("add", 
               course_session_index_path(course_id: @course.id, id: session.id), 
               { data: { turbo_method: :post }, class: "button" }) %></td>
