@@ -21,9 +21,9 @@ Rails.application.routes.draw do
   post 'imports/create'
 
   get 'courses', to: 'courses#index'
-  get 'courses/show'
-  get 'courses/new'
-  post 'courses/create_from_session'
+  resources :courses, only: [:index, :show, :new, :create_from_session] do
+    resources :session, only: [:destroy, :create]
+  end
 
   get 'trace_matcher', to: 'trace_matcher#index'
 

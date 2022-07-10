@@ -29,20 +29,20 @@ class CoursesController < ApplicationController
   end
 
   def assigned_sessions(course)
-    return [] if course['session_ids'].count.zero?
+    return [] if course.session_ids.count.zero?
 
-    sessions_repo.find_by_ids(ids: course['session_ids'])
+    sessions_repo.find_by_ids(ids: course.session_ids)
   end
 
   def matching_sessions(course)
-    distance = course['distance']
+    distance = course.distance
     sessions = sessions_repo.where(
       'distance.between' => [distance - 250, distance + 250],
-      'id.not_in' => course['session_ids'],
+      'id.not_in' => course.session_ids,
       'trace.exists' => true
     )
     sessions.each_with_object([]) do |session, ary|
-      matcher = UseCases::Traces::Matcher.new(trace1: course['trace'], trace2: session.trace)
+      matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: session.trace)
       matcher.analyse
       ary << session if matcher.matching?
     end.compact

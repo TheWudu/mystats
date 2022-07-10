@@ -1,16 +1,16 @@
 <div class="center" style="width:90%">
   <table class="normaltable" style="width:100%">
     <tr>
-      <td style="width:20%">id</td>       <td><%= @course["id"] %></td>
+      <td style="width:20%">id</td>       <td><%= @course.id %></td>
     </tr>
     <tr>
-      <td style="width:50%">name</td>     <td><%= @course["name"] %></td>
+      <td style="width:50%">name</td>     <td><%= @course.name %></td>
     </tr>
     <tr>
-      <td style="width:20%">distance</td> <td><%= @course["distance"] %></td>
+      <td style="width:20%">distance</td> <td><%= @course.distance %></td>
     </tr>
     <tr>
-      <td style="width:10%">session#</td> <td><%= @course["session_ids"]&.count %></td>
+      <td style="width:10%">session#</td> <td><%= @course.session_ids&.count %></td>
     </tr>
   </table>
 
@@ -26,7 +26,8 @@
         <th style="width:10%">distance [km]</th>
         <th style="width:10%">duration [hh:mm]</th>
         <th style="width:10%">elevation gain/loss</th>
-        <th style="width:35%">notes</th>
+        <th style="width:30%">notes</th>
+        <th style=width:"5%">&nbsp;</th>
       </tr>
     <% @assigned_sessions.each do |session| %>
       <tr>
@@ -37,6 +38,10 @@
         <td><%= session.duration %></td>
         <td><%= session.elevation %></td>
         <td><%= session.notes %></td>
+        <td><%= link_to("remove", 
+            course_session_path(course_id: @course.id, id: session.id), 
+            { data: { confirm: 'Are you sure?',
+            turbo_method: :delete }, class: "button", style: "background-color:#FF1200" }) %></td>
       </tr>
     <% end %>
     </table>
@@ -54,7 +59,8 @@
         <th style="width:10%">distance [km]</th>
         <th style="width:10%">duration [hh:mm]</th>
         <th style="width:10%">elevation gain/loss</th>
-        <th style="width:35%">notes</th>
+        <th style="width:30%">notes</th>
+        <th style="width:5%">&nbsp;</th>
       </tr>
       <% @matching_sessions.each do |session| %>
         <tr>
@@ -65,6 +71,9 @@
           <td><%= session.duration %></td>
           <td><%= session.elevation %></td>
           <td><%= session.notes %></td>
+          <td><%= link_to("add", 
+              course_session_index_path(course_id: @course.id, id: session.id), 
+              { data: { turbo_method: :post }, class: "button" }) %></td>
         </tr>
       <% end %>
     </table>

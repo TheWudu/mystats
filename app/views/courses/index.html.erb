@@ -1,3 +1,6 @@
+<div style="float:left">
+  <%= link_to("new", new_course_path, { class: "button", style: "margin:10px" }) %>
+</div>
 <div class="center" style="width:90%">
   <table class="normaltable" style="width:100%">
     <tr>
@@ -8,10 +11,10 @@
     </tr>
     <% @courses.each do |course| %>
       <tr>
-        <td><%= link_to(course["id"], courses_show_path(id: course["id"])) %></td>
-        <td><%= course["name"] %></td>
-        <td><%= course["distance"] %></td>
-        <td><%= course["session_ids"]&.count %></td>
+        <td><%= link_to(course.id, course_path(id: course.id)) %></td>
+        <td><%= course.name %></td>
+        <td><%= course.distance %></td>
+        <td><%= course.session_ids&.count %></td>
       </tr>
     <% end %>
   </table>
