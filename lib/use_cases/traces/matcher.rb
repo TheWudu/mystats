@@ -6,17 +6,15 @@ module UseCases
   module Traces
     class Matcher
       BLOCK_SIZE_IN_METERS = 30
-      MAX_DIFF = 2
       MIN_OVERLAP = 60 # %
 
       attr_accessor :trace1, :trace2, :blocks1, :blocks2, :match_in_percent,
-                    :block_size, :max_diff, :min_overlap, :orig1, :orig2
+                    :block_size, :min_overlap, :orig1, :orig2
 
-      def initialize(trace1:, trace2:, block_size: nil, max_diff: nil, min_overlap: nil)
+      def initialize(trace1:, trace2:, block_size: nil,  min_overlap: nil)
         self.trace1 = trace1
         self.trace2 = trace2
         self.block_size  = block_size&.to_i || BLOCK_SIZE_IN_METERS
-        self.max_diff    = max_diff&.to_i || MAX_DIFF
         self.min_overlap = min_overlap&.to_f || MIN_OVERLAP
       end
 

@@ -119,12 +119,11 @@
           <td style="width:30%" class="smalltd"><%= form.number_field :block_size, value: @match_params[:block_size] %></td>
         </tr>
         <tr>
-          <td><%= form.label :text, "max diff: " %></td>
-          <td><%= form.number_field :max_diff, value: @match_params[:max_diff] %></td>
-        </tr>
-        <tr>
           <td><%= form.label :text, "min overlap: " %></td>
           <td><%= form.number_field :min_overlap, value: @match_params[:min_overlap], in: 0..100, step: 1 %></td>
+        </tr>
+        <tr>
+          <td colspan=2>&nbsp;</td>
         </tr>
       </table>
     </div>

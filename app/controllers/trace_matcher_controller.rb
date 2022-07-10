@@ -8,7 +8,6 @@ class TraceMatcherController < ApplicationController
       trace1: trace1,
       trace2: trace2,
       block_size: block_size,
-      max_diff: max_diff,
       min_overlap: min_overlap
     )
     @matcher.analyse
@@ -16,7 +15,6 @@ class TraceMatcherController < ApplicationController
     @match_params = {
       block_size: params[:block_size] || UseCases::Traces::Matcher::BLOCK_SIZE_IN_METERS,
       min_overlap: params[:min_overlap] || UseCases::Traces::Matcher::MIN_OVERLAP,
-      max_diff: params[:max_diff] || UseCases::Traces::Matcher::MAX_DIFF,
       session1: session1_id,
       session2: session2_id
     }
@@ -30,10 +28,6 @@ class TraceMatcherController < ApplicationController
 
   def block_size
     params[:block_size].blank? ? nil : params[:block_size]
-  end
-
-  def max_diff
-    params[:max_diff].blank? ? nil : params[:max_diff]
   end
 
   def session1_id
