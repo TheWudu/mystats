@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'repositories/statistics/mongo_db'
-require 'repositories/sessions/mongo_db'
 require 'sport_type'
 
 class CitiesController < ApplicationController

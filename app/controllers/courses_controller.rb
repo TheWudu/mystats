@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'repositories/sessions/mongo_db'
 require 'repositories/sport_sessions'
 require 'repositories/courses'
 

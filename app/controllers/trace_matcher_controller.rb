@@ -11,6 +11,7 @@ class TraceMatcherController < ApplicationController
       min_overlap: min_overlap
     )
     @matcher.analyse
+    @possible_sessions = Repositories::SportSessions.find_with_traces
 
     @match_params = {
       block_size: params[:block_size] || UseCases::Traces::Matcher::BLOCK_SIZE_IN_METERS,
@@ -39,7 +40,7 @@ class TraceMatcherController < ApplicationController
   end
 
   def session1
-    @session1 ||= Repositories::Sessions::MongoDb.new.find_by_id(id: session1_id)
+    @session1 ||= Repositories::SportSessions.find_by_id(id: session1_id)
   end
 
   def trace1
@@ -47,7 +48,7 @@ class TraceMatcherController < ApplicationController
   end
 
   def session2
-    @session2 ||= Repositories::Sessions::MongoDb.new.find_by_id(id: session2_id)
+    @session2 ||= Repositories::SportSessions.find_by_id(id: session2_id)
   end
 
   def trace2

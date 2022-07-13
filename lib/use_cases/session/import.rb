@@ -40,7 +40,7 @@ module UseCases
       end
 
       def session_repo
-        Repositories::Sessions::MongoDb.new
+        Repositories::SportSessions
       end
     end
   end

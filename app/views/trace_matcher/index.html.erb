@@ -111,41 +111,34 @@
 <% end -%>
 
 <%= form_with url: "/trace_matcher", method: :get do |form| %>
-  <div class="container">
+  <div class="container" style="width:80%">
     <div class="item-left">
-      <table class="smalltable">
+      <table class="smalltable" style="width:50%">
         <tr>
-          <td style="width:70%" class="smalltd"><%= form.label :text, "block_size: " %></td>
-          <td style="width:30%" class="smalltd"><%= form.number_field :block_size, value: @match_params[:block_size] %></td>
+          <td style="width:100px" class="smalltd"><%= form.label :text, "block_size: " %></td>
+          <td class="smalltd"><%= form.number_field :block_size, value: @match_params[:block_size] %></td>
         </tr>
         <tr>
           <td><%= form.label :text, "min overlap: " %></td>
           <td><%= form.number_field :min_overlap, value: @match_params[:min_overlap], in: 0..100, step: 1 %></td>
         </tr>
-        <tr>
-          <td colspan=2>&nbsp;</td>
-        </tr>
       </table>
-    </div>
-    <div class="item-center" style="width:90%">
       <table class="smalltable" style="width:100%">
         <tr>
-          <% possible_sessions = Repositories::Sessions::MongoDb.new.find_with_traces %>
-          <td style="width:30%"><%= form.label :text, "session 1: " %></td>
-          <td style="width:70%"><%= form.collection_select(:session1, possible_sessions, :id, :selector_text, { selected: @session1&.id }) %></td>
+          <td style="width:100px"><%= form.label :text, "session 1: " %></td>
+          <td><%= form.collection_select(:session1, @possible_sessions, :id, :selector_text, { selected: @session1&.id }) %></td>
         </tr>
-          <td style="width:30%"><%= form.label :text, "session 2: " %></td>
-          <td style="width:70%"><%= form.collection_select(:session2, possible_sessions, :id, :selector_text, { selected: @session2&.id }) %></td>
+          <td><%= form.label :text, "session 2: " %></td>
+          <td><%= form.collection_select(:session2, @possible_sessions, :id, :selector_text, { selected: @session2&.id }) %></td>
         <tr><td colspan=2 class="smalltd"><%= form.submit "Apply" %></td></tr>
       </table>
     </div>
-
     <div class="item-right">
       <table class="smalltable">
         <tr>
-          <th style="width:40%">&nbsp;</td>
-          <th style="width:30%">Session 1</td>
-          <th style="width:30%">Session 2</td>
+          <th style="width:30%">&nbsp;</td>
+          <th style="width:35%">Session 1</td>
+          <th style="width:35%">Session 2</td>
         </tr>
         <tr>
           <td>Distance</td>
@@ -175,7 +168,7 @@
   </div>
 <% end %>
 
-<div style="display:flex; align-items:left">
+<div style="display:flex; align-items:left;">
   <div id="placeholder" style="width:80%;height:700px"></div>
 </div>
 

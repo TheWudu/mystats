@@ -9,7 +9,9 @@ module Repositories
         matcher = build_matcher(years: years, months: months, sport_type_ids: sport_type_ids)
         matcher.merge!(text_filter(text)) unless text.blank?
 
-        collection.find(matcher).sort({ start_time: -1 }).to_a
+        collection.find(matcher).sort({ start_time: -1 }).map do |doc|
+          to_model(doc)
+        end
       end
 
       def find(start_time:, sport_type_id:)
@@ -66,11 +68,8 @@ ap query
 
       private
 
-      def to_model(session)
-        session_model = session.merge({
-                                        selector_text: "#{session['id']} - #{session['start_time']} - #{session['distance']}"
-                                      })
-        OpenStruct.new(session_model)
+      def to_model(doc)
+        Models::SportSession.new(doc.except("_id"))
       end
 
       def text_filter(text)

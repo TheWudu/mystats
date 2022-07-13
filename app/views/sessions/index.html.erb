@@ -86,13 +86,13 @@ deselected_color = "#bbbbbb"
   </tr>
 <% @sessions.each do |session| %>
   <tr>
-    <td><%= session["id"] %></td>
-    <td><%= session["start_time"] %></td>
-    <td><%= session["sport"] %></td>
-    <td><%= session["distance"] %></td>
-    <td><%= session["duration"] %></td>
-    <td><%= session["elevation"] %></td>
-    <td><%= session["notes"] %></td>
+    <td><%= session.id %></td>
+    <td><%= session.start_time %></td>
+    <td><%= session.sport %></td>
+    <td><%= session.distance_in_km %></td>
+    <td><%= session.duration_as_str %></td>
+    <td><%= session.elevation %></td>
+    <td><%= session.notes %></td>
   </tr>
 <% end %>
 </table>
