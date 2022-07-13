@@ -33,6 +33,10 @@ module Repositories
         end
       end
 
+      def delete(id:)
+        collection.find({id: id}).delete_one
+      end
+
       private
 
       def to_model(doc)

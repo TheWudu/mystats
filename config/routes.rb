@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   get 'courses', to: 'courses#index'
   post 'courses/create_from_session'
-  resources :courses, only: [:index, :show, :new] do
+  resources :courses, only: [:index, :show, :new, :destroy] do
     resources :session, only: [:destroy, :create]
   end
 

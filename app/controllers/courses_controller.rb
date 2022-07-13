@@ -14,6 +14,12 @@ class CoursesController < ApplicationController
     @matching_sessions = matching_sessions(@course)
   end
 
+  def destroy
+    Repositories::Courses::MongoDb.new.delete(id: params[:id])
+
+    redirect_to courses_path, status: 303 
+  end
+
   def new
     @possible_sessions = Repositories::Sessions::MongoDb.new.find_with_traces("id.not_in" => session_ids_from_courses)
   end
@@ -43,7 +49,7 @@ class CoursesController < ApplicationController
   def matching_sessions(course)
     distance = course.distance
     sessions = sessions_repo.where(
-      'distance.between' => [distance - 250, distance + 250],
+      'distance.between' => [distance - 500, distance + 500],
       'id.not_in' => course.session_ids,
       'trace.exists' => true
     )
