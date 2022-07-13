@@ -24,8 +24,8 @@
   width: 45%; 
   margin-right: 10px; 
 }
-.button {
-  background-color: #4CAF50; /* Green */
+
+[class*="button-"] {
   border: none;
   color: white;
   padding: 8px 16px;
@@ -34,6 +34,15 @@
   display: inline-block;
   font-size: 12px;
   border-radius: 12px;
+}
+.button-base {
+}
+.button-green {
+  background-color: #4CAF50; /* Green */
+}
+
+.button-red {
+  background-color: #FF1200; /* Red */
 }
 
 .container {

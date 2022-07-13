@@ -1,31 +1,32 @@
 # frozen_string_literal: true
 
 require 'repositories/sessions/mongo_db'
-require 'repositories/courses/mongo_db'
+require 'repositories/sport_sessions'
+require 'repositories/courses'
 
 class CoursesController < ApplicationController
   def index
-    @courses = Repositories::Courses::MongoDb.new.fetch
+    @courses = Repositories::Courses.fetch
   end
 
   def show
-    @course = Repositories::Courses::MongoDb.new.find(id: params[:id])
+    @course = Repositories::Courses.find(id: params[:id])
     @assigned_sessions = assigned_sessions(@course)
     @matching_sessions = matching_sessions(@course)
   end
 
   def destroy
-    Repositories::Courses::MongoDb.new.delete(id: params[:id])
+    Repositories::Courses.delete(id: params[:id])
 
     redirect_to courses_path, status: 303 
   end
 
   def new
-    @possible_sessions = Repositories::Sessions::MongoDb.new.find_with_traces("id.not_in" => session_ids_from_courses)
+    @possible_sessions = Repositories::SportSessions.find_with_traces("id.not_in" => session_ids_from_courses)
   end
 
   def session_ids_from_courses
-    Repositories::Courses::MongoDb.new.session_ids
+    Repositories::Courses.session_ids
   end
 
   def create_from_session
@@ -37,7 +38,7 @@ class CoursesController < ApplicationController
   # private
 
   def sport_session
-    Repositories::Sessions::MongoDb.new.find_by_id(id: params[:session_id])
+    Repositories::SportSessions.find_by_id(id: params[:session_id])
   end
 
   def assigned_sessions(course)
@@ -61,6 +62,6 @@ class CoursesController < ApplicationController
   end
 
   def sessions_repo
-    Repositories::Sessions::MongoDb.new
+    Repositories::SportSessions
   end
 end

@@ -17,7 +17,7 @@ deselected_color = "#bbbbbb"
         
       color = selected_color if selected_years.empty?
   %>
-    <%= link_to(year, charts_path(params), { class: "button", style: "background-color:#{color}" }) %>
+    <%= link_to(year, charts_path(params), { class: "button-base", style: "background-color:#{color}" }) %>
   <% end %>
 </div>
 
@@ -35,7 +35,7 @@ deselected_color = "#bbbbbb"
 
       color = selected_color if selected_sports.empty?
   %>
-    <%= link_to(name, charts_path(params), { class: "button", style: "background-color:#{color}" }) %>
+    <%= link_to(name, charts_path(params), { class: "button-base", style: "background-color:#{color}" }) %>
   <% end %>
 </div>
 
