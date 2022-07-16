@@ -1,22 +1,19 @@
+# frozen_string_literal: true
+
 module Repositories
   module Cities
+    extend Base
 
-    %w[fetch
-      nearest 
-      exist?
-      insert
-      create_geo_index 
-      create_name_index].each do |method_name| 
-      define_singleton_method(method_name) do |**args|
-        strategy.public_send(method_name, **args)
-      end
-    end
+    METHODS = %w[fetch
+                 nearest
+                 exist?
+                 insert
+                 create_geo_index
+                 create_name_index].freeze
 
-    def self.strategy
-      MongoDb.new
-    end
-
+    create_methods(METHODS)
+    setup_strategy(MongoDb)
   end
 end
 
-require_relative "cities/mongo_db"
+require_relative 'cities/mongo_db'

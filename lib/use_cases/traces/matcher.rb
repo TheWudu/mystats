@@ -11,7 +11,7 @@ module UseCases
       attr_accessor :trace1, :trace2, :blocks1, :blocks2, :match_in_percent,
                     :block_size, :min_overlap, :orig1, :orig2
 
-      def initialize(trace1:, trace2:, block_size: nil,  min_overlap: nil)
+      def initialize(trace1:, trace2:, block_size: nil, min_overlap: nil)
         self.trace1 = trace1
         self.trace2 = trace2
         self.block_size  = block_size&.to_i || BLOCK_SIZE_IN_METERS
@@ -20,6 +20,7 @@ module UseCases
 
       def analyse
         return unless trace1 || trace2
+
         self.blocks1 = trace1.map { |p| blockify(p) }.uniq
         self.blocks2 = trace2.map { |p| blockify(p) }.uniq
         self.orig1   = trace1.map { |p| blockify(p, 1) }
@@ -43,6 +44,7 @@ module UseCases
 
       def matching?
         return false unless match_in_percent
+
         match_in_percent > min_overlap
       end
 

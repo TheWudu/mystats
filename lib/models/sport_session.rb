@@ -2,12 +2,12 @@
 
 module Models
   class SportSession
-    attr_accessor :id, :notes, 
-      :distance, :trace, :duration, :start_time, :end_time, :timezone, :start_time_timezone_offset,
-      :year, :month,
-      :elevation_gain, :elevation_loss, :sport_type_id,
-      :pause, :sport_type
-    
+    attr_accessor :id, :notes,
+                  :distance, :trace, :duration, :start_time, :end_time, :timezone, :start_time_timezone_offset,
+                  :year, :month,
+                  :elevation_gain, :elevation_loss, :sport_type_id,
+                  :pause, :sport_type
+
     def initialize(attrs = {})
       attrs.each do |k, v|
         send("#{k}=", v)
@@ -37,7 +37,7 @@ module Models
     def elevation
       format_elevation(elevation_gain, elevation_loss)
     end
-  
+
     def format_ms(millis)
       secs, = millis.divmod(1000) # divmod returns [quotient, modulus]
       mins, secs = secs.divmod(60)

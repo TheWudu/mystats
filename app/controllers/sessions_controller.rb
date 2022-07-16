@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     @possible_sport_types = statistics.possible_sport_types
   end
 
-  def index # rubocop:disable Metrics/AbcSize
+  def index
     @sessions = sessions_repo.fetch(
       text: params[:text],
       years: years,
@@ -52,5 +52,4 @@ class SessionsController < ApplicationController
       group_by: group_by
     )
   end
-
 end

@@ -1,22 +1,19 @@
+# frozen_string_literal: true
+
 module Repositories
-  module Courses 
+  module Courses
+    extend Base
 
-    %w[fetch
-      find
-      insert
-      update
-      session_ids
-      delete].each do |method_name| 
-      define_singleton_method(method_name) do |**args|
-        strategy.public_send(method_name, **args)
-      end
-    end
+    METHODS = %w[fetch
+                 find
+                 insert
+                 update
+                 session_ids
+                 delete].freeze
 
-    def self.strategy
-      MongoDb.new
-    end
-
+    create_methods(METHODS)
+    setup_strategy(MongoDb)
   end
 end
 
-require_relative "courses/mongo_db"
+require_relative 'courses/mongo_db'

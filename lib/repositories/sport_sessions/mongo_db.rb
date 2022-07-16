@@ -50,8 +50,7 @@ module Repositories
 
       def find_with_traces(opts = {})
         query = { trace: { '$exists' => true } }
-        query.merge!(id: { "$nin" => opts["id.not_in"] } ) if opts["id.not_in"]
-ap query
+        query.merge!(id: { '$nin' => opts['id.not_in'] }) if opts['id.not_in']
         collection.find(query)
                   .sort({ start_time: -1 }).map do |session|
           to_model(session)
@@ -69,7 +68,7 @@ ap query
       private
 
       def to_model(doc)
-        Models::SportSession.new(doc.except("_id"))
+        Models::SportSession.new(doc.except('_id'))
       end
 
       def text_filter(text)

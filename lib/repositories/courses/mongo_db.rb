@@ -26,15 +26,15 @@ module Repositories
 
       def session_ids
         collection.aggregate([
-          { "$unwind"  => "$session_ids" },
-          { "$project" => { _id: "$session_ids" } },
-        ]).map do |doc|
-          doc["_id"]
+                               { '$unwind' => '$session_ids' },
+                               { '$project' => { _id: '$session_ids' } }
+                             ]).map do |doc|
+          doc['_id']
         end
       end
 
       def delete(id:)
-        collection.find({id: id}).delete_one
+        collection.find({ id: id }).delete_one
       end
 
       private

@@ -17,11 +17,11 @@ class CoursesController < ApplicationController
   def destroy
     Repositories::Courses.delete(id: params[:id])
 
-    redirect_to courses_path, status: 303 
+    redirect_to courses_path, status: 303
   end
 
   def new
-    @possible_sessions = Repositories::SportSessions.find_with_traces("id.not_in" => session_ids_from_courses)
+    @possible_sessions = Repositories::SportSessions.find_with_traces('id.not_in' => session_ids_from_courses)
   end
 
   def session_ids_from_courses

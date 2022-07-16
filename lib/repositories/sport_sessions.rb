@@ -1,24 +1,21 @@
+# frozen_string_literal: true
+
 module Repositories
   module SportSessions
+    extend Base
 
-    %w[fetch
-      find
-      find_by_id
-      find_by_ids
-      where 
-      find_with_traces 
-      exists?
-      insert].each do |method_name| 
-      define_singleton_method(method_name) do |**args|
-        strategy.public_send(method_name, **args)
-      end
-    end
+    METHODS = %w[fetch
+                 find
+                 find_by_id
+                 find_by_ids
+                 where
+                 find_with_traces
+                 exists?
+                 insert].freeze
 
-    def self.strategy
-      MongoDb.new
-    end
-
+    create_methods(METHODS)
+    setup_strategy(MongoDb)
   end
 end
 
-require_relative "sport_sessions/mongo_db"
+require_relative 'sport_sessions/mongo_db'
