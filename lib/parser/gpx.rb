@@ -5,8 +5,7 @@ require 'time'
 require 'tzinfo'
 require 'pry'
 require 'geokit'
-# require "repositories/cities/mongo_db"
-require_relative '../repositories/cities/mongo_db'
+require_relative '../repositories/cities'
 
 require_relative 'xml'
 
@@ -24,16 +23,16 @@ module Parser
         timezone = timezone_for(track[:points].first)
 
         stats.merge({
-                      notes: track[:name],
-                      sport_type: track[:type],
-                      sport_type_id: SportType.for(name: track[:type]),
-                      start_time: track[:points].first[:time],
-                      end_time: track[:points].last[:time],
-                      duration: ((track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000).to_i,
-                      pause: (stats[:pause] * 1000).to_i,
-                      timezone: timezone,
+                      notes:         track[:name],
+                      sport_type:    track[:type],
+                      sport_type_id: SportType.id_for(name: track[:type]),
+                      start_time:    track[:points].first[:time],
+                      end_time:      track[:points].last[:time],
+                      duration:      ((track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000).to_i,
+                      pause:         (stats[:pause] * 1000).to_i,
+                      timezone:      timezone,
                       start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]).to_i,
-                      trace: trace_from_track(track)
+                      trace:         trace_from_track(track)
                     })
       end
     end
@@ -109,8 +108,8 @@ module Parser
       gpx = xml.first
       @tracks ||= gpx[:tags].select { |t| t[:tag] == 'trk' }.map do |trk|
         {
-          name: trk[:tags].find { |t| t[:tag] == 'name' }[:data],
-          type: trk[:tags].find { |t| t[:tag] == 'type' }[:data],
+          name: tag_data(trk, "name"),
+          type: tag_data(trk, "type"),
           points: trk[:tags].select { |t| t[:tag] == 'trkseg' }.map do |trkseg|
             trkseg[:tags].select { |t| t[:tag] == 'trkpt' }.map do |trkpt|
               trkpt[:meta].merge(
@@ -121,6 +120,12 @@ module Parser
           end.flatten
         }
       end
+    end
+
+    def tag_data(trk, tag)
+      tag = trk[:tags].find { |t| t[:tag] == tag }
+      return nil unless tag
+      tag[:data]
     end
 
     def refined_elevation(ele, meta)

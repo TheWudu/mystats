@@ -28,7 +28,7 @@ module Repositories
                                      { '$sort' => { _id: 1 } }
                                    ])
         query.each_with_object({}) do |d, h|
-          h[d['_id']] = SportType.for(id: d['_id'])
+          h[d['_id']] = SportType.name_for(id: d['_id'])
         end
       end
 

@@ -23,7 +23,7 @@ module Models
     end
 
     def sport
-      SportType.for(id: sport_type_id)
+      SportType.name_for(id: sport_type_id)
     end
 
     def distance_in_km
