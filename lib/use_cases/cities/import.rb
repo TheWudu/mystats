@@ -37,7 +37,7 @@ module UseCases
       end
 
       def repo
-        Repositories::Cities::MongoDb.new
+        Repositories::Cities
       end
     end
   end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'repositories/sessions/mongo_db'
-require 'repositories/courses/mongo_db'
+require 'repositories/sport_sessions'
+require 'repositories/courses'
 
 class SessionController < ApplicationController
   def create
@@ -24,10 +24,10 @@ class SessionController < ApplicationController
   private
 
   def course
-    @course ||= Repositories::Courses::MongoDb.new.find(id: params[:course_id])
+    @course ||= Repositories::Courses.find(id: params[:course_id])
   end
 
   def update_course
-    Repositories::Courses::MongoDb.new.update(course: course)
+    Repositories::Courses.update(course: course)
   end
 end

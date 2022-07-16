@@ -13,6 +13,6 @@ class CitiesController < ApplicationController
   end
 
   def cities_repo
-    Repositories::Cities::MongoDb.new
+    Repositories::Cities
   end
 end

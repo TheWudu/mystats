@@ -52,7 +52,7 @@ module Parser
     end
 
     def timezone_for(point)
-      city = Repositories::Cities::MongoDb.new.nearest(lat: point[:lat].to_f, lng: point[:lon].to_f)
+      city = Repositories::Cities.nearest(lat: point[:lat].to_f, lng: point[:lon].to_f)
       return city[:timezone] if city
 
       'UTC'

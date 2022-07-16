@@ -11,7 +11,7 @@ module UseCases
       end
 
       def run
-        Repositories::Courses::MongoDb.new.insert(course: course)
+        Repositories::Courses.insert(course: course)
       end
 
       def course
