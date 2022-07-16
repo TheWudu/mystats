@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   post 'courses/create_from_session'
   resources :courses, only: [:index, :show, :new, :destroy] do
     resources :session, only: [:destroy, :create]
+  
+    post 'add_all_matching_sessions'
   end
 
   get 'trace_matcher', to: 'trace_matcher#index'

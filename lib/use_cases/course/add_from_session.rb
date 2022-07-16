@@ -19,13 +19,13 @@ module UseCases
           id: SecureRandom.uuid,
           name: name,
           trace: trace,
-          distance: session['distance'],
-          session_ids: [session['id']]
+          distance: session.distance,
+          session_ids: [session.id]
         )
       end
 
       def trace
-        session['trace'].map { |p| p.slice('lat', 'lng', 'ele') }
+        session.trace.map { |p| p.slice('lat', 'lng', 'ele') }
       end
     end
   end

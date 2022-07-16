@@ -24,17 +24,23 @@ class CoursesController < ApplicationController
     @possible_sessions = Repositories::SportSessions.find_with_traces('id.not_in' => session_ids_from_courses)
   end
 
-  def session_ids_from_courses
-    Repositories::Courses.session_ids
-  end
-
   def create_from_session
     UseCases::Course::AddFromSession.new(session: sport_session, name: params[:name]).run
 
     redirect_to courses_path
   end
 
-  # private
+  def add_all_matching_sessions
+    UseCases::Course::AddAllMatchingSessions.new(course_id: params[:course_id]).run
+
+    redirect_to course_path(id: params[:course_id])
+  end
+
+  private
+
+  def session_ids_from_courses
+    Repositories::Courses.session_ids
+  end
 
   def sport_session
     Repositories::SportSessions.find_by_id(id: params[:session_id])
