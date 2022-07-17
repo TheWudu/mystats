@@ -6,8 +6,10 @@ require 'tzinfo'
 require 'pry'
 require 'geokit'
 require_relative '../repositories/cities'
+require "sport_type"
 
 require_relative 'xml'
+require_relative "gpx"
 
 module Parser
   class RuntasticJson
@@ -20,6 +22,7 @@ module Parser
 
     def parse
       {
+        id:             json_stats["id"],
         elevation_gain: json_stats["elevation_gain"],
         elevation_loss: json_stats["elevation_loss"],
         distance:       json_stats["distance"],
@@ -33,7 +36,7 @@ module Parser
         start_time_timezone_offset: json_stats["start_time_timezone_offset"] / 1000,
         timezone:       timezone,
         trace:          trace,
-      }
+      }.compact
     end
 
     def gpx_parsed

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "base"
+require_relative 'sport_sessions/mongo_db'
+
 module Repositories
   module SportSessions
     extend Base
@@ -18,4 +21,3 @@ module Repositories
   end
 end
 
-require_relative 'sport_sessions/mongo_db'

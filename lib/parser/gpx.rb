@@ -8,6 +8,7 @@ require 'geokit'
 require_relative '../repositories/cities'
 
 require_relative 'xml'
+require "hgt_reader"
 
 module Parser
   class Gpx

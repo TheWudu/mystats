@@ -54,6 +54,7 @@ module Models
     end
 
     def format_elevation(gain, loss)
+      return '-' unless gain || loss
       return '-' if gain.zero? && loss.zero?
 
       "#{gain} / #{loss}"

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "base"
+require_relative 'cities/mongo_db'
+
 module Repositories
   module Cities
     extend Base
@@ -16,4 +19,3 @@ module Repositories
   end
 end
 
-require_relative 'cities/mongo_db'
