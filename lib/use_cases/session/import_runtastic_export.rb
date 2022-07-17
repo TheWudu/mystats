@@ -1,32 +1,11 @@
 # frozen_string_literal: true
 
 require 'parser/runtastic_json'
-require_relative 'import'
+require_relative 'import_multiple'
 
 module UseCases
   module Session
-    class ImportRuntasticExport < Import
-      attr_reader :path
-
-      def initialize(path:)
-        @path = path
-      end
-
-      def run
-        puts "Read and parse #{filenames.count} files"
-        sport_sessions = read_files
-        puts "Store #{sport_sessions.count} sport sessions"
-        store_sessions(sport_sessions)
-      end
-
-      def store_sessions(sport_sessions)
-        with_progress do |bar|
-          sport_sessions.each do |sport_session|
-            store(sport_session)
-            bar.increment
-          end
-        end
-      end
+    class ImportRuntasticExport < ImportMultiple
 
       private
 
@@ -56,10 +35,6 @@ module UseCases
         parser.parse
       end
 
-      def with_progress
-        bar = ProgressBar.create(title: 'Items', total: filenames.size, format: "%c/%C (%j \%) - %e - %B")
-        yield bar
-      end
     end
   end
 end
