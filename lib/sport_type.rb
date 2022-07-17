@@ -6,9 +6,9 @@ class SportType
 
     SPORT_TYPE_MAPPING.key(name)
   end
-    
+
   def self.name_for(id: nil)
-    return "other" unless id
+    return 'other' unless id
 
     SPORT_TYPE_MAPPING[id]
   end

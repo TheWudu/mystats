@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module UseCases
   module Course
     class AddAllMatchingSessions
-
       attr_reader :course_id
 
       def initialize(course_id:)
@@ -15,7 +16,7 @@ module UseCases
         update_course
       end
 
-      private 
+      private
 
       def matching_sessions
         distance = course.distance
@@ -30,11 +31,11 @@ module UseCases
           ary << session if matcher.matching?
         end.compact
       end
-        
+
       def course
         @course ||= Repositories::Courses.find(id: course_id)
       end
-  
+
       def update_course
         Repositories::Courses.update(course: course)
       end

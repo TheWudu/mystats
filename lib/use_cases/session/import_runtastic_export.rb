@@ -1,10 +1,11 @@
-require "parser/runtastic_json"
-require_relative "import"
+# frozen_string_literal: true
+
+require 'parser/runtastic_json'
+require_relative 'import'
 
 module UseCases
   module Session
     class ImportRuntasticExport < Import
-    
       attr_reader :path
 
       def initialize(path:)
@@ -30,16 +31,20 @@ module UseCases
       private
 
       def filenames
-        @filenames ||= Dir.glob(File.join(path, "*.json")).map do |filename|
-          filename.split("/").last.split(".").first
+        @filenames ||= Dir.glob(File.join(path, '*.json')).map do |filename|
+          filename.split('/').last.split('.').first
         end
       end
-        
+
       def read_files
         with_progress do |bar|
           filenames.map do |filename|
             json_data = File.read(File.join(path, "#{filename}.json"))
-            gpx_data  = File.read(File.join(path, "GPS-data", "#{filename}.gpx")) rescue nil
+            gpx_data  = begin
+              File.read(File.join(path, 'GPS-data', "#{filename}.gpx"))
+            rescue StandardError
+              nil
+            end
             bar.increment
             parse(json_data, gpx_data)
           end
@@ -52,7 +57,7 @@ module UseCases
       end
 
       def with_progress
-        bar = ProgressBar.create(:title => "Items", :total => filenames.size, format: "%c/%C (%j \%) - %e - %B")
+        bar = ProgressBar.create(title: 'Items', total: filenames.size, format: "%c/%C (%j \%) - %e - %B")
         yield bar
       end
     end

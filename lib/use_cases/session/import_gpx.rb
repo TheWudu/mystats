@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'parser/gpx'
-require_relative "import"
+require_relative 'import'
 
 module UseCases
   module Session

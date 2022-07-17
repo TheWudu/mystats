@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative 'base'
 require_relative 'sport_sessions/mongo_db'
 
 module Repositories
@@ -20,4 +20,3 @@ module Repositories
     setup_strategy(MongoDb)
   end
 end
-

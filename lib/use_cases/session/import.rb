@@ -1,11 +1,13 @@
-require "repositories/sport_sessions"
+# frozen_string_literal: true
+
+require 'repositories/sport_sessions'
 
 module UseCases
   module Session
     class Import
-      
       def store(session)
         return false if exists?(session)
+
         session_repo.insert(session: session)
       end
 
