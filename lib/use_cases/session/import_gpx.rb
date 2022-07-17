@@ -21,10 +21,7 @@ module UseCases
       private
 
       def sessions
-        @sessions ||= Parser::Gpx.new(data: data).parse.map do |session|
-          session[:id] = SecureRandom.uuid
-          session
-        end
+        Parser::Gpx.new(data: data).parse
       end
     end
   end

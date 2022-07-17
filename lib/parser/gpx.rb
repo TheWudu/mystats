@@ -24,6 +24,7 @@ module Parser
         timezone = timezone_for(track[:points].first)
 
         stats.merge({
+                      id:    SecureRandom.uuid,
                       notes: track[:name],
                       sport_type: track[:type],
                       sport_type_id: SportType.id_for(name: track[:type]),
