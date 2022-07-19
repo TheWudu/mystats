@@ -28,11 +28,16 @@ module Repositories
         to_model(sessions.first)
       end
 
-      def find_by_ids(ids:)
-        sessions = collection.find({ id: { '$in' => ids } })
-        sessions.map do |session|
+      def find_by_ids(ids:, sort: nil)
+        view = collection.find({ id: { '$in' => ids } })
+        view = view.sort(sort_option(sort)) if sort
+        view.map do |session|
           to_model(session)
         end
+      end
+
+      def sort_option(sort)
+        { sort[:attribute].to_s => sort[:direction] == :asc ? 1 : -1 }
       end
 
       def where(opts = {})

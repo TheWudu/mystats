@@ -41,9 +41,9 @@
         <td><%= session.id %></td>
         <td><%= session.start_time %></td>
         <td><%= session.sport_type %></td>
-        <td><%= session.distance %></td>
-        <td><%= session.duration %></td>
-        <td><%= session.elevation_gain %> / <%= session.elevation_loss %></td>
+        <td><%= session.distance_in_km %></td>
+        <td><%= session.duration_as_str %></td>
+        <td><%= session.elevation %></td>
         <td><%= session.notes %></td>
         <td><%= link_to("remove", 
             course_session_path(course_id: @course.id, id: session.id), 
@@ -82,9 +82,9 @@
           <td><%= session.id %></td>
           <td><%= session.start_time %></td>
           <td><%= session.sport_type %></td>
-          <td><%= session.distance %></td>
-          <td><%= session.duration %></td>
-          <td><%= session.elevation_gain %> / <%= session.elevation_loss %></td>
+          <td><%= session.distance_in_km %></td>
+          <td><%= session.duration_as_str %></td>
+          <td><%= session.elevation %></td>
           <td><%= session.notes %></td>
           <td><%= hash[:match_rate] %></td>
           <td><%= link_to("add", 

@@ -49,7 +49,10 @@ class CoursesController < ApplicationController
   def assigned_sessions(course)
     return [] if course.session_ids.count.zero?
 
-    sessions_repo.find_by_ids(ids: course.session_ids)
+    sessions_repo.find_by_ids(
+      ids: course.session_ids, 
+      sort: { attribute: "start_time", direction: :desc }
+    )
   end
 
   def matching_sessions(course)
@@ -63,7 +66,7 @@ class CoursesController < ApplicationController
       matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: session.trace)
       matcher.analyse
       ary << { session: session, match_rate: matcher.match_in_percent } if matcher.matching?
-    end.compact
+    end.compact.sort_by { |s| s[:session].start_time }.reverse
   end
 
   def sessions_repo
