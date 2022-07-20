@@ -56,6 +56,9 @@ module Repositories
       def find_with_traces(opts = {})
         query = { trace: { '$exists' => true } }
         query.merge!(id: { '$nin' => opts['id.not_in'] }) if opts['id.not_in']
+        query.merge!(year: { "$in" => opts[:year] }) unless opts[:year].blank?
+        query.merge!(month: { "$in" => opts[:month] }) unless opts[:month].blank?
+        query.merge!(sport_type_id: { "$in" => opts[:sport_type_id] }) unless opts[:sport_type_id].blank?
         collection.find(query)
                   .sort({ start_time: -1 }).map do |session|
           to_model(session)

@@ -8,6 +8,7 @@ class CoursesController < ApplicationController
     @courses = Repositories::Courses.fetch
   end
 
+
   def show
     @course = Repositories::Courses.find(id: params[:id])
     @assigned_sessions = assigned_sessions(@course)

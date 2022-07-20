@@ -15,7 +15,7 @@ module Models
     end
 
     def selector_text
-      "#{id} - #{start_time} - #{distance} - #{notes}"
+      "#{start_time} - #{distance} - #{notes&.first(50)}"
     end
 
     def local_start_time

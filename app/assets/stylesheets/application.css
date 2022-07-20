@@ -89,6 +89,13 @@ div {
   padding: 10px;
 }
 
+.filters {
+  margin: auto;
+  width: 90%;
+  border: none; /* 3px dotted green; */
+  padding: 10px;
+}
+
 th, td {
   padding-top: 15px;
   padding-bottom: 15px;

@@ -110,7 +110,15 @@
 	</script> 
 <% end -%>
 
+<div class="filters">
+  <%= render "shared/filters" %>
+</div>
+
 <%= form_with url: "/trace_matcher", method: :get do |form| %>
+  <%= form.hidden_field :year, value: @filter_params[:year] %>
+  <%= form.hidden_field :month, value: @filter_params[:month] %>
+  <%= form.hidden_field :sport_type_id, value: @filter_params[:sport_type_id] %>
+
   <div class="container" style="width:80%">
     <div class="item-left">
       <table class="smalltable" style="width:50%">

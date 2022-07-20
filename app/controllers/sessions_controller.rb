@@ -5,12 +5,12 @@ require 'repositories/sport_sessions'
 require 'sport_type'
 
 class SessionsController < ApplicationController
-  before_action :filter_params
+  before_action :filters
+  before_action :session_filters
 
-  def filter_params
+  def session_filters
     @session_params       = session_params
-    @possible_years       = statistics.possible_years
-    @possible_sport_types = statistics.possible_sport_types
+    @path_method          = "sessions_index_path"
   end
 
   def index
@@ -22,15 +22,9 @@ class SessionsController < ApplicationController
     )
   end
 
+
   def session_params
-    params.reverse_merge!(
-      month: Time.now.month.to_s,
-      year: Time.now.year.to_s
-    )
     {
-      year: params[:year],
-      month: params[:month],
-      sport_type_id: params[:sport_type_id],
       text: params[:text]
     }
   end

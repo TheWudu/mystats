@@ -3,16 +3,17 @@
 require 'repositories/statistics/mongo_db'
 
 class ChartsController < ApplicationController
+  before_action :filters
+  before_action :chart_filters
+
+  def chart_filters
+    @path_method = "charts_index_path"
+  end
+
   def index
     @chart_params = {
-      year: params[:year],
-      month: params[:month],
       group_by: params[:group_by],
-      sport_type_id: params[:sport_type_id]
-    }
-
-    @possible_years = statistics.possible_years
-    @possible_sport_types = statistics.possible_sport_types
+    }.merge(@filter_params)
   end
 
   def cnt_per_weekday

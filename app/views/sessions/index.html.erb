@@ -1,76 +1,17 @@
-<%
-selected_color   = "#81d99a"
-deselected_color = "#bbbbbb"
-%>
+<div class="filters">
+  <%= render "shared/filters" %>
 
-<div class="center" style="width:95%">
+  <div>
+    <%= form_with url: "/sessions", method: :get do |form| %>
+      <%= form.hidden_field :year, value: @session_params[:year] %>
+      <%= form.hidden_field :month, value: @session_params[:month] %>
+      <%= form.hidden_field :sport_type_id, value: @session_params[:sport_type_id] %>
+      <%= form.label :text, "Search for notes: " %>
+      <%= form.text_field :text, value: @session_params[:text] %>
+      <%= form.submit "Search" %>
+    <% end %>
+  </div>
 
-<div>
-  <% @possible_years.each do |year| 
-      params = @session_params.dup
-      selected_years = params[:year]&.split(",") || []
-      params[:year] = if selected_years.include?(year.to_s)
-        color = selected_color
-        selected_years - [year.to_s]
-      else
-        color = deselected_color
-        selected_years + [year.to_s]
-      end.flatten.join(',')
-        
-      color = selected_color if selected_years.empty?
-  %>
-    <%= link_to(year, sessions_path(params), { class: "button-base", style: "background-color:#{color}" }) %>
-  <% end %>
-</div>
-
-<div>
-  <% (1..12).each do |month| 
-      params = @session_params.dup
-      selected_month = params[:month]&.split(",") || []
-      params[:month] = if selected_month.include?(month.to_s)
-        color = selected_color
-        selected_month - [month.to_s]
-      else
-        color = deselected_color
-        selected_month + [month.to_s]
-      end.flatten.join(',')
-
-      color = selected_color if selected_month.empty?
-  %>
-    <%= link_to(month, sessions_path(params), { class: "button-base", style: "background-color:#{color}" }) %>
-  <% end %>
-</div>
-
-
-<div>
-  <% @possible_sport_types.each do |id, name| 
-      params = @session_params.dup
-      selected_sports = params[:sport_type_id]&.split(",") || []
-      params[:sport_type_id] = if selected_sports.include?(id.to_s)
-        color = selected_color
-        selected_sports - [id.to_s]
-      else
-        color = deselected_color
-        selected_sports + [id.to_s]
-      end.flatten.join(',')
-
-      color = selected_color if selected_sports.empty?
-  %>
-    <%= link_to(name, sessions_path(params), { class: "button-base", style: "background-color:#{color}" }) %>
-  <% end %>
-</div>
-
-<div>
-<%= form_with url: "/sessions", method: :get do |form| %>
-  <%= form.hidden_field :year, value: @session_params[:year] %>
-  <%= form.hidden_field :month, value: @session_params[:month] %>
-  <%= form.hidden_field :sport_type_id, value: @session_params[:sport_type_id] %>
-  <%= form.label :text, "Search for notes: " %>
-  <%= form.text_field :text, value: @session_params[:text] %>
-  <%= form.submit "Search" %>
-<% end %>
-
-</div>
 </div>
 
 <div class="center" style="width:90%">
