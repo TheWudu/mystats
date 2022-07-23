@@ -4,17 +4,17 @@ require 'repositories/statistics/mongo_db'
 require 'repositories/sport_sessions'
 require 'sport_type'
 
-class SessionsController < ApplicationController
+class SportSessionsController < ApplicationController
   before_action :filters
   before_action :session_filters
 
   def session_filters
     @session_params       = session_params
-    @path_method          = "sessions_index_path"
+    @path_method          = "sport_sessions_index_path"
   end
 
   def index
-    @sessions = sessions_repo.fetch(
+    @sport_sessions = sport_sessions_repo.fetch(
       text: params[:text],
       years: years,
       months: months,
@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
     }
   end
 
-  def sessions_repo
+  def sport_sessions_repo
     Repositories::SportSessions
   end
 

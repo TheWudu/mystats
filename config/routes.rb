@@ -10,11 +10,11 @@ Rails.application.routes.draw do
   get 'charts/distance_buckets'
   get 'charts/hour_per_day'
 
-  get 'sessions/index'
+  get 'sport_sessions/index'
 
   get 'charts', to: 'charts#index'
-  get 'sessions', to: 'sessions#index'
-  get 'sessions/search', to: 'sessions#search'
+  get 'sport_sessions', to: 'sport_sessions#index'
+  get 'sport_sessions/search', to: 'sport_sessions#search'
   get 'cities', to: 'cities#index'
 
   get 'imports', to: 'imports#index'

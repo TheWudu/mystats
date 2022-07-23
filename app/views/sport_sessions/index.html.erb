@@ -2,10 +2,10 @@
   <%= render "shared/filters" %>
 
   <div>
-    <%= form_with url: "/sessions", method: :get do |form| %>
-      <%= form.hidden_field :year, value: @session_params[:year] %>
-      <%= form.hidden_field :month, value: @session_params[:month] %>
-      <%= form.hidden_field :sport_type_id, value: @session_params[:sport_type_id] %>
+    <%= form_with url: "/sport_sessions", method: :get do |form| %>
+      <%= form.hidden_field :year, value: @filter_params[:year] %>
+      <%= form.hidden_field :month, value: @filter_params[:month] %>
+      <%= form.hidden_field :sport_type_id, value: @filter_params[:sport_type_id] %>
       <%= form.label :text, "Search for notes: " %>
       <%= form.text_field :text, value: @session_params[:text] %>
       <%= form.submit "Search" %>
@@ -25,15 +25,15 @@
     <th style="width:10%">elevation gain/loss</th>
     <th style="width:35%">notes</th>
   </tr>
-<% @sessions.each do |session| %>
+<% @sport_sessions.each do |sport_session| %>
   <tr>
-    <td><%= session.id %></td>
-    <td><%= session.start_time %></td>
-    <td><%= session.sport %></td>
-    <td><%= session.distance_in_km %></td>
-    <td><%= session.duration_as_str %></td>
-    <td><%= session.elevation %></td>
-    <td><%= session.notes %></td>
+    <td><%= sport_session.id %></td>
+    <td><%= sport_session.start_time %></td>
+    <td><%= sport_session.sport %></td>
+    <td><%= sport_session.distance_in_km %></td>
+    <td><%= sport_session.duration_as_str %></td>
+    <td><%= sport_session.elevation %></td>
+    <td><%= sport_session.notes %></td>
   </tr>
 <% end %>
 </table>
