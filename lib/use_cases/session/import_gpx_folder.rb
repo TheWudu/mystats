@@ -6,7 +6,6 @@ require_relative 'import_multiple'
 module UseCases
   module Session
     class ImportGpxFolder < ImportMultiple
-
       private
 
       def filenames
@@ -29,7 +28,6 @@ module UseCases
         parser = Parser::Gpx.new(data: gpx_data)
         parser.parse
       end
-
     end
   end
 end

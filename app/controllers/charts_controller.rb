@@ -7,12 +7,12 @@ class ChartsController < ApplicationController
   before_action :chart_filters
 
   def chart_filters
-    @path_method = "charts_index_path"
+    @path_method = 'charts_index_path'
   end
 
   def index
     @chart_params = {
-      group_by: params[:group_by],
+      group_by: params[:group_by]
     }.merge(@filter_params)
   end
 

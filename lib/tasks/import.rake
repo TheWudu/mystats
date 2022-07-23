@@ -11,7 +11,7 @@ namespace :import do
     use_case = UseCases::Session::ImportRuntasticExport.new(path: args[:path])
     use_case.run
   end
-  
+
   desc 'Import a folder with gpx files'
   task :gpx_folder, [:path] do |_task, args|
     puts "Import GPX folder from #{args[:path]}"

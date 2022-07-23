@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-
   def filters
     @filter_params        = filter_params
     @possible_years       = statistics.possible_years
     @possible_sport_types = statistics.possible_sport_types
   end
-  
+
   def statistics
     @statistics ||= Repositories::Statistics::MongoDb.new(
       years: years,
@@ -15,8 +14,8 @@ class ApplicationController < ActionController::Base
       group_by: nil
     )
   end
-  
-  def filter_params 
+
+  def filter_params
     params.reverse_merge!(
       month: Time.now.month.to_s,
       year: Time.now.year.to_s
@@ -24,7 +23,7 @@ class ApplicationController < ActionController::Base
     {
       year: params[:year],
       month: params[:month],
-      sport_type_id: params[:sport_type_id],
+      sport_type_id: params[:sport_type_id]
     }
   end
 
@@ -45,7 +44,7 @@ class ApplicationController < ActionController::Base
       h[v] = "$#{v}"
     end
   end
-  
+
   def measure(title = nil)
     s = Time.now.to_f
     r = yield

@@ -8,7 +8,6 @@ class CoursesController < ApplicationController
     @courses = Repositories::Courses.fetch
   end
 
-
   def show
     @course = Repositories::Courses.find(id: params[:id])
     @assigned_sessions = assigned_sessions(@course)
@@ -51,8 +50,8 @@ class CoursesController < ApplicationController
     return [] if course.session_ids.count.zero?
 
     sessions_repo.find_by_ids(
-      ids: course.session_ids, 
-      sort: { attribute: "start_time", direction: :desc }
+      ids: course.session_ids,
+      sort: { attribute: 'start_time', direction: :desc }
     )
   end
 

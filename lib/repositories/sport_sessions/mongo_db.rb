@@ -61,9 +61,9 @@ module Repositories
       def find_with_traces(opts = {})
         query = { trace: { '$exists' => true } }
         query.merge!(id: { '$nin' => opts['id.not_in'] }) if opts['id.not_in']
-        query.merge!(year: { "$in" => opts[:year] }) unless opts[:year].blank?
-        query.merge!(month: { "$in" => opts[:month] }) unless opts[:month].blank?
-        query.merge!(sport_type_id: { "$in" => opts[:sport_type_id] }) unless opts[:sport_type_id].blank?
+        query.merge!(year: { '$in' => opts[:year] }) unless opts[:year].blank?
+        query.merge!(month: { '$in' => opts[:month] }) unless opts[:month].blank?
+        query.merge!(sport_type_id: { '$in' => opts[:sport_type_id] }) unless opts[:sport_type_id].blank?
         collection.find(query)
                   .sort({ start_time: -1 }).map do |session|
           to_model(session)
@@ -72,11 +72,10 @@ module Repositories
 
       def exists?(start_time:, sport_type_id:)
         collection.count({ start_time: {
-            "$gte" => (start_time - 1.minute),
-            "$lte" => (start_time + 1.minute)
-          },
-          sport_type_id: sport_type_id 
-        }).positive?
+                           '$gte' => (start_time - 1.minute),
+                           '$lte' => (start_time + 1.minute)
+                         },
+                           sport_type_id: sport_type_id }).positive?
       end
 
       def insert(session:)

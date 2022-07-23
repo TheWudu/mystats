@@ -6,7 +6,6 @@ require_relative 'import_multiple'
 module UseCases
   module Session
     class ImportRuntasticExport < ImportMultiple
-
       private
 
       def filenames
@@ -34,7 +33,6 @@ module UseCases
         parser = Parser::RuntasticJson.new(json_data: json_data, gpx_data: gpx_data)
         parser.parse
       end
-
     end
   end
 end
