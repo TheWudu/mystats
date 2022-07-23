@@ -66,7 +66,12 @@ module Repositories
       end
 
       def exists?(start_time:, sport_type_id:)
-        collection.count({ start_time: start_time, sport_type_id: sport_type_id }).positive?
+        collection.count({ start_time: {
+            "$gte" => (start_time - 1.minute),
+            "$lte" => (start_time + 1.minute)
+          },
+          sport_type_id: sport_type_id 
+        }).positive?
       end
 
       def insert(session:)
