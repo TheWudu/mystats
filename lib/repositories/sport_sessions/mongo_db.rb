@@ -36,6 +36,11 @@ module Repositories
         end
       end
 
+      def delete(id:)
+        resp = collection.delete_one(id: id)
+        resp.n == 1
+      end
+
       def sort_option(sort)
         { sort[:attribute].to_s => sort[:direction] == :asc ? 1 : -1 }
       end

@@ -23,7 +23,8 @@
     <th style="width:10%">distance [km]</th>
     <th style="width:10%">duration [hh:mm]</th>
     <th style="width:10%">elevation gain/loss</th>
-    <th style="width:35%">notes</th>
+    <th style="width:30%">notes</th>
+    <th style="width:5%">&nbsp;</th>
   </tr>
 <% @sport_sessions.each do |sport_session| %>
   <tr>
@@ -34,6 +35,7 @@
     <td><%= sport_session.duration_as_str %></td>
     <td><%= sport_session.elevation %></td>
     <td><%= sport_session.notes %></td>
+    <td><%= link_to("delete", sport_session_path(id: sport_session.id), data: { turbo_method: :delete }, class: "button-red") %></td>
   </tr>
 <% end %>
 </table>

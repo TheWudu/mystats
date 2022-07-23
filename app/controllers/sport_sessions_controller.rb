@@ -10,7 +10,7 @@ class SportSessionsController < ApplicationController
 
   def session_filters
     @session_params       = session_params
-    @path_method          = "sport_sessions_index_path"
+    @path_method          = "sport_sessions_path"
   end
 
   def index
@@ -20,6 +20,12 @@ class SportSessionsController < ApplicationController
       months: months,
       sport_type_ids: sport_type_ids
     )
+  end
+  
+  def destroy
+    sport_sessions_repo.delete(id: params[:id])
+
+    redirect_to sport_sessions_path(@filter_params), status: 303
   end
 
 

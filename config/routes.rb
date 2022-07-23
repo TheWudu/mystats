@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  root controller: "charts", action: "index"
+
   get 'charts/index'
   get 'charts/cnt_per_weekday'
   get 'charts/distance_per_year'
@@ -10,10 +12,10 @@ Rails.application.routes.draw do
   get 'charts/distance_buckets'
   get 'charts/hour_per_day'
 
-  get 'sport_sessions/index'
+  resources :sport_sessions, only: [:index, :destroy]
 
   get 'charts', to: 'charts#index'
-  get 'sport_sessions', to: 'sport_sessions#index'
+  #get 'sport_sessions', to: 'sport_sessions#index'
   get 'sport_sessions/search', to: 'sport_sessions#search'
   get 'cities', to: 'cities#index'
 

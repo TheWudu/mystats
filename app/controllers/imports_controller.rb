@@ -9,6 +9,6 @@ class ImportsController < ApplicationController
     data = params['input'].read
     UseCases::Session::ImportGpx.new(data: data).run
 
-    redirect_to sessions_index_path
+    redirect_to sport_sessions_path
   end
 end

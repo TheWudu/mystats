@@ -22,7 +22,7 @@ class ChartsController < ApplicationController
 
   def distance_per_year
     data = statistics.data_per_year('overall_distance')
-    data.transform_values! { |v| (v / 1000.0).round(0) }
+    data.transform_values! { |v| (v / 1000.0).round(1) }
     render json: data
   end
 
