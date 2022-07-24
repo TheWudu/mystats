@@ -23,8 +23,11 @@ class CoursesController < ApplicationController
   end
 
   def new
-    @path_method = "new_course_path"
-    @possible_sessions = Repositories::SportSessions.find_with_traces('id.not_in' => session_ids_from_courses, year: years, month: months, sport_type_id: sport_type_ids)
+    @path_method = 'new_course_path'
+    @possible_sessions = Repositories::SportSessions.find_with_traces(
+      'id.not_in' => session_ids_from_courses,
+      year: years, month: months, sport_type_id: sport_type_ids
+    )
   end
 
   def create_from_session

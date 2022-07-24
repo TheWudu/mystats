@@ -38,8 +38,8 @@ module UseCases
         diffs
       end
 
-      def find_match(b1)
-        !!blocks2.find_index { |b2| b2 == b1 }
+      def find_match(block1)
+        !!blocks2.find_index { |block2| block2 == block1 }
       end
 
       def matching?
@@ -52,7 +52,8 @@ module UseCases
         (6370 * Math::PI * val / 180 * 1000)
       end
 
-      def blockify(point, bs = block_size)
+      def blockify(point)
+        bs = block_size
         [
           (calc(point['lng'].to_f).to_i / bs).to_i * bs + bs / 2,
           (calc(point['lat'].to_f).to_i / bs).to_i * bs + bs / 2

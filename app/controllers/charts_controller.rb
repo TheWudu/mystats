@@ -11,7 +11,7 @@ class ChartsController < ApplicationController
     @show_filters[:month] = false
     @show_filters[:group_by] = true
 
-    @possible_groups = %w(year year,month year,sport_type sport_type) 
+    @possible_groups = %w[year year,month year,sport_type sport_type]
   end
 
   def index

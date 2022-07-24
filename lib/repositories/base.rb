@@ -11,7 +11,7 @@ module Repositories
     end
 
     def setup_strategy(strategy)
-      @strategy ||= strategy
+      @strategy ||= strategy # rubocop:disable Naming/MemoizedInstanceVariableName
     end
 
     def strategy_instance

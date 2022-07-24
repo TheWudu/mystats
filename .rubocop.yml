@@ -4,7 +4,9 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - 'bin/{rails,rake,bundle}'
+    - 'mongodb_data/**/*'
     - !ruby/regexp /old_and_unused\.rb$/
+    - 'lib/hgt_reader.rb'
 
 Style/Documentation:
   Enabled: false

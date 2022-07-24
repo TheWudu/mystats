@@ -22,6 +22,7 @@ module Parser
       tracks.map do |track|
         stats = calculate_track(track)
         timezone = timezone_for(track[:points].first)
+        duration = ((track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000).to_i
 
         stats.merge({
                       id: SecureRandom.uuid,
@@ -30,7 +31,7 @@ module Parser
                       sport_type_id: SportType.id_for(name: track[:type]),
                       start_time: track[:points].first[:time],
                       end_time: track[:points].last[:time],
-                      duration: ((track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000).to_i,
+                      duration: duration,
                       pause: (stats[:pause] * 1000).to_i,
                       timezone: timezone,
                       start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]).to_i,

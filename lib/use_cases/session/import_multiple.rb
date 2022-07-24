@@ -8,6 +8,7 @@ module UseCases
       attr_reader :path
 
       def initialize(path:)
+        super()
         @path = path
       end
 
