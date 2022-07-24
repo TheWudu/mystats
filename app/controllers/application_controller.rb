@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   def filters
+    @show_filters         = { month: true }
     @filter_params        = filter_params
     @possible_years       = statistics.possible_years
     @possible_sport_types = statistics.possible_sport_types
@@ -23,7 +24,8 @@ class ApplicationController < ActionController::Base
     {
       year: params[:year],
       month: params[:month],
-      sport_type_id: params[:sport_type_id]
+      sport_type_id: params[:sport_type_id],
+      group_by: params[:group_by]
     }
   end
 

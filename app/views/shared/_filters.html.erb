@@ -23,6 +23,25 @@ deselected_color = "#bbbbbb"
     <% end %>
   </div>
 
+  <% if @show_filters&.fetch(:group_by, false) %>
+    <% @possible_groups.each do |group| 
+        params = @filter_params.dup
+        selected_group = params[:group_by]
+        if selected_group == group.to_s
+          color = selected_color
+          params.delete(:group_by)
+        else
+          color = deselected_color
+          params[:group_by] = group
+        end
+
+        path = send(@path_method, params) 
+    %>
+      <%= link_to(group.gsub(",","-"), path, { class: "button-base", style: "background-color:#{color}" }) %>
+    <% end %>
+  <% end %>
+
+  <% if @show_filters&.fetch(:month, false) %>
   <div>
     <% (1..12).each do |month| 
         params = @filter_params.dup
@@ -42,6 +61,7 @@ deselected_color = "#bbbbbb"
       <%= link_to(month, path, { class: "button-base", style: "background-color:#{color}" }) %>
     <% end %>
   </div>
+  <% end %>
 
 
   <div>

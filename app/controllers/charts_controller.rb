@@ -8,6 +8,10 @@ class ChartsController < ApplicationController
 
   def chart_filters
     @path_method = 'charts_index_path'
+    @show_filters[:month] = false
+    @show_filters[:group_by] = true
+
+    @possible_groups = %w(year year,month year,sport_type sport_type) 
   end
 
   def index
