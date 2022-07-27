@@ -23,7 +23,7 @@ module UseCases
       def store_sessions(sport_sessions)
         with_progress do |bar|
           sport_sessions.each_with_object([]) do |sport_session, ary|
-            ary << !store(sport_session).nil?
+            ary << store(sport_session)
             bar.increment
           end
         end

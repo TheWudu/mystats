@@ -12,10 +12,11 @@ require 'hgt_reader'
 
 module Parser
   class Gpx
-    attr_reader :data
+    attr_reader :data, :errors
 
     def initialize(data:)
       @data = data
+      @errors = []
     end
 
     def parse # rubocop:disable Metrics/AbcSize
@@ -139,6 +140,9 @@ module Parser
       return ele unless lat && lng
 
       HgtReader.new.elevation(lat.to_f, lng.to_f)
+    rescue => e
+      @errors << e
+      ele
     end
 
     def from_tags(tag, type)

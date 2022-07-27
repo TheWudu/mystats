@@ -19,10 +19,18 @@ module UseCases
         end
       end
 
+      def errors
+        parser.errors
+      end
+
       private
 
       def sessions
-        Parser::Gpx.new(data: data).parse
+        parser.parse
+      end
+      
+      def parser
+        @parser ||= Parser::Gpx.new(data: data)
       end
     end
   end

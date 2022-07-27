@@ -123,6 +123,8 @@ class HgtReader
     f.close
 
     elevation
+  rescue Errno::ENOENT => e
+    raise "Missing file: #{filename}"
   end
 
   def srtm3_folder
