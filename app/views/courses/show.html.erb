@@ -62,22 +62,30 @@ function sortTable(n) {
           { data: { turbo_method: :delete }, class: "button-red" }) %>
   </div>
 
-  <table class="normaltable" style="width:100%">
-    <tr>
-      <td style="width:20%">id</td>       <td><%= @course.id %></td>
-    </tr>
-    <tr>
-      <td style="width:50%">name</td>     <td><%= @course.name %></td>
-    </tr>
-    <tr>
-      <td style="width:20%">distance</td> <td><%= @course.distance %></td>
-    </tr>
-    <tr>
-      <td style="width:10%">session#</td> <td><%= @course.session_ids&.count %></td>
-    </tr>
-  </table>
+  <div class="flexbox">
+    <div class="chart">
+      <table class="normaltable" style="width:100%">
+        <tr>
+          <td style="width:20%">id</td>       <td><%= @course.id %></td>
+        </tr>
+        <tr>
+          <td style="width:50%">name</td>     <td><%= @course.name %></td>
+        </tr>
+        <tr>
+          <td style="width:20%">distance</td> <td><%= @course.distance %></td>
+        </tr>
+        <tr>
+          <td style="width:10%">session#</td> <td><%= @course.session_ids&.count %></td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="chart">
+      <%= line_chart @assigned_sessions_durations %>
+    </div>
 
-  <p>
+  </div>
+
   <div>
     Assigned Sessions: <p/>
   <% if @assigned_sessions.count > 0 %>

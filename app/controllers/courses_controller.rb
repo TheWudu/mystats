@@ -13,6 +13,7 @@ class CoursesController < ApplicationController
   def show
     @course = Repositories::Courses.find(id: params[:id])
     @assigned_sessions = assigned_sessions(@course)
+    @assigned_sessions_durations = duration_chart_data(@assigned_sessions)
     @matching_sessions = matching_sessions(@course)
   end
 
@@ -43,6 +44,12 @@ class CoursesController < ApplicationController
   end
 
   private
+
+  def duration_chart_data(assigned_sessions)
+    assigned_sessions.reverse.each_with_object({}) do |sport_session, h|
+      h[sport_session.start_time.strftime('%Y.%m.%d')] = sport_session.duration / 1000
+    end
+  end
 
   def session_ids_from_courses
     Repositories::Courses.session_ids
