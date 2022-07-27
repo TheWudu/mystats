@@ -52,8 +52,7 @@ module UseCases
         (6370 * Math::PI * val / 180 * 1000)
       end
 
-      def blockify(point)
-        bs = block_size
+      def blockify(point, bs = block_size)
         [
           (calc(point['lng'].to_f).to_i / bs).to_i * bs + bs / 2,
           (calc(point['lat'].to_f).to_i / bs).to_i * bs + bs / 2

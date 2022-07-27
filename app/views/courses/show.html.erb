@@ -1,3 +1,59 @@
+<script>
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("sportSessionTable");
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = "asc";
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /* Loop through all table rows (except the
+      first, which contains table headers): */
+      for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare,
+        one from current row and one from the next: */
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /* Check if the two rows should switch place,
+        based on the direction, asc or desc: */
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        // Each time a switch is done, increase this count by 1:
+        switchcount ++;
+      } else {
+        /* If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again. */
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
+</script>
 <div class="center" style="width:90%">
 
   <div style="float:right">
@@ -25,13 +81,13 @@
   <div>
     Assigned Sessions: <p/>
   <% if @assigned_sessions.count > 0 %>
-    <table class="normaltable" style="width:100%">
+    <table class="normaltable" style="width:100%" id="sportSessionTable">
       <tr>
         <th style="width:20%">id</th>
-        <th style="width:15%">started</th>
+        <th style="width:15%" onclick="sortTable(1)">started</th>
         <th style="width:10%">sport</th>
-        <th style="width:10%">distance [km]</th>
-        <th style="width:10%">duration [hh:mm]</th>
+        <th style="width:10%" onclick="sortTable(3)">distance [km]</th>
+        <th style="width:10%" onclick="sortTable(4)">duration [hh:mm]</th>
         <th style="width:10%">elevation gain/loss</th>
         <th style="width:30%">notes</th>
         <th style=width:"5%">&nbsp;</th>
