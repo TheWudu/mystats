@@ -9,8 +9,13 @@ class ImportsController < ApplicationController
     data = params['input'].read
 
     use_case(data).run
-ap use_case_errors
-    redirect_to sport_sessions_path, notice: use_case_errors
+
+    if use_case_errors
+      flash[:warning] = use_case_errors
+    else
+      flash[:success] = "Successfully imported"
+    end
+    redirect_to sport_sessions_path
   end
 
   def use_case(data)

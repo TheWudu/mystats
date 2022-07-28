@@ -37,7 +37,7 @@
 
       <div style="float:right; width:90%">
         <% flash.each do |flash_type, message| %>
-          <div class="flash">
+          <div class="flash flash-<%= flash_type %>">
              <%= message %>
           </div>
         <% end %>
