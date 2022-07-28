@@ -6,7 +6,7 @@ class ImportsController < ApplicationController
   def index; end
 
   def create
-    data = params['input'].read
+    data = File.open(params["input"].tempfile, "r:UTF-8").read
 
     use_case(data).run
 
