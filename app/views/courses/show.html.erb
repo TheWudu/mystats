@@ -150,7 +150,7 @@ function sortTable(n) {
           <td><%= session.duration_as_str %></td>
           <td><%= session.elevation %></td>
           <td><%= session.notes %></td>
-          <td><%= hash[:match_rate] %></td>
+          <td><%= link_to(hash[:match_rate], trace_matcher_path(session1: @assigned_sessions.first.id, session2: session.id))  %></td>
           <td><%= link_to("add", 
               course_session_index_path(course_id: @course.id, id: session.id), 
               { data: { turbo_method: :post }, class: "button-green" }) %></td>
