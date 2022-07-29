@@ -47,7 +47,7 @@ class CoursesController < ApplicationController
 
   def duration_chart_data(assigned_sessions)
     assigned_sessions.reverse.each_with_object({}) do |sport_session, h|
-      h[sport_session.start_time.strftime('%Y.%m.%d')] = sport_session.duration / 1000
+      h[sport_session.start_time.strftime('%Y.%m.%d')] = (sport_session.duration / 1000.0 / 60).round(1)
     end
   end
 
