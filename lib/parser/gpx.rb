@@ -140,7 +140,7 @@ module Parser
       return ele unless lat && lng
 
       HgtReader.new.elevation(lat.to_f, lng.to_f)
-    rescue => e
+    rescue StandardError => e
       @errors << e
       ele
     end

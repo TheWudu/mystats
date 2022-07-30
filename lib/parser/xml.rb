@@ -35,11 +35,11 @@ module Parser
 
         tag[:tags] ||= []
         offset = if current_tag[:empty]
-          tag[:tags] << current_tag
-          current_tag[:end_at]
-        else
-          handle_tag(current_tag, tag[:tags])
-        end
+                   tag[:tags] << current_tag
+                   current_tag[:end_at]
+                 else
+                   handle_tag(current_tag, tag[:tags])
+                 end
 
         break if offset >= data.size
       end
@@ -74,7 +74,7 @@ module Parser
     def build_tag(data, opening, closing)
       tag_data = data[opening..closing - 1]
 
-      empty_tag   = tag_data.match("/>$")
+      empty_tag   = tag_data.match('/>$')
       current_tag = tag_data.split(' ').first.gsub('<', '').gsub('>', '')
       tag_meta    = meta(tag_data.split(' ', 2)[1])
 
@@ -88,7 +88,7 @@ module Parser
       closing = find_tag(data, opening, '>')
       return unless closing
 
-      [opening, closing+1]
+      [opening, closing + 1]
     end
 
     def find_tag(data, offset, char)

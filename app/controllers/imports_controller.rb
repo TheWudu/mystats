@@ -6,14 +6,14 @@ class ImportsController < ApplicationController
   def index; end
 
   def create
-    data = File.open(params["input"].tempfile, "r:UTF-8").read
+    data = File.open(params['input'].tempfile, 'r:UTF-8').read
 
     use_case(data).run
 
     if use_case_errors
       flash[:warning] = use_case_errors
     else
-      flash[:success] = "Successfully imported"
+      flash[:success] = 'Successfully imported'
     end
     redirect_to sport_sessions_path
   end

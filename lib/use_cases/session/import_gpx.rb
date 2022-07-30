@@ -28,7 +28,7 @@ module UseCases
       def sessions
         parser.parse
       end
-      
+
       def parser
         @parser ||= Parser::Gpx.new(data: data)
       end

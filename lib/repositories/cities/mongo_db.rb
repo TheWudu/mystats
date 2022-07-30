@@ -23,11 +23,11 @@ module Repositories
         cities.find(geo_matcher(lat, lng)).limit(1).first
       end
 
-      def exist?(name)
+      def exist?(name:)
         cities.find({ name: name }).limit(1).first
       end
 
-      def insert(city)
+      def insert(city:)
         cities.insert_one(prepare(city))
       end
 
