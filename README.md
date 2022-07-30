@@ -76,15 +76,9 @@ Start rails
 rails s
 ```
 
-## Pages
+# Pages
 
----
->  
-> OUT OF DATE !
->  
----
-
-### Statistics
+## Statistics
 
 To view statistics visit
 
@@ -97,7 +91,7 @@ You should see something like this, depending on your data and your filters:
 ![stats01](./doc/20220730_stats01.png)
 ![stats02](./doc/20220730_stats02.png)
 
-### Sessions
+## Sport-Sessions
 
 To view sessions overview visit
 
@@ -109,7 +103,7 @@ You should see something like this, depending on your data and your filters:
 
 ![sessions01](./doc/20220730_sessions01.png)
 
-### Import
+## Import
 
 To import gpx files to the database, you now can also import it via the
 web application. Visit
@@ -122,7 +116,7 @@ Browse for the file and press import. It will upload the gpx file,
 read and parse the content, refine the elevation using srtm3 data (if available)
 and store it to the database.
 
-### Courses
+## Courses
 
 Courses are a feature to group same or similar sport sessions together, and be able
 to compare them. A course can be created out of a sport-session. When showing a 
@@ -134,7 +128,7 @@ see why it matches more or less.
 
 ![courses](./doc/20220730_courses.png)
 
-### Trace Matching
+## Trace Matching
 
 To compare two sport-sessions with traces, and check how good they match, open the 
 trace matcher:
@@ -154,7 +148,7 @@ Parameters:
 
 ![trace_matcher](./doc/20220730_trace_matcher.png)
 
-### Cities
+## Cities
 
 To view a list of imported cities (which are used for timezone finding) visit
 
@@ -167,7 +161,3 @@ combinations.
 
 ![cities01](./doc/20220627_cities.png)
 
-# Supported Filters
-
-Supported filters are displayed on top, to be selectable. Group_by on the charts
-controller might support more variations, but I added some that make sense to me.
