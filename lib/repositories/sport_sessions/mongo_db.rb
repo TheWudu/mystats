@@ -5,6 +5,8 @@ require 'connections/mongo_db'
 module Repositories
   module SportSessions
     class MongoDb
+
+
       def fetch(years:, months:, sport_type_ids:, text: nil)
         matcher = build_matcher(years: years, months: months, sport_type_ids: sport_type_ids)
         matcher.merge!(text_filter(text)) unless text.blank?
@@ -15,7 +17,9 @@ module Repositories
       end
 
       def find(start_time:, sport_type_id:)
-        sessions = collection.find({ start_time: start_time, sport_type_id: sport_type_id })
+        sessions = collection.find({ year: start_time.year, month: start_time.month, 
+          start_time: start_time, sport_type_id: sport_type_id 
+        })
         return unless sessions.count == 1
 
         to_model(sessions.first)
@@ -81,6 +85,12 @@ module Repositories
       def insert(session:)
         collection.insert_one(prepare_for_write(session))
       end
+      
+      def create_indexes
+        create_year_month_index
+        create_id_distance_index
+        create_notes_text_index
+      end
 
       private
 
@@ -111,6 +121,44 @@ module Repositories
         m.merge!(month: { '$in' => months }) if months && !months.empty?
         m.merge!(sport_type_id: { '$in' => sport_type_ids }) if sport_type_ids && !sport_type_ids.empty?
         m
+      end
+
+
+      def create_year_month_index
+        name = "year_month_sport_type_id_start_time"
+        index = { year: 1, month: 1, sport_type_id: 1, start_time: 1 }
+        
+        create_index_if_not_exist(name, index)
+      end
+
+      def create_id_distance_index
+        name  = "id_distance"
+        index = { _id: 1, distance: 1 }
+
+        create_index_if_not_exist(name, index)
+      end
+
+      def create_notes_text_index
+        name  = "notes"
+        index = { notes: "text" }
+
+        create_index_if_not_exist(name, index)
+      end
+
+      def create_index_if_not_exist(name, index)
+        return if find_index(name)
+
+        puts "Create: #{name}, #{index}"
+
+        options = { name: name }
+
+        Mongo::Index::View.new(collection).create_one(index, options)
+      end
+      
+      def find_index(name)
+        collection.indexes.find { |index| index['name'] == name }
+      rescue StandardError
+        nil
       end
 
       def collection

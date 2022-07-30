@@ -15,7 +15,8 @@ module Repositories
                  find_with_traces
                  exists?
                  insert
-                 delete].freeze
+                 delete
+                 create_indexes].freeze
 
     create_methods(METHODS)
     setup_strategy(MongoDb)

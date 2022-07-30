@@ -1,9 +1,74 @@
 # mystats
 Small rails application to render stats nicely
 
+# Setup
+
+To setup the application first of all clone it locally and then bundle it.
+
+```
+bundle install
+```
+
+Then you have to start up mongo, either a local instance or using the provided 
+docker-compose file.
+
+First time:
+
+```
+docker-compose up
+```
+
+Then:
+
+```
+docker-compose starte
+```
+
+would be sufficient.
+
+To have a better performance, create the indexes:
+
+```
+rake setup:create_indexes
+```
+
 # Usage
 
-Use [mongo_cpp](https://github.com/TheWudu/mongo_cpp/) to import sessions to the database.
+Instead of using [mongo_cpp](https://github.com/TheWudu/mongo_cpp/) to import sessions to 
+the database, you can now use the provided rake tasks to import multiple sport-sessions
+at once, or import the gpx files separately with the UI.
+
+Before importing sessions, you should import cities into the database. Thisfore a rake
+task is provided:
+
+```
+rake import:cities[./public/cities500.txt]
+```
+
+You may prefer other cities files, you can download them from geonames.org.
+
+http://download.geonames.org/export/dump/
+
+## Import a runtastic export
+
+To easily import a runtastic gdpr export, just download the export from runtastic,
+extract it somewhere and then call the rake task providing the path to the 
+Sport-sessions folder.
+
+```
+rake import:runtastic_export[/home/myuser/Downloads/export-20220704-000/Sport-sessions]
+```
+
+## Import multiple GPX files
+
+To import multiple GPX files at once, you can run the following rake task, providing
+the folder where those files are located:
+
+```
+rake import:gpx_folder[/home/myuser/Downloads/my_gpx_files_folder]
+```
+
+## Starting the application
 
 Start rails 
 
@@ -12,6 +77,12 @@ rails s
 ```
 
 ## Pages
+
+---
+>  
+> OUT OF DATE !
+>  
+---
 
 ### Statistics
 
