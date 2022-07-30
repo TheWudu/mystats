@@ -91,7 +91,8 @@ function sortTable(n) {
   <% if @assigned_sessions.count > 0 %>
     <table class="normaltable" style="width:100%" id="sportSessionTable">
       <tr>
-        <th style="width:20%">id</th>
+        <th style="width:3%">&nbsp;</th>
+        <th style="width:17%">id</th>
         <th style="width:15%" onclick="sortTable(1)">started</th>
         <th style="width:10%">sport</th>
         <th style="width:10%" onclick="sortTable(3)">distance [km]</th>
@@ -101,7 +102,19 @@ function sortTable(n) {
         <th style=width:"5%">&nbsp;</th>
       </tr>
     <% @assigned_sessions.each do |session| %>
-      <tr>
+      <tr <% if session == @fastest_session %>
+          style="background:lightgreen"
+          <% elsif session == @slowest_session %>
+          style="background:#ffcccb"
+          <% end %>
+        >
+        <td>
+          <% if session == @fastest_session %>
+            <%= image_tag "fast-rabbit-icon.png", height: 25 %> 
+          <% elsif session == @slowest_session %>
+            <%= image_tag "slow-snail-icon.png", height: 25 %> 
+          <% end %>
+        </td>
         <td><%= session.id %></td>
         <td><%= session.start_time %></td>
         <td><%= session.sport_type %></td>

@@ -15,6 +15,9 @@ class CoursesController < ApplicationController
     @assigned_sessions = assigned_sessions(@course)
     @assigned_sessions_durations = duration_chart_data(@assigned_sessions)
     @matching_sessions = matching_sessions(@course)
+    slow_fast = @assigned_sessions.sort_by { |sport_session| sport_session.duration / sport_session.distance }
+    @fastest_session   = slow_fast.first
+    @slowest_session   = slow_fast.last
   end
 
   def destroy
