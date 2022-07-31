@@ -16,14 +16,14 @@ module Repositories
         end
       end
 
-      def find(start_time:, sport_type_id:)
-        sessions = collection.find({ year: start_time.year, month: start_time.month, 
-          start_time: start_time, sport_type_id: sport_type_id 
-        })
-        return unless sessions.count == 1
+      # def find(start_time:, sport_type_id:)
+      #   sessions = collection.find({ year: start_time.year, month: start_time.month, 
+      #     start_time: start_time, sport_type_id: sport_type_id 
+      #   })
+      #   return unless sessions.count == 1
 
-        to_model(sessions.first)
-      end
+      #   to_model(sessions.first)
+      # end
 
       def find_by_id(id:)
         sessions = collection.find({ id: id })
@@ -75,7 +75,9 @@ module Repositories
       end
 
       def exists?(start_time:, sport_type_id:)
-        collection.count({ start_time: {
+        collection.count({ year: start_time.year,
+                           month: start_time.month, 
+                           start_time: {
                            '$gte' => (start_time - 1.minute),
                            '$lte' => (start_time + 1.minute)
                          },
@@ -133,7 +135,7 @@ module Repositories
 
       def create_id_distance_index
         name  = "id_distance"
-        index = { _id: 1, distance: 1 }
+        index = { id: 1, distance: 1 }
 
         create_index_if_not_exist(name, index)
       end

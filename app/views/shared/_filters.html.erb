@@ -8,18 +8,18 @@ deselected_color = "#bbbbbb"
         params = @filter_params.dup
         selected_years = params[:year]&.split(",") || []
         params[:year] = if selected_years.include?(year.to_s)
-          color = selected_color
+          button = "button-green"
           selected_years - [year.to_s]
         else
-          color = deselected_color
+          button = "button-gray"
           selected_years + [year.to_s]
         end.flatten.join(',')
           
-        color = selected_color if selected_years.empty?
+        button = "button-green"  if selected_years.empty?
 
         path = send(@path_method, params) 
     %>
-      <%= link_to(year, path, { class: "button-base", style: "background-color:#{color}" }) %>
+      <%= link_to(year, path, { class: button }) %>
     <% end %>
   </div>
 
@@ -28,16 +28,16 @@ deselected_color = "#bbbbbb"
         params = @filter_params.dup
         selected_group = params[:group_by]
         if selected_group == group.to_s
-          color = selected_color
+          button = "button-green"
           params.delete(:group_by)
         else
-          color = deselected_color
+          button = "button-gray"
           params[:group_by] = group
         end
 
         path = send(@path_method, params) 
     %>
-      <%= link_to(group.gsub(",","-"), path, { class: "button-base", style: "background-color:#{color}" }) %>
+      <%= link_to(group.gsub(",","-"), path, { class: button }) %>
     <% end %>
   <% end %>
 
@@ -47,18 +47,18 @@ deselected_color = "#bbbbbb"
         params = @filter_params.dup
         selected_month = params[:month]&.split(",") || []
         params[:month] = if selected_month.include?(month.to_s)
-          color = selected_color
+          button = "button-green"
           selected_month - [month.to_s]
         else
-          color = deselected_color
+          button = "button-gray"
           selected_month + [month.to_s]
         end.flatten.join(',')
 
-        color = selected_color if selected_month.empty?
+        button = "button-green" if selected_month.empty?
 
         path = send(@path_method, params) 
     %>
-      <%= link_to(month, path, { class: "button-base", style: "background-color:#{color}" }) %>
+      <%= link_to(month, path, { class: button }) %>
     <% end %>
   </div>
   <% end %>
@@ -69,17 +69,16 @@ deselected_color = "#bbbbbb"
         params = @filter_params.dup
         selected_sports = params[:sport_type_id]&.split(",") || []
         params[:sport_type_id] = if selected_sports.include?(id.to_s)
-          color = selected_color
+          button = "button-green"
           selected_sports - [id.to_s]
         else
-          color = deselected_color
+          button = "button-gray"
           selected_sports + [id.to_s]
         end.flatten.join(',')
 
-        color = selected_color if selected_sports.empty?
-
+        button = "button-green" if selected_sports.empty?
         path = send(@path_method, params) 
     %>
-      <%= link_to(name, path, { class: "button-base", style: "background-color:#{color}" }) %>
+      <%= link_to(name, path, { class: button }) %>
     <% end %>
   </div>

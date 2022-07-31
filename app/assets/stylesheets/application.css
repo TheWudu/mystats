@@ -39,12 +39,12 @@
 
 .flash-warning {
   border: 3px dotted orange;
-  background-color: orange; 
+  background-color: #fed8b1; /* light orange */ 
 }
 
 .flash-success {
-  border: 3px dotted green;
-  background-color: green; 
+  border: 3px dotted #81d99a;
+  background-color: #81d99a; 
 }
 
 [class*="button-"] {
@@ -56,13 +56,16 @@
   display: inline-block;
   font-size: 12px;
   border-radius: 12px;
+  margin: 2px;
 }
 .button-base {
 }
-.button-green {
-  background-color: #4CAF50; /* Green */
+.button-gray {
+  background-color: #BBBBBB; /* Gray */
 }
-
+.button-green {
+  background-color: #81d99a; /* Green */
+}
 .button-red {
   background-color: #FF1200; /* Red */
 }
