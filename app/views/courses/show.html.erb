@@ -59,7 +59,7 @@ function sortTable(n) {
   <div style="float:right">
     <%= link_to("delete", 
           course_path(id: @course.id), 
-          { data: { turbo_method: :delete }, class: "button-red" }) %>
+          { data: { turbo_confirm: "Are you sure?", turbo_method: :delete }, class: "button-red" }) %>
   </div>
 
   <div class="flexbox">
@@ -83,6 +83,16 @@ function sortTable(n) {
     <div class="chart">
       <%= line_chart @assigned_sessions_durations %>
     </div>
+
+  </div>
+
+  <div>
+    <%= turbo_frame_tag "matching_sessions_turbo", src: "#{@course.id}/matching_sessions" do %>
+      <div>
+        Matching Sessions:<p>
+        Loading ... 
+      </div>
+    <% end %>
 
   </div>
 
@@ -124,14 +134,14 @@ function sortTable(n) {
         <td><%= session.notes %></td>
         <td><%= link_to("remove", 
             course_session_path(course_id: @course.id, id: session.id), 
-            { data: { confirm: 'Are you sure?',
-            turbo_method: :delete }, class: "button-red" }) %></td>
+            data: { turbo_confirm: 'Are you sure?',
+            turbo_method: :delete }, class: "button-red") %></td>
       </tr>
     <% end %>
     </table>
   <% end %>
   </div>
-    
+
   <div>
   <% if @matching_sessions.count > 0 %>
     Matching Sessions: <p/>

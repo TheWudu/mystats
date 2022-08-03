@@ -14,10 +14,18 @@ class CoursesController < ApplicationController
     @course = Repositories::Courses.find(id: params[:id])
     @assigned_sessions = assigned_sessions(@course)
     @assigned_sessions_durations = duration_chart_data(@assigned_sessions)
-    @matching_sessions = matching_sessions(@course)
+    @matching_sessions = [] # matching_sessions(@course)
     slow_fast = @assigned_sessions.sort_by { |sport_session| sport_session.duration / sport_session.distance }
     @fastest_session   = slow_fast.first
     @slowest_session   = slow_fast.last
+  end
+
+  def matching_sessions
+    @course = Repositories::Courses.find(id: params[:course_id])
+    @matched_sessions = matched_sessions(@course)
+    @assigned_session_id = @course.session_ids.first
+
+    render 'courses/_matching_sessions'
   end
 
   def destroy
@@ -71,7 +79,7 @@ class CoursesController < ApplicationController
     )
   end
 
-  def matching_sessions(course)
+  def matched_sessions(course)
     distance = course.distance
     sessions = sessions_repo.where(
       'distance.between' => [distance - 500, distance + 500],

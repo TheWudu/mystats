@@ -1,0 +1,40 @@
+<%= turbo_frame_tag "matching_sessions_turbo" do %>
+  <% if @matched_sessions.count > 0 %>
+    Matching Sessions: <p/>
+    <div style="float:right">
+      <%= link_to("add all", 
+            course_add_all_matching_sessions_path(course_id: @course.id), 
+            { data: { turbo_method: :post }, class: "button-green" }) %>
+    </div>
+    <table class="normaltable" style="width:100%">
+      <tr>
+        <th style="width:20%">id</th>
+        <th style="width:15%">started</th>
+        <th style="width:10%">sport</th>
+        <th style="width:10%">distance [km]</th>
+        <th style="width:10%">duration [hh:mm]</th>
+        <th style="width:10%">elevation gain/loss</th>
+        <th style="width:25%">notes</th>
+        <th style="width:5%">match rate</th>
+        <th style="width:5%">&nbsp;</th>
+      </tr>
+      <% @matched_sessions.each do |hash|
+         session = hash[:session]
+      %>
+        <tr>
+          <td><%= session.id %></td>
+          <td><%= session.start_time %></td>
+          <td><%= session.sport_type %></td>
+          <td><%= session.distance_in_km %></td>
+          <td><%= session.duration_as_str %></td>
+          <td><%= session.elevation %></td>
+          <td><%= session.notes %></td>
+          <td><%= link_to(hash[:match_rate], trace_matcher_path(session1: @assigned_session_id, session2: session.id))  %></td>
+          <td><%= link_to("add", 
+              course_session_index_path(course_id: @course.id, id: session.id), 
+              { data: { turbo_method: :post }, class: "button-green" }) %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+<% end %>

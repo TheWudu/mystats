@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :courses, only: [:index, :show, :new, :destroy] do
     resources :session, only: [:destroy, :create]
   
+    get 'matching_sessions'
     post 'add_all_matching_sessions'
   end
 
