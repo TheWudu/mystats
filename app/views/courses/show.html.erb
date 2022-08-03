@@ -66,16 +66,29 @@ function sortTable(n) {
     <div class="chart">
       <table class="normaltable" style="width:100%">
         <tr>
-          <td style="width:20%">id</td>       <td><%= @course.id %></td>
+          <td style="width:35%"><b>id</b></td>       <td><%= @course.id %></td>
         </tr>
         <tr>
-          <td style="width:50%">name</td>     <td><%= @course.name %></td>
+          <td><b>name</b></td>     <td><%= @course.name %></td>
         </tr>
         <tr>
-          <td style="width:20%">distance</td> <td><%= @course.distance %></td>
+          <td><b>distance</b></td> <td><%= @course.distance %></td>
         </tr>
         <tr>
-          <td style="width:10%">session#</td> <td><%= @course.session_ids&.count %></td>
+          <td><b>session#</b></td> <td><%= @course.session_ids&.count %></td>
+        </tr>
+
+        <tr>
+          <td><b>overall distance</b></td> <td><%= @course_stats[:overall_distance] %></td>
+        </tr>
+        <tr>
+          <td><b>overall duration</b></td> <td><%= @course_stats[:overall_duration] %></td>
+        </tr>
+        <tr>
+          <td><b>overall elevation gain</b></td> <td><%= @course_stats[:overall_elevation_gain] %></td>
+        </tr>
+        <tr>
+          <td><b>average pace</b></td> <td><%= @course_stats[:average_pace] %></td>
         </tr>
       </table>
     </div>
@@ -90,7 +103,7 @@ function sortTable(n) {
     <%= turbo_frame_tag "matching_sessions_turbo", src: "#{@course.id}/matching_sessions" do %>
       <div>
         Matching Sessions:<p>
-        Loading ... 
+        <%= image_tag  "loading_icon.gif", height: 50 %>
       </div>
     <% end %>
 
@@ -112,9 +125,9 @@ function sortTable(n) {
         <th style=width:"5%">&nbsp;</th>
       </tr>
     <% @assigned_sessions.each do |session| %>
-      <tr <% if session == @fastest_session %>
+      <tr <% if session.id == @fastest_session_id %>
           style="background:lightgreen"
-          <% elsif session == @slowest_session %>
+          <% elsif session.id == @slowest_session_id %>
           style="background:#ffcccb"
           <% end %>
         >
@@ -142,44 +155,4 @@ function sortTable(n) {
   <% end %>
   </div>
 
-  <div>
-  <% if @matching_sessions.count > 0 %>
-    Matching Sessions: <p/>
-    <div style="float:right">
-      <%= link_to("add all", 
-            course_add_all_matching_sessions_path(course_id: @course.id), 
-            { data: { turbo_method: :post }, class: "button-green" }) %>
-    </div>
-    <table class="normaltable" style="width:100%">
-      <tr>
-        <th style="width:20%">id</th>
-        <th style="width:15%">started</th>
-        <th style="width:10%">sport</th>
-        <th style="width:10%">distance [km]</th>
-        <th style="width:10%">duration [hh:mm]</th>
-        <th style="width:10%">elevation gain/loss</th>
-        <th style="width:25%">notes</th>
-        <th style="width:5%">match rate</th>
-        <th style="width:5%">&nbsp;</th>
-      </tr>
-      <% @matching_sessions.each do |hash|
-         session = hash[:session]
-      %>
-        <tr>
-          <td><%= session.id %></td>
-          <td><%= session.start_time %></td>
-          <td><%= session.sport_type %></td>
-          <td><%= session.distance_in_km %></td>
-          <td><%= session.duration_as_str %></td>
-          <td><%= session.elevation %></td>
-          <td><%= session.notes %></td>
-          <td><%= link_to(hash[:match_rate], trace_matcher_path(session1: @assigned_sessions.first.id, session2: session.id))  %></td>
-          <td><%= link_to("add", 
-              course_session_index_path(course_id: @course.id, id: session.id), 
-              { data: { turbo_method: :post }, class: "button-green" }) %></td>
-        </tr>
-      <% end %>
-    </table>
-  <% end %>
-  </div>
 </div>

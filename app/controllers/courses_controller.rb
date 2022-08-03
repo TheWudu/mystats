@@ -14,10 +14,11 @@ class CoursesController < ApplicationController
     @course = Repositories::Courses.find(id: params[:id])
     @assigned_sessions = assigned_sessions(@course)
     @assigned_sessions_durations = duration_chart_data(@assigned_sessions)
-    @matching_sessions = [] # matching_sessions(@course)
     slow_fast = @assigned_sessions.sort_by { |sport_session| sport_session.duration / sport_session.distance }
-    @fastest_session   = slow_fast.first
-    @slowest_session   = slow_fast.last
+    @fastest_session_id   = slow_fast.first.id
+    @slowest_session_id   = slow_fast.last.id
+
+    @course_stats = stats_from_assigned(@assigned_sessions)
   end
 
   def matching_sessions
@@ -60,6 +61,27 @@ class CoursesController < ApplicationController
     assigned_sessions.reverse.each_with_object({}) do |sport_session, h|
       h[sport_session.start_time.strftime('%Y.%m.%d')] = (sport_session.duration / 1000.0 / 60).round(1)
     end
+  end
+
+  def stats_from_assigned(assigned_sessions)
+    overall_distance = assigned_sessions.sum(&:distance)
+    overall_duration = assigned_sessions.sum(&:duration)
+    average_pace     = overall_duration / overall_distance.to_f * 1000 # ms / m * 1000 = ms/km
+    {
+      overall_distance: (overall_distance / 1000.0).round(2),
+      overall_duration: format_ms(overall_duration),
+      overall_elevation_gain: assigned_sessions.sum(&:elevation_gain),
+      average_pace:     format_ms(average_pace)
+    }
+  end
+
+  def format_ms(millis)
+    secs, = millis.divmod(1000) # divmod returns [quotient, modulus]
+    mins, secs = secs.divmod(60)
+    hours, mins = mins.divmod(60)
+    hours = nil if hours.zero?
+
+    [hours, mins, secs].compact.map { |e| e.to_s.rjust(2, '0') }.join ':'
   end
 
   def session_ids_from_courses
