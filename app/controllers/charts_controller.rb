@@ -24,6 +24,10 @@ class ChartsController < ApplicationController
     render json: statistics.cnt_per_weekday_data
   end
 
+  def cnt_per_week_of_year
+    render json: statistics.cnt_per_week_of_year
+  end
+
   def distance_per_year
     data = statistics.data_per_year('overall_distance')
     data.transform_values! { |v| (v / 1000.0).round(1) }

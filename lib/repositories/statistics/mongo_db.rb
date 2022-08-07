@@ -47,6 +47,17 @@ module Repositories
         end
       end
 
+      def cnt_per_week_of_year
+        query = sessions.aggregate([{ '$match' => matcher },
+                                    { '$addFields' => { 'week' => { '$week' => '$start_time' } } },
+                                    { '$group' => { _id: '$week', cnt: { '$sum' => 1 } } },
+                                    { '$sort' => { _id: 1 } }])
+        data = query.to_a
+        data.each_with_object({}) do |d, h|
+          h[d['_id']] = d['cnt']
+        end
+      end
+
       def data_per_year(attr)
         data = sessions.aggregate([
                                     { '$match' => matcher },

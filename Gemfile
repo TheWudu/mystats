@@ -55,8 +55,8 @@ gem 'fast-polylines'
 gem 'geokit'
 gem 'jquery-drag-rails'
 gem 'mongo'
+gem 'polylines'
 gem 'ruby-progressbar'
-gem "polylines"
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
