@@ -63,8 +63,8 @@ function drawmap() {
 
 <% end -%>
 
-<div class="container_two_cols">
-  <div class="item-tc-left" width="70%">
+<div class="container_three_cols">
+  <div class="item-left">
     <table>
       <tr><th>id</th>        <td><%= @sport_session.id %></td></tr>
       <tr><th>sport</th>     <td><%= @sport_session.sport %></td></tr>
@@ -75,7 +75,15 @@ function drawmap() {
       <tr><th>avg pace</th>  <td><%= @sport_session.avg_pace  %></td></tr>
     </table>
   </div>
-  <div class="item-tc-right" id="map" style="width:600px;height:600px">
+  <div class="item-center">
+    <table>
+      <tr><th>km</th><th>pace</th>
+      <% @split_table.each do |km, pace| %>
+        <tr><td><%= km %></td><td><%= pace %></td>
+      <% end %>
+    </table>
+  </div>
+  <div class="item-right" id="map" style="width:600px;height:600px">
   </div>
 </div>
 

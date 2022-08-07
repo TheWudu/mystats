@@ -70,19 +70,23 @@
   background-color: #FF1200; /* Red */
 }
 
-.container_two_cols {
+.container_three_cols {
   border: 1px dotted black;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 30% 70%;
+  grid-template-columns: 30% 30% 40%;
   grid-template-areas: 
-    "left right";
+    "left center right";
   justify-items: center;
   align-items: center;
 }
 
 .item-tc-left {
   grid-area: left;
+}
+
+.item-tc-center {
+  grid-area: center;
 }
 
 .item-tc-right {

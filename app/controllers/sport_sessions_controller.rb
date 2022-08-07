@@ -25,6 +25,7 @@ class SportSessionsController < ApplicationController
   def show
     @sport_session = Repositories::SportSessions.find_by_id(id: params[:id])
     @polytrace = Polylines::Encoder.encode_points(@sport_session.trace.map { |p| [p['lat'].to_f, p['lng'].to_f] })
+    @split_table = UseCases::Traces::SplitTable.new(trace: @sport_session.trace).run
   end
 
   def destroy
