@@ -38,6 +38,10 @@ module Models
       format_elevation(elevation_gain, elevation_loss)
     end
 
+    def avg_pace
+      format_ms(duration / distance * 1000)
+    end
+
     def format_ms(millis)
       secs, = millis.divmod(1000) # divmod returns [quotient, modulus]
       mins, secs = secs.divmod(60)

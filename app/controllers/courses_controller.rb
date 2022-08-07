@@ -71,7 +71,7 @@ class CoursesController < ApplicationController
       overall_distance: (overall_distance / 1000.0).round(2),
       overall_duration: format_ms(overall_duration),
       overall_elevation_gain: assigned_sessions.sum(&:elevation_gain),
-      average_pace:     format_ms(average_pace)
+      average_pace: format_ms(average_pace)
     }
   end
 
@@ -104,7 +104,7 @@ class CoursesController < ApplicationController
   def matched_sessions(course)
     distance = course.distance
     sessions = sessions_repo.where(
-      'distance.between' => [distance - 500, distance + 500],
+      'distance.between' => [distance - 250, distance + 250],
       'id.not_in' => course.session_ids,
       'trace.exists' => true
     )

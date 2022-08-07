@@ -22,6 +22,11 @@ class SportSessionsController < ApplicationController
     )
   end
 
+  def show
+    @sport_session = Repositories::SportSessions.find_by_id(id: params[:id])
+    @polytrace = Polylines::Encoder.encode_points(@sport_session.trace.map { |p| [p["lat"].to_f, p["lng"].to_f] })
+  end
+
   def destroy
     sport_sessions_repo.delete(id: params[:id])
 

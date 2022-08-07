@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   get 'imports', to: 'imports#index'
   post 'imports/create'
 
+  resources :sport_sessions, only: [:index, :show, :destroy]
+
   get 'courses', to: 'courses#index'
   post 'courses/create_from_session'
   resources :courses, only: [:index, :show, :new, :destroy] do

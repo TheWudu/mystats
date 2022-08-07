@@ -1,0 +1,23 @@
+#header {
+  font-family: Verdana, Arial;
+  font-size: 1em;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+#map {
+  height: 86%;
+  width: 96%;
+  padding: 0; margin: 0;
+}
+
+#content {
+  font-size: 1em;
+}
+
+#osm {
+  font-size: 0.7em;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+

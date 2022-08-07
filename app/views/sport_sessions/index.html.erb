@@ -28,7 +28,7 @@
   </tr>
 <% @sport_sessions.each do |sport_session| %>
   <tr>
-    <td><%= sport_session.id %></td>
+    <td><%= link_to(sport_session.id, sport_session_path(id: sport_session.id)) %></td>
     <td><%= sport_session.start_time %></td>
     <td><%= sport_session.sport %></td>
     <td><%= sport_session.distance_in_km %></td>

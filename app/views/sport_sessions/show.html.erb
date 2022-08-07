@@ -1,0 +1,85 @@
+<% content_for :for_head do -%>
+
+<!-- <link rel="stylesheet" type="text/css" href="assets/stylesheets/map.css"></link> -->
+<script type="text/javascript" src="https://openlayers.org/api/OpenLayers.js"></script>
+<script type="text/javascript" src="https://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+<!-- <script type="text/javascript" src="controllers/tom.js"></script> -->
+<%= javascript_include_tag "controllers/tom.js" %>
+
+<script type="text/javascript">
+//<![CDATA[
+
+var map;
+var layer_mapnik;
+var layer_tah;
+var layer_markers;
+
+function drawmap() {
+  // Popup und Popuptext mit evtl. Grafik
+  // var popuptext="<font color=\"black\"><b>Thomas Heiles<br>Stra&szlig;e 123<br>54290 Trier</b><p><img src=\"test.jpg\" width=\"180\" height=\"113\"></p></font>";
+
+  OpenLayers.Lang.setCode('de');
+  
+  // Position und Zoomstufe der Karte
+  var lon = <%= @sport_session.trace.first["lng"] %>;
+  var lat = <%= @sport_session.trace.first["lat"] %>;
+  var zoom = 12;
+
+  map = new OpenLayers.Map('map', {
+      projection: new OpenLayers.Projection("EPSG:900913"),
+      displayProjection: new OpenLayers.Projection("EPSG:4326"),
+      controls: [
+          new OpenLayers.Control.Navigation(),
+          new OpenLayers.Control.LayerSwitcher(),
+          new OpenLayers.Control.PanZoomBar()],
+      maxExtent:
+          new OpenLayers.Bounds(-20037508.34,-20037508.34,
+                                  20037508.34, 20037508.34),
+      numZoomLevels: 18,
+      maxResolution: 156543,
+      units: 'meters'
+  });
+
+  layer_mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
+  layer_markers = new OpenLayers.Layer.Markers("Start", { projection: new OpenLayers.Projection("EPSG:4326"), 
+                                              visibility: true, displayInLayerSwitcher: false });
+
+  layer_markers_stop = new OpenLayers.Layer.Markers("Stop", { projection: new OpenLayers.Projection("EPSG:4326"), 
+                                              visibility: true, displayInLayerSwitcher: false });
+
+
+  map.addLayers([layer_mapnik, layer_markers, layer_markers_stop]);
+  jumpTo(lon, lat, zoom);
+  // Position des Markers
+
+  addMarker(layer_markers, lon, lat, "Start");
+  var lon_stop = <%= @sport_session.trace.last["lng"] %>;
+  var lat_stop = <%= @sport_session.trace.last["lat"] %>;
+  addMarker(layer_markers_stop, lon_stop, lat_stop, "Stop");
+}
+
+//]]>
+    </script>
+
+<% end -%>
+
+<div class="container_two_cols">
+  <div class="item-tc-left" width="70%">
+    <table>
+      <tr><th>id</th>        <td><%= @sport_session.id %></td></tr>
+      <tr><th>sport</th>     <td><%= @sport_session.sport %></td></tr>
+      <tr><th>start time</th><td><%= @sport_session.local_start_time %></td></tr>
+      <tr><th>distance</th>  <td><%= @sport_session.distance_in_km %></td></tr>
+      <tr><th>duration</th>  <td><%= @sport_session.duration_as_str %></td></tr>
+      <tr><th>elevation</th> <td><%= @sport_session.elevation %></td></tr>
+      <tr><th>avg pace</th>  <td><%= @sport_session.avg_pace  %></td></tr>
+    </table>
+  </div>
+  <div class="item-tc-right" id="map" style="width:600px;height:600px">
+  </div>
+</div>
+
+<script type="text/javascript">
+    drawmap();
+</script>
+

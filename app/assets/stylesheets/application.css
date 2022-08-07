@@ -70,6 +70,25 @@
   background-color: #FF1200; /* Red */
 }
 
+.container_two_cols {
+  border: 1px dotted black;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 30% 70%;
+  grid-template-areas: 
+    "left right";
+  justify-items: center;
+  align-items: center;
+}
+
+.item-tc-left {
+  grid-area: left;
+}
+
+.item-tc-right {
+  grid-area: right;
+}
+
 .container {
   border: 1px dotted black;
   display: grid;
@@ -78,8 +97,7 @@
   grid-template-areas: 
     "left center right"
     "left center right";
-  justify-items: 
-    left right;
+  justify-items: center;
   align-items: center;
 }
 
