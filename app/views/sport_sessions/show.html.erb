@@ -1,13 +1,8 @@
 <% content_for :for_head do -%>
 
-<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-        crossorigin="">
-</script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-      integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-      crossorigin="" />
 
 <script>
   function drawTrack(track) {
@@ -22,9 +17,9 @@
 
 <% end -%>
 
-<div class="container_three_cols">
+<div class="container" style="grid-template-columns: 30% 5% 65%;">
   <div class="item-left">
-    <table>
+    <table style="width:100%">
       <tr><th>id</th>        <td><%= @sport_session.id %></td></tr>
       <tr><th>sport</th>     <td><%= @sport_session.sport %></td></tr>
       <tr><th>start time</th><td><%= @sport_session.local_start_time %></td></tr>
@@ -34,16 +29,20 @@
       <tr><th>avg pace</th>  <td><%= @sport_session.avg_pace  %></td></tr>
     </table>
   </div>
-  <div class="item-center">
-    <table>
+  <div id="map" class="item-right">
+  </div>
+  <div class="item-left" style="grid-row-start: 2;">
+    <table style="width:100%">
       <tr><th>km</th><th>pace</th>
       <% @split_table.each do |km, pace| %>
         <tr><td><%= km %></td><td><%= pace %></td>
       <% end %>
     </table>
   </div>
-  <div id="map" class="item-right" style="width:600px;height:600px">
+  <div class="item-right" style="grid-row-start: 2;">
+    <%= line_chart @chart_data, min: @chart_data.values.min - 10, max: @chart_data.values.max + 10 %>
   </div>
+  
 </div>
 
 <script type="text/javascript">
@@ -54,6 +53,11 @@
         maxZoom: 50
         }).addTo(mymap);
 
-    drawTrack();
+  L.marker([<%= @sport_session.trace.first["lat"].to_f.round(5) %>, <%= @sport_session.trace.first["lng"].to_f.round(5) %>])
+    .addTo(mymap)
+    .bindPopup('Start')
+    .openPopup();
+
+  drawTrack();
 </script>
 

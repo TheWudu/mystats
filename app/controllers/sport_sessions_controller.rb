@@ -26,6 +26,7 @@ class SportSessionsController < ApplicationController
     @sport_session = Repositories::SportSessions.find_by_id(id: params[:id])
     @polytrace = Polylines::Encoder.encode_points(@sport_session.trace.map { |p| [p['lat'].to_f, p['lng'].to_f] })
     @split_table = UseCases::Traces::SplitTable.new(trace: @sport_session.trace).run
+    @chart_data = @sport_session.trace.each_with_object({}) { |p,h| h[p["time"]] = p["ele"].to_f.round(2) }
   end
 
   def destroy
