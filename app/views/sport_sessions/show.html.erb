@@ -1,65 +1,24 @@
 <% content_for :for_head do -%>
 
-<!-- <link rel="stylesheet" type="text/css" href="assets/stylesheets/map.css"></link> -->
-<script type="text/javascript" src="https://openlayers.org/api/OpenLayers.js"></script>
-<script type="text/javascript" src="https://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-<!-- <script type="text/javascript" src="controllers/tom.js"></script> -->
-<%= javascript_include_tag "controllers/tom.js" %>
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+        crossorigin="">
+</script>
 
-<script type="text/javascript">
-//<![CDATA[
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+      integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+      crossorigin="" />
 
-var map;
-var layer_mapnik;
-var layer_tah;
-var layer_markers;
+<script>
+  function drawTrack(track) {
+    let coordinates = <%= @sport_session.trace.map { |p| [p["lat"].to_f.round(5), p["lng"].to_f.round(5)] } %>;
 
-function drawmap() {
-  // Popup und Popuptext mit evtl. Grafik
-  // var popuptext="<font color=\"black\"><b>Thomas Heiles<br>Stra&szlig;e 123<br>54290 Trier</b><p><img src=\"test.jpg\" width=\"180\" height=\"113\"></p></font>";
+    var polyline = L.polyline(coordinates, { weight: 4, color: 'darkred' }).addTo(mymap);
 
-  OpenLayers.Lang.setCode('de');
-  
-  // Position und Zoomstufe der Karte
-  var lon = <%= @sport_session.trace.first["lng"] %>;
-  var lat = <%= @sport_session.trace.first["lat"] %>;
-  var zoom = 12;
-
-  map = new OpenLayers.Map('map', {
-      projection: new OpenLayers.Projection("EPSG:900913"),
-      displayProjection: new OpenLayers.Projection("EPSG:4326"),
-      controls: [
-          new OpenLayers.Control.Navigation(),
-          new OpenLayers.Control.LayerSwitcher(),
-          new OpenLayers.Control.PanZoomBar()],
-      maxExtent:
-          new OpenLayers.Bounds(-20037508.34,-20037508.34,
-                                  20037508.34, 20037508.34),
-      numZoomLevels: 18,
-      maxResolution: 156543,
-      units: 'meters'
-  });
-
-  layer_mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
-  layer_markers = new OpenLayers.Layer.Markers("Start", { projection: new OpenLayers.Projection("EPSG:4326"), 
-                                              visibility: true, displayInLayerSwitcher: false });
-
-  layer_markers_stop = new OpenLayers.Layer.Markers("Stop", { projection: new OpenLayers.Projection("EPSG:4326"), 
-                                              visibility: true, displayInLayerSwitcher: false });
-
-
-  map.addLayers([layer_mapnik, layer_markers, layer_markers_stop]);
-  jumpTo(lon, lat, zoom);
-  // Position des Markers
-
-  addMarker(layer_markers, lon, lat, "Start");
-  var lon_stop = <%= @sport_session.trace.last["lng"] %>;
-  var lat_stop = <%= @sport_session.trace.last["lat"] %>;
-  addMarker(layer_markers_stop, lon_stop, lat_stop, "Stop");
-}
-
-//]]>
-    </script>
+    // zoom the map to the polyline
+    mymap.fitBounds(polyline.getBounds());
+  }
+</script>      
 
 <% end -%>
 
@@ -83,11 +42,18 @@ function drawmap() {
       <% end %>
     </table>
   </div>
-  <div class="item-right" id="map" style="width:600px;height:600px">
+  <div id="map" class="item-right" style="width:600px;height:600px">
   </div>
 </div>
 
 <script type="text/javascript">
-    drawmap();
+  let mymap = L.map('map');
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 50
+        }).addTo(mymap);
+
+    drawTrack();
 </script>
 
