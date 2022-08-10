@@ -77,8 +77,8 @@
   grid-template-columns: 65% 5% 30%;
   grid-template-areas: 
     "left center right";
-  justify-items: center stretch;
-  align-items: center stretch;
+  justify-items: stretch;
+  align-items: stretch;
   column-gap: 10px;
   row-gap: 15px;
   margin: 10px; 
