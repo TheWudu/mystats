@@ -53,19 +53,19 @@ module UseCases
         match_in_percent > min_overlap
       end
 
-      def calc(val)
+      def to_meters(val)
         (6370 * Math::PI * val / 180 * 1000)
       end
 
-      def uncalc(val)
-        (val * 180 / 6370 / Math::PI / 1000)
+      def to_coordinate(val)
+        (val.to_f * 180 / 6370 / Math::PI / 1000)
       end
 
       def to_lat_lng(block)
-        lng1 = uncalc(block[0])
-        lng2 = uncalc(block[0] + block_size)
-        lat1 = uncalc(block[1])
-        lat2 = uncalc(block[1] + block_size)
+        lng1 = to_coordinate(block[0])
+        lng2 = to_coordinate(block[0] + block_size)
+        lat1 = to_coordinate(block[1])
+        lat2 = to_coordinate(block[1] + block_size)
 
         [[lat1, lng1],[lat2, lng2]]
       end
@@ -78,8 +78,8 @@ module UseCases
 
       def blockify(point, bs = block_size)
         [
-          (calc(point['lng'].to_f).to_i / bs).to_i * bs + bs / 2,
-          (calc(point['lat'].to_f).to_i / bs).to_i * bs + bs / 2
+          (to_meters(point['lng'].to_f).to_i / bs).to_i * bs + bs / 2,
+          (to_meters(point['lat'].to_f).to_i / bs).to_i * bs + bs / 2
         ]
       end
     end
