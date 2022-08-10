@@ -19,6 +19,8 @@ class CoursesController < ApplicationController
     @slowest_session_id   = slow_fast.last.id
 
     @course_stats = stats_from_assigned(@assigned_sessions)
+
+    @trace = @assigned_sessions.first.trace
   end
 
   def matching_sessions
