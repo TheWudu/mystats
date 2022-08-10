@@ -80,7 +80,7 @@ module Repositories
                                     { '$match' => { distance: { '$gt' => 0 } } },
                                     { '$bucket' => {
                                       groupBy: '$distance',
-                                      boundaries: [0, 5000, 10_000, 20_000, 100_000],
+                                      boundaries: [0, 5000, 7_500, 10_000, 15_000, 20_000, 100_000],
                                       default: 'no distance',
                                       output: {
                                         total: { '$sum' => 1 },

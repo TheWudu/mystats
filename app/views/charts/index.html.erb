@@ -28,14 +28,14 @@
 
 <div class="flexbox">
   <div class="chart">
-    <%= line_chart charts_cnt_per_weekday_path(@chart_params) %>
+    <%= line_chart charts_cnt_per_weekday_path(@chart_params), xtitle: "Count per weekday" %>
   </div>
 
   <div class="chart">
-    <%= area_chart charts_hour_per_day_path(@chart_params) %>
+    <%= area_chart charts_hour_per_day_path(@chart_params), xtitle: "Count per start hour" %>
   </div>
   
   <div class="chart">
-    <%= line_chart charts_cnt_per_week_of_year_path(@chart_params) %>
+    <%= line_chart charts_cnt_per_week_of_year_path(@chart_params), xtitle: "Count per weekday" %>
   </div>
 </div>

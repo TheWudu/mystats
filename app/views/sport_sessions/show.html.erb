@@ -27,11 +27,12 @@
       <tr><th>duration</th>  <td><%= @sport_session.duration_as_str %></td></tr>
       <tr><th>elevation</th> <td><%= @sport_session.elevation %></td></tr>
       <tr><th>avg pace</th>  <td><%= @sport_session.avg_pace  %></td></tr>
+      <tr><th>notes</th>     <td><%= @sport_session.notes %></td></tr>
     </table>
   </div>
   <div id="map" class="item-right">
   </div>
-  <div class="item-left" style="grid-row-start: 2;">
+  <div class="item-left" style="grid-row: 2 / span 1;">
     <table style="width:100%">
       <tr><th>km</th><th>pace</th>
       <% @split_table.each do |km, pace| %>
@@ -39,8 +40,8 @@
       <% end %>
     </table>
   </div>
-  <div class="item-right" style="grid-row-start: 2;">
-    <%= line_chart @chart_data, min: @chart_data.values.min - 10, max: @chart_data.values.max + 10 %>
+  <div class="item-right" style="grid-row: 2 / span 1;">
+    <%= area_chart @chart_data, points: false, xtitle: @chart_title, min: @chart_data.values.min - 10, max: @chart_data.values.max + 10 %>
   </div>
   
 </div>

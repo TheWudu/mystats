@@ -73,13 +73,14 @@
 .container {
   border: 1px dotted black;
   display: grid;
-  grid-template-rows: [row1-start] 25% [row2-start] 75% [row2-end];
+  grid-template-rows: [row1-start] 500px [row2-start] auto [row2-end];
   grid-template-columns: 65% 5% 30%;
   grid-template-areas: 
     "left center right";
   justify-items: center stretch;
   align-items: center stretch;
-  column-gap: 20px;
+  column-gap: 10px;
+  row-gap: 15px;
   margin: 10px; 
 }
 
@@ -153,8 +154,8 @@ tr:hover {background-color: #76d7c4;}
 }
 
 #map {
-  height: 86%;
-  width: 96%;
+  height: 95%;
+  width: 95%;
   padding: 0; margin: 0;
 }
 
