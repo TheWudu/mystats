@@ -78,8 +78,8 @@ module UseCases
 
       def blockify(point, bs = block_size)
         [
-          (to_meters(point['lng'].to_f).to_i / bs).to_i * bs + bs / 2,
-          (to_meters(point['lat'].to_f).to_i / bs).to_i * bs + bs / 2
+          (to_meters(point['lng'].to_f).to_i / bs).to_i * bs,
+          (to_meters(point['lat'].to_f).to_i / bs).to_i * bs 
         ]
       end
     end

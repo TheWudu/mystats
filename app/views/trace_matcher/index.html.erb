@@ -23,13 +23,10 @@
 
   <script>
     <% if @matcher.trace1 %>
-    function drawTrack1(track) {
+    function drawTrack1() {
       let coordinates = <%= @matcher.trace1.map { |p| [p["lat"].to_f.round(5), p["lng"].to_f.round(5)] } %>;
 
       var polyline = L.polyline(coordinates, { weight: 4, color: 'red' }).addTo(mymap);
-
-      // zoom the map to the polyline
-      mymap.fitBounds(polyline.getBounds());
 
       // define rectangle geographical bounds
       <% @matcher.lat_lng_blocks1.each do |block| %>
@@ -44,7 +41,7 @@
     <% end %>
 
     <% if @matcher.trace2 %>
-    function drawTrack2(track) {
+    function drawTrack2() {
       let coordinates = <%= @matcher.trace2.map { |p| [p["lat"].to_f.round(5), p["lng"].to_f.round(5)] } %>;
 
       var polyline = L.polyline(coordinates, { weight: 4, color: 'blue' }).addTo(mymap);
@@ -56,9 +53,6 @@
         // create an orange rectangle
         L.rectangle(bounds, {color: "lightblue", weight: 2}).addTo(mymap);
       <% end %>
-
-      // zoom the map to the polyline
-      // mymap.fitBounds(polyline.getBounds());
     }
     <% end %>
 
