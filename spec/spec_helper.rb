@@ -92,6 +92,10 @@ RSpec.configure do |config|
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
 
+  config.before(:suite) do
+    Repositories::SportSessions.create_indexes
+  end
+
   config.before(:each, :clear_db) do
     Repositories::SportSessions.clear
   end

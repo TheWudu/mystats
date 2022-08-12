@@ -15,7 +15,7 @@ module Models
     end
 
     def ==(other)
-      other.as_json == as_json
+      other.as_json&.compact == as_json&.compact
     end
 
     def selector_text

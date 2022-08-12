@@ -47,7 +47,7 @@ module Repositories
         { sort[:attribute].to_s => sort[:direction] == :asc ? 1 : -1 }
       end
 
-      def where(opts = {})
+      def where(opts: {})
         query = {}
         if opts['distance.between']
           query.merge!({ distance: { '$gte' => opts['distance.between'].first,
@@ -83,7 +83,8 @@ module Repositories
       end
 
       def insert(session:)
-        collection.insert_one(prepare_for_write(session))
+        resp = collection.insert_one(prepare_for_write(session))
+        resp.n == 1
       end
 
       def create_indexes
@@ -112,7 +113,9 @@ module Repositories
         session.merge(
           year: session[:start_time].year,
           month: session[:start_time].month
-        )
+        ).compact
+      rescue NoMethodError => e
+        raise ArgumentError.new("missing start_time") 
       end
 
       def build_matcher(years: nil, months: nil, sport_type_ids: nil)
