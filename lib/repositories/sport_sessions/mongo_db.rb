@@ -60,7 +60,7 @@ module Repositories
         end
       end
 
-      def find_with_traces(opts = {})
+      def find_with_traces(opts: {})
         query = { trace: { '$exists' => true } }
         query.merge!(id: { '$nin' => opts['id.not_in'] }) if opts['id.not_in']
         query.merge!(year: { '$in' => opts[:year] }) unless opts[:year].blank?
