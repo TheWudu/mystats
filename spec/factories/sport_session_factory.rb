@@ -44,7 +44,7 @@ FactoryBot.define do
     trace          { nil }
 
     trait :with_trace do
-      trace        { [ "muh" ] }
+      trace { ['muh'] }
     end
   end
 end

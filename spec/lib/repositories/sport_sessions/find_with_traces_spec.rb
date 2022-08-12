@@ -12,15 +12,14 @@ describe Repositories::SportSessions, :clear_db do
     let(:id_not_in) { nil }
     let(:trace_exists) { nil }
 
-    let(:opts) do 
+    let(:opts) do
       {
         year: year,
         month: month,
         sport_type_id: sport_type_id,
-        "id.not_in" => id_not_in
+        'id.not_in' => id_not_in
       }.compact
     end
-
 
     subject { described_class.find_with_traces(opts: opts) }
 
@@ -35,13 +34,16 @@ describe Repositories::SportSessions, :clear_db do
 
     context 'when session exists' do
       let(:sport_session_1) do
-        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse("2022-08-12T07:08:23Z"), sport_type_id: 1 )
+        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2022-08-12T07:08:23Z'),
+                                                       sport_type_id: 1)
       end
       let(:sport_session_2) do
-        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse("2022-07-12T09:26:23Z"), sport_type_id: 2 )
+        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2022-07-12T09:26:23Z'),
+                                                       sport_type_id: 2)
       end
       let(:sport_session_3) do
-        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse("2021-08-12T12:56:23Z"), sport_type_id: 1 )
+        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2021-08-12T12:56:23Z'),
+                                                       sport_type_id: 1)
       end
 
       before do
@@ -51,7 +53,7 @@ describe Repositories::SportSessions, :clear_db do
       end
 
       it_behaves_like 'returns sport-sessions' do
-        let(:id_not_in)      { [sport_session_1.id] } 
+        let(:id_not_in)      { [sport_session_1.id] }
         let(:expected_ids)   { [sport_session_2.id, sport_session_3.id] }
         let(:expected_count) { 2 }
       end

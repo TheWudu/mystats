@@ -28,8 +28,8 @@ describe Repositories::SportSessions do
 
       it { expect(subject).to be_truthy }
 
-      context "when searching for slightly different start_time" do
-        let(:start_time)    { sport_session.start_time - 30.seconds }
+      context 'when searching for slightly different start_time' do
+        let(:start_time) { sport_session.start_time - 30.seconds }
 
         it { expect(subject).to be_truthy }
       end

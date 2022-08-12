@@ -23,7 +23,7 @@ describe Repositories::SportSessions do
 
       it { expect(subject).to be_truthy }
       it "can't find session after delete" do
-        expect{subject}.to change{Repositories::SportSessions.find_by_id(id: id)}.from(sport_session).to(nil)
+        expect { subject }.to change { Repositories::SportSessions.find_by_id(id: id) }.from(sport_session).to(nil)
       end
     end
   end

@@ -80,9 +80,9 @@ describe Repositories::SportSessions, :clear_db do
       end
     end
 
-    describe "text search" do
-      let(:sport_session_1) { FactoryBot.create(:sport_session, notes: "Around the lake") }
-      let(:sport_session_2) { FactoryBot.create(:sport_session, notes: "Up and around the Tannberg") }
+    describe 'text search' do
+      let(:sport_session_1) { FactoryBot.create(:sport_session, notes: 'Around the lake') }
+      let(:sport_session_2) { FactoryBot.create(:sport_session, notes: 'Up and around the Tannberg') }
 
       before do
         sport_session_1
@@ -90,23 +90,22 @@ describe Repositories::SportSessions, :clear_db do
       end
 
       it_behaves_like 'returns sport-sessions' do
-        let(:text) { "around" }
+        let(:text) { 'around' }
         let(:expected_ids) { [sport_session_1.id, sport_session_2.id] }
         let(:expected_count) { 2 }
       end
-      
+
       it_behaves_like 'returns sport-sessions' do
-        let(:text) { "lake" }
+        let(:text) { 'lake' }
         let(:expected_ids) { [sport_session_1.id] }
         let(:expected_count) { 1 }
       end
-      
+
       it_behaves_like 'returns sport-sessions' do
-        let(:text) { "Tannberg" }
+        let(:text) { 'Tannberg' }
         let(:expected_ids) { [sport_session_2.id] }
         let(:expected_count) { 1 }
       end
-
     end
   end
 end

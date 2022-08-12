@@ -10,7 +10,7 @@ describe Repositories::SportSessions, :clear_db do
     let(:id_not_in) { nil }
     let(:trace_exists) { nil }
 
-    let(:opts) do 
+    let(:opts) do
       {
         'distance.between' => distance_between,
         'id.not_in' => id_not_in,

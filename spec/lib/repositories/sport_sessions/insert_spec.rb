@@ -10,11 +10,10 @@ describe Repositories::SportSessions do
 
     it { expect(subject).to be(true) }
 
-
-    context "when start_time is missing" do 
+    context 'when start_time is missing' do
       let(:session_hash) { super().except(:start_time) }
 
-      it { expect{subject}.to raise_error(ArgumentError) }
+      it { expect { subject }.to raise_error(ArgumentError) }
     end
   end
 end

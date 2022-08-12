@@ -25,7 +25,7 @@ class TraceMatcherController < ApplicationController
     )
     @matcher.analyse
     @possible_sessions = Repositories::SportSessions.find_with_traces(opts: { year: years, month: months,
-                                                                      sport_type_id: sport_type_ids })
+                                                                              sport_type_id: sport_type_ids })
   end
 
   private

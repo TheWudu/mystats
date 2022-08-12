@@ -115,7 +115,7 @@ module Repositories
           month: session[:start_time].month
         ).compact
       rescue NoMethodError => e
-        raise ArgumentError.new("missing start_time") 
+        raise ArgumentError, 'missing start_time'
       end
 
       def build_matcher(years: nil, months: nil, sport_type_ids: nil)
