@@ -1,37 +1,38 @@
-require "repositories/sport_sessions"
-require "models/sport_session"
+# frozen_string_literal: true
+
+require 'repositories/sport_sessions'
+require 'models/sport_session'
 
 FactoryBot.define do
-  factory :sport_session, class: "Models::SportSession" do
-
+  factory :sport_session, class: 'Models::SportSession' do
     to_create do |instance|
       attrs = {
-        id:             instance.id,
-        notes:          instance.notes,
-        distance:       instance.distance,
-        start_time:     instance.start_time,
+        id: instance.id,
+        notes: instance.notes,
+        distance: instance.distance,
+        start_time: instance.start_time,
         start_time_timezone_offset: instance.start_time_timezone_offset,
-        end_time:       instance.end_time,
-        timezone:       instance.timezone,
-        duration:       instance.duration,
-        pause:          instance.pause,
+        end_time: instance.end_time,
+        timezone: instance.timezone,
+        duration: instance.duration,
+        pause: instance.pause,
         elevation_gain: instance.elevation_gain,
         elevation_loss: instance.elevation_loss,
-        sport_type_id:  instance.sport_type_id,
-        sport_type:     instance.sport_type,
-        trace:          instance.trace
+        sport_type_id: instance.sport_type_id,
+        sport_type: instance.sport_type,
+        trace: instance.trace
       }
       Repositories::SportSessions.insert(session: attrs)
     end
 
     id { SecureRandom.uuid }
-    
-    notes { "my session" } 
+
+    notes { 'my session' }
     distance { 5270 }
     start_time { Time.at(1.hour.ago.to_i).utc }
     start_time_timezone_offset { 7200 }
     end_time { Time.at(30.minutes.ago.to_i).utc }
-    timezone { "Europe/Vienna" }
+    timezone { 'Europe/Vienna' }
     duration { 30 * 60 }
     pause { 0 }
     year { start_time.year }
@@ -39,7 +40,7 @@ FactoryBot.define do
     elevation_gain { 112 }
     elevation_loss { 110 }
     sport_type_id  { 1 }
-    sport_type     { "running" }
+    sport_type     { 'running' }
     trace          { [] }
   end
 end

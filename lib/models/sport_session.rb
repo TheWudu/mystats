@@ -14,6 +14,10 @@ module Models
       end
     end
 
+    def ==(other)
+      other.as_json == as_json
+    end
+
     def selector_text
       "#{start_time} - #{distance} - #{notes&.first(50)}"
     end

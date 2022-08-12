@@ -68,16 +68,15 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
   gem 'pry'
+  gem 'pry-doc'
   gem 'rubocop'
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
+  gem 'factory_bot_rails'
+  gem 'rspec-rails'
   gem 'selenium-webdriver'
   gem 'webdrivers'
-  gem "rspec-rails"
-  gem "factory_bot_rails"
-  gem "pry"
-  gem "pry-doc"
 end
