@@ -44,7 +44,7 @@ FactoryBot.define do
     trace          { nil }
 
     trait :with_trace do
-      trace { ['muh'] }
+      trace { JSON.parse(File.read("spec/fixtures/traces/running_7km.json")) }
     end
   end
 end
