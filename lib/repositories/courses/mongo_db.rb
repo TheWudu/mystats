@@ -18,7 +18,8 @@ module Repositories
       end
 
       def insert(course:)
-        collection.insert_one(prepare_for_write(course))
+        resp = collection.insert_one(prepare_for_write(course))
+        resp.n == 1
       end
 
       def update(course:)
