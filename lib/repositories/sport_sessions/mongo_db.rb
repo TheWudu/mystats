@@ -14,15 +14,6 @@ module Repositories
         end
       end
 
-      # def find(start_time:, sport_type_id:)
-      #   sessions = collection.find({ year: start_time.year, month: start_time.month,
-      #     start_time: start_time, sport_type_id: sport_type_id
-      #   })
-      #   return unless sessions.count == 1
-
-      #   to_model(sessions.first)
-      # end
-
       def find_by_id(id:)
         sessions = collection.find({ id: id })
         return nil unless sessions.count == 1

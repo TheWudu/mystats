@@ -8,7 +8,6 @@ module Repositories
     extend Base
 
     METHODS = %w[fetch
-                 find
                  find_by_id
                  find_by_ids
                  where
