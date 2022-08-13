@@ -19,5 +19,9 @@ module Models
         trace: trace
       }
     end
+
+    def ==(other)
+      other&.as_json == self&.as_json
+    end
   end
 end

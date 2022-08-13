@@ -98,5 +98,6 @@ RSpec.configure do |config|
 
   config.before(:each, :clear_db) do
     Repositories::SportSessions.clear
+    Repositories::Courses.clear
   end
 end
