@@ -47,8 +47,8 @@ module Parser
       track[:points].map do |p|
         {
           time: p[:time],
-          lat: p[:lat],
-          lng: p[:lon],
+          lat: p[:lat].to_f,
+          lng: p[:lon].to_f,
           ele: p[:ele]
         }
       end
@@ -77,11 +77,12 @@ module Parser
 
       prev_point = track[:points].first
       track[:points][1..].each do |cur_point|
+        calc_pause(cur_point, prev_point, stats)
         calc_elevation(cur_point, prev_point, stats)
         calc_distance(cur_point, prev_point, stats)
-        calc_pause(cur_point, prev_point, stats)
         prev_point = cur_point
       end
+ap stats
 
       stats.transform_values!(&:to_i)
     end
@@ -100,6 +101,7 @@ module Parser
     def calc_pause(cur_point, prev_point, stats)
       duration = cur_point[:time].to_f - prev_point[:time].to_f
       stats[:pause] += duration if duration > PAUSE_THRESHOLD
+      duration > PAUSE_THRESHOLD
     end
 
     def calc_distance(cur_point, prev_point, stats)
@@ -134,12 +136,11 @@ module Parser
     end
 
     def refined_elevation(ele, meta)
-      lat = meta[:lat]
-      lng = meta[:lon]
+      lat = meta[:lat].to_f
+      lng = meta[:lon].to_f
 
       return ele unless lat && lng
-      refined = HgtReader.new.elevation(lat.to_f, lng.to_f)
-      refined
+      HgtReader.new.elevation(lat, lng)
     rescue StandardError => e
       @errors << e
       ele

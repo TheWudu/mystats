@@ -12,6 +12,8 @@ module UseCases
         self.result = {}
       end
 
+      PAUSE_THRESHOLD = 10
+
       def run
         last_km_point = trace.first
         pause = 0
@@ -20,7 +22,7 @@ module UseCases
         prev_point['distance'] = 0
         trace[1..].each do |cur_point|
           cur_point['distance'] = prev_point['distance'] + calc_distance(cur_point, prev_point)
-          if (d = cur_point['time'] - prev_point['time']) > 10
+          if (d = cur_point['time'] - prev_point['time']) > PAUSE_THRESHOLD
             pause += d
           end
 
