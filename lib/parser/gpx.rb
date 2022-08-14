@@ -95,7 +95,7 @@ module Parser
       end
     end
 
-    PAUSE_THRESHOLD = 30
+    PAUSE_THRESHOLD = 10
 
     def calc_pause(cur_point, prev_point, stats)
       duration = cur_point[:time].to_f - prev_point[:time].to_f
@@ -138,8 +138,8 @@ module Parser
       lng = meta[:lon]
 
       return ele unless lat && lng
-
-      HgtReader.new.elevation(lat.to_f, lng.to_f)
+      refined = HgtReader.new.elevation(lat.to_f, lng.to_f)
+      refined
     rescue StandardError => e
       @errors << e
       ele

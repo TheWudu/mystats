@@ -35,7 +35,7 @@
     <td><%= sport_session.duration_as_str %></td>
     <td><%= sport_session.elevation %></td>
     <td><%= sport_session.notes %></td>
-    <td><%= link_to("delete", sport_session_path(id: sport_session.id), data: { turbo_method: :delete }, class: "button-red") %></td>
+    <td><%= link_to("delete", sport_session_path(id: sport_session.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "button-red") %></td>
   </tr>
 <% end %>
 </table>
