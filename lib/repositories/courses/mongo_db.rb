@@ -23,7 +23,8 @@ module Repositories
       end
 
       def update(course:)
-        collection.find(id: course.id).update_one(prepare_for_write(course))
+        resp = collection.find(id: course.id).update_one(prepare_for_write(course))
+        resp.n == 1
       end
 
       def session_ids
@@ -36,7 +37,8 @@ module Repositories
       end
 
       def delete(id:)
-        collection.find({ id: id }).delete_one
+        resp = collection.find({ id: id }).delete_one
+        resp.n == 1
       end
 
       private
