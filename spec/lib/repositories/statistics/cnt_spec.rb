@@ -24,11 +24,19 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   context "when multiple sessions exist" do 
     before do
       FactoryBot.create(:sport_session, 
+        duration: 2823, 
+        distance: 9678,
+        elevation_gain: 230,
+        sport_type_id: 1, 
+        start_time: Time.parse("2022-08-14T10:12:32Z") # Sunday W31
+      )
+
+      FactoryBot.create(:sport_session, 
         duration: 1823, 
         distance: 5678,
         elevation_gain: 123,
         sport_type_id: 1, 
-        start_time: Time.parse("2022-08-12T07:12:32Z")
+        start_time: Time.parse("2022-08-12T07:12:32Z") # Friday W31
       )
       
       FactoryBot.create(:sport_session, 
@@ -52,6 +60,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       { 
         "Friday" => 1,
         "Monday" => 1,
+        "Sunday" => 1,
         "Tuesday" => 1
       }
     end
@@ -60,13 +69,14 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       {
         15 => 1,
         28 => 1,
-        32 => 1
+        32 => 2
       }
     end
     let(:expected_hour_per_day) do
       {
         9  => 2,
-        11 => 1
+        11 => 1,
+        12 => 1
       }
     end
     it { expect(instance.cnt_per_weekday_data).to eq(expected_weekday_data) }
