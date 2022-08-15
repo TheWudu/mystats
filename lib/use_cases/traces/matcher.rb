@@ -30,16 +30,14 @@ module UseCases
         self.lat_lng_blocks1 = bounds(blocks1)
         self.lat_lng_blocks2 = bounds(blocks2)
 
-        diffs = find_matches_v2
+        diffs = find_matches
         self.match_in_percent = ((diffs.count(true).to_f / diffs.count) * 100).round(2)
       end
 
-      def find_matches_v2
-        diffs = []
-        blocks1.each do |b1|
+      def find_matches 
+        blocks1.each_with_object([]) do |b1, diffs|
           diffs << find_match(b1)
         end
-        diffs
       end
 
       def find_match(block1)
