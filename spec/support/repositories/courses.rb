@@ -3,7 +3,7 @@
 require 'connections/mongo_db'
 
 module Repositories
-  module Courses 
+  module Courses
     class MongoDb
       def clear
         return unless Rails.env.test?

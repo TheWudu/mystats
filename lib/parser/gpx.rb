@@ -140,6 +140,7 @@ ap stats
       lng = meta[:lon].to_f
 
       return ele unless lat && lng
+
       HgtReader.new.elevation(lat, lng)
     rescue StandardError => e
       @errors << e

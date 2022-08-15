@@ -14,6 +14,7 @@ module Repositories
       def find(id:)
         doc = collection.find({ id: id }).first
         return nil unless doc
+
         to_model(doc)
       end
 
