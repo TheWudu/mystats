@@ -23,10 +23,14 @@ module UseCases
         parser.errors
       end
 
+      def count
+        sessions.count
+      end
+
       private
 
       def sessions
-        parser.parse
+        @sessions ||= parser.parse
       end
 
       def parser

@@ -82,7 +82,7 @@ module Parser
         calc_distance(cur_point, prev_point, stats)
         prev_point = cur_point
       end
-ap stats
+      ap stats
 
       stats.transform_values!(&:to_i)
     end

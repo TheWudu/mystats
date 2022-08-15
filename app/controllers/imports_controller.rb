@@ -8,23 +8,20 @@ class ImportsController < ApplicationController
   def create
     data = File.open(params['input'].tempfile, 'r:UTF-8').read
 
-    use_case(data).run
+    use_case = UseCases::Session::ImportGpx.new(data: data)
+    use_case.run
 
-    if use_case_errors
+    if use_case_errors(use_case)
       flash[:warning] = use_case_errors
     else
-      flash[:success] = 'Successfully imported'
+      flash[:success] = "Successfully imported #{use_case.count} sessions"
     end
     redirect_to sport_sessions_path
   end
 
-  def use_case(data)
-    @use_case ||= UseCases::Session::ImportGpx.new(data: data)
-  end
+  def use_case_errors(use_case)
+    return nil if use_case.errors.empty?
 
-  def use_case_errors
-    return nil if @use_case.errors.empty?
-
-    @use_case.errors.map(&:message).uniq.join("\n")
+    use_case.errors.map(&:message).uniq.join("\n")
   end
 end

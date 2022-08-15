@@ -48,13 +48,23 @@ module Repositories
       end
 
       def cnt_per_week_of_year
-        query = sessions.aggregate([{ '$match' => matcher },
-                                    { '$addFields' => { 'week' => { '$isoWeek' => '$start_time' } } },
-                                    { '$group' => { _id: '$week', cnt: { '$sum' => 1 } } },
-                                    { '$sort' => { _id: 1 } }])
-        data = query.to_a
+        query = [{ '$match' => matcher },
+                                    { '$addFields' => { 'week' => { '$isoWeek' => '$start_time' }, 'iso_week_year' => { "$isoWeekYear": "$start_time" } } }]
+        query << { '$match' => { iso_week_year: { '$in' => years } } } if years && !years.empty?
+        query << { '$group' => { _id: { year: "$year", week: '$week' }, cnt: { '$sum' => 1 } } }
+        query << { '$sort' => { _id: 1 } }
+
+        data = sessions.aggregate(query).to_a
         data.each_with_object({}) do |d, h|
           h[d['_id']] = d['cnt']
+        end
+
+        # multiline data per year
+        data.each_with_object({}) do |d, h|
+           h[d["_id"]["year"]] ||= {}
+           h[d["_id"]["year"]].merge!({ d["_id"]["week"].to_s => d["cnt"] })
+        end.map do |k,v| 
+          { name: k, data: v }
         end
       end
 
