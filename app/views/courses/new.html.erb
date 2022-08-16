@@ -14,7 +14,7 @@ Create a new course out of a existing session
         <tr>
           <%  %>
           <td style="width:30%"><%= form.label :text, "session: " %></td>
-          <td style="width:70%"><%= form.collection_select(:session_id, @possible_sessions, :id, :selector_text) %></td>
+          <td style="width:70%"><%= form.collection_select(:sport_session_id, @possible_sessions, :id, :selector_text, { selected: @pre_selected&.id }) %></td>
         </tr>
         <tr><td colspan=2 class="smalltd"><%= form.submit "Apply" %></td></tr>
       </table>
