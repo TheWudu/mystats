@@ -5,6 +5,7 @@ require 'rails_helper'
 describe Repositories::Courses do
   %w[fetch
      find
+     find_by_session_id
      insert
      update
      delete

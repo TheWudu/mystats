@@ -28,6 +28,13 @@
       <tr><th>elevation</th> <td><%= @sport_session.elevation %></td></tr>
       <tr><th>avg pace</th>  <td><%= @sport_session.avg_pace  %></td></tr>
       <tr><th>notes</th>     <td><%= @sport_session.notes %></td></tr>
+      <tr><th>course</th>    <td>
+      <% if @course %>
+        <%= link_to(@course.name, course_path(id: @course.id)) %>
+      <% else %>
+        -
+      <% end %>
+      </td></tr>
     </table>
   </div>
   <div id="map" class="item-right">

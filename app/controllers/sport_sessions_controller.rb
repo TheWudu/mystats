@@ -24,6 +24,7 @@ class SportSessionsController < ApplicationController
 
   def show
     @sport_session = Repositories::SportSessions.find_by_id(id: params[:id])
+    @course = Repositories::Courses.find_by_session_id(id: @sport_session.id)
     @polytrace = Polylines::Encoder.encode_points(@sport_session.trace.map { |p| [p['lat'].to_f, p['lng'].to_f] })
     @split_table = UseCases::Traces::SplitTable.new(trace: @sport_session.trace).run
     @chart_data = @sport_session.trace.each_with_object({}) do |p, h|

@@ -62,7 +62,7 @@ module Repositories
         # multiline data per year
         data.each_with_object({}) do |d, h|
            h[d["_id"]["year"]] ||= {}
-           h[d["_id"]["year"]].merge!({ d["_id"]["week"].to_s => d["cnt"] })
+           h[d["_id"]["year"]].merge!({ d["_id"]["week"] => d["cnt"] })
         end.map do |k,v| 
           { name: k, data: v }
         end

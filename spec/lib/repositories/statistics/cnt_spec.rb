@@ -16,7 +16,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
 
   context 'without sessions available' do
     it { expect(instance.cnt_per_weekday_data).to eq({}) }
-    it { expect(instance.cnt_per_week_of_year).to eq({}) }
+    it { expect(instance.cnt_per_week_of_year).to eq([]) }
     it { expect(instance.hour_per_day_data).to eq({}) }
   end
 
@@ -61,11 +61,13 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     end
 
     let(:expected_week_of_year) do
-      {
-        15 => 1,
-        28 => 1,
-        32 => 2
-      }
+      [
+        { name: 2021, data: { 15 => 1 } },
+        { name: 2022, data: { 
+          28 => 1,
+          32 => 2
+        } }
+      ]
     end
     let(:expected_hour_per_day) do
       {
@@ -89,9 +91,9 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       end
 
       let(:expected_week_of_year) do
-        {
-          15 => 1
-        }
+        [
+          { name: 2021, data: { 15 => 1 } }
+        ]
       end
       let(:expected_hour_per_day) do
         {
@@ -108,7 +110,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       let(:sport_type_ids) { [1] }
 
       let(:expected_weekday_data) { {} }
-      let(:expected_week_of_year) { {} }
+      let(:expected_week_of_year) { [] }
       let(:expected_hour_per_day) { {} }
       it { expect(instance.cnt_per_weekday_data).to eq(expected_weekday_data) }
       it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }

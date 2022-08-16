@@ -18,6 +18,13 @@ module Repositories
         to_model(doc)
       end
 
+      def find_by_session_id(id:)
+        doc = collection.find({ "session_ids": id }).first
+        return nil unless doc
+
+        to_model(doc)
+      end
+
       def insert(course:)
         resp = collection.insert_one(prepare_for_write(course))
         resp.n == 1
