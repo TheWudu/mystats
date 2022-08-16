@@ -63,7 +63,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     let(:expected_week_of_year) do
       [
         { name: 2021, data: { 15 => 1 } },
-        { name: 2022, data: { 
+        { name: 2022, data: {
           28 => 1,
           32 => 2
         } }

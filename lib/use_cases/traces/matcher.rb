@@ -34,7 +34,7 @@ module UseCases
         self.match_in_percent = ((diffs.count(true).to_f / diffs.count) * 100).round(2)
       end
 
-      def find_matches 
+      def find_matches
         blocks1.each_with_object([]) do |b1, diffs|
           diffs << find_match(b1)
         end
