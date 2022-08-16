@@ -151,9 +151,9 @@ function sortTable(n) {
           <% end %>
         >
         <td>
-          <% if session == @fastest_session %>
+          <% if session.id == @fastest_session_id %>
             <%= image_tag "fast-rabbit-icon.png", height: 25 %> 
-          <% elsif session == @slowest_session %>
+          <% elsif session.id == @slowest_session_id %>
             <%= image_tag "slow-snail-icon.png", height: 25 %> 
           <% end %>
         </td>
