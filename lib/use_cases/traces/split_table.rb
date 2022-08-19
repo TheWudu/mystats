@@ -15,6 +15,8 @@ module UseCases
       PAUSE_THRESHOLD = 10
 
       def run
+        return {} if trace.blank?
+
         last_km_point = trace.first
         pause = 0
 
