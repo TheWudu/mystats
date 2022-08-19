@@ -20,6 +20,7 @@ class SportType
     5 => 'other',
     7 => 'hiking',
     9 => 'skiing',
+    14 => 'treadmill',
     18 => 'swimming',
     19 => 'walking',
     22 => 'race-cycling',
@@ -27,12 +28,15 @@ class SportType
     31 => 'pilates',
     32 => 'climbing',
     34 => 'strength-training',
+    38 => 'soccer',
     54 => 'ice-skating',
     55 => 'sledding',
     69 => 'crossfit',
     70 => 'dancing',
     71 => 'ice-hockey',
+    72 => 'skateboarding',
     74 => 'gymnastics',
+    76 => 'standup-paddling', 
     81 => 'training',
     91 => 'body-weight training'
   }.freeze
