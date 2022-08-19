@@ -18,10 +18,12 @@
 !/tmp/pids/
 !/tmp/pids/.keep
 
-
 /public/assets
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
 **/*.swp
+
+# Ignore MongoDB files.
+/mongodb_data/*
