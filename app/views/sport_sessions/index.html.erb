@@ -28,7 +28,11 @@
   </tr>
 <% @sport_sessions.each do |sport_session| %>
   <tr>
-    <td><%= link_to(sport_session.id, sport_session_path(id: sport_session.id)) %></td>
+    <% if sport_session.trace.blank? %>
+      <td><%= sport_session.id %></td>
+    <% else %>
+      <td><%= link_to(sport_session.id, sport_session_path(id: sport_session.id)) %></td>
+    <% end %>
     <td><%= sport_session.start_time %></td>
     <td><%= sport_session.sport %></td>
     <td><%= sport_session.distance_in_km %></td>
