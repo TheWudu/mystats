@@ -21,7 +21,7 @@ docker-compose up
 Then:
 
 ```
-docker-compose starte
+docker-compose start
 ```
 
 would be sufficient.
@@ -38,7 +38,7 @@ Instead of using [mongo_cpp](https://github.com/TheWudu/mongo_cpp/) to import se
 the database, you can now use the provided rake tasks to import multiple sport-sessions
 at once, or import the gpx files separately with the UI.
 
-Before importing sessions, you should import cities into the database. Thisfore a rake
+Before importing sessions, you should import cities into the database. Therefore a rake
 task is provided:
 
 ```
