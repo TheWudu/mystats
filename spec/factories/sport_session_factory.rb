@@ -45,9 +45,9 @@ FactoryBot.define do
     trace          { nil }
 
     trait :with_trace do
-      trace do 
+      trace do
         JSON.parse(File.read('spec/fixtures/traces/running_7km.json')).map do |p|
-          p["time"] = Time.parse(p["time"])
+          p['time'] = Time.parse(p['time'])
           p
         end
       end

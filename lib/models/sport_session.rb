@@ -59,6 +59,8 @@ module Models
     end
 
     def avg_pace
+      return '-' if distance.zero?
+
       format_ms(duration / distance * 1000)
     end
 

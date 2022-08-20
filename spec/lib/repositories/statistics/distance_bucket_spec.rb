@@ -60,8 +60,8 @@ describe Repositories::Statistics::MongoDb, :clear_db do
 
     let(:expected_stats) do
       {
-        5000 => 1,
-        7500 => 1,
+        5000   => 1,
+        7500   => 1,
         10_000 => 1
       }
     end

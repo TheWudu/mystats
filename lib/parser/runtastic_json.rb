@@ -50,7 +50,7 @@ module Parser
     end
 
     def trace
-      gpx_parsed[:trace]
+      gpx_parsed[:trace] || []
     end
 
     def timezone

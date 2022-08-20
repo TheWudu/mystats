@@ -109,8 +109,8 @@ class CoursesController < ApplicationController
     distance = course.distance
     sessions = sessions_repo.where(opts: {
                                      'distance.between' => [distance - 250, distance + 250],
-                                     'id.not_in' => course.session_ids,
-                                     'trace.exists' => true
+                                     'id.not_in'        => course.session_ids,
+                                     'trace.exists'     => true
                                    })
     sessions.each_with_object([]) do |session, ary|
       matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: session.trace)

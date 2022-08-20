@@ -49,7 +49,7 @@ module Repositories
 
       def cnt_per_week_of_year
         query = [{ '$match' => matcher },
-                 { '$addFields' => { 'week' => { '$isoWeek' => '$start_time' },
+                 { '$addFields' => { 'week'          => { '$isoWeek' => '$start_time' },
                                      'iso_week_year' => { "$isoWeekYear": '$start_time' } } }]
         query << { '$match' => { iso_week_year: { '$in' => years } } } if years && !years.empty?
         query << { '$group' => { _id: { year: '$year', week: '$week' }, cnt: { '$sum' => 1 } } }

@@ -92,12 +92,12 @@ module Repositories
 
       def text_filter(text)
         { '$text' =>
-          {
-            '$search' => text,
-            # "$language" => <string>,
-            '$caseSensitive' => false
-            # "$diacriticSensitive" => <boolean>
-          } }
+                     {
+                       '$search'        => text,
+                       # "$language" => <string>,
+                       '$caseSensitive' => false
+                       # "$diacriticSensitive" => <boolean>
+                     } }
       end
 
       def prepare_for_write(session)

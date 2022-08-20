@@ -22,8 +22,8 @@ module UseCases
         distance = course.distance
         sessions = Repositories::SportSessions.where(opts: {
                                                        'distance.between' => [distance - 500, distance + 500],
-                                                       'id.not_in' => course.session_ids,
-                                                       'trace.exists' => true
+                                                       'id.not_in'        => course.session_ids,
+                                                       'trace.exists'     => true
                                                      })
         sessions.each_with_object([]) do |session, ary|
           matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: session.trace)

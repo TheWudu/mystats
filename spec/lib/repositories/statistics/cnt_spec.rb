@@ -53,9 +53,9 @@ describe Repositories::Statistics::MongoDb, :clear_db do
 
     let(:expected_weekday_data) do
       {
-        'Friday' => 1,
-        'Monday' => 1,
-        'Sunday' => 1,
+        'Friday'  => 1,
+        'Monday'  => 1,
+        'Sunday'  => 1,
         'Tuesday' => 1
       }
     end
@@ -71,7 +71,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     end
     let(:expected_hour_per_day) do
       {
-        9 => 2,
+        9  => 2,
         11 => 1,
         12 => 1
       }
