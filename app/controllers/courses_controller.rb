@@ -39,10 +39,12 @@ class CoursesController < ApplicationController
 
   def new
     @path_method = 'new_course_path'
-    @possible_sessions = Repositories::SportSessions.find_with_traces(opts: {
-                                                                        'id.not_in' => session_ids_from_courses,
-                                                                        year: years, month: months, sport_type_id: sport_type_ids
-                                                                      })
+    @possible_sessions = Repositories::SportSessions.find_with_traces(
+      id__not_in:    session_ids_from_courses,
+      year:          years,
+      month:         months,
+      sport_type_id: sport_type_ids
+    )
     @pre_selected = Repositories::SportSessions.find_by_id(id: params[:sport_session_id])
     @possible_sessions << @pre_selected unless @possible_sessions.map(&:id).include?(params[:sport_session_id])
   end

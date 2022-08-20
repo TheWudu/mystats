@@ -24,8 +24,11 @@ class TraceMatcherController < ApplicationController
       min_overlap: min_overlap
     )
     @matcher.analyse
-    @possible_sessions = Repositories::SportSessions.find_with_traces(opts: { year: years, month: months,
-                                                                              sport_type_id: sport_type_ids })
+    @possible_sessions = Repositories::SportSessions.find_with_traces(
+      year:          years,
+      month:         months,
+      sport_type_id: sport_type_ids
+    )
   end
 
   private

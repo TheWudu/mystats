@@ -14,14 +14,14 @@ describe Repositories::SportSessions, :clear_db do
 
     let(:opts) do
       {
-        year: year,
-        month: month,
+        year:          year,
+        month:         month,
         sport_type_id: sport_type_id,
-        'id.not_in' => id_not_in
+        id__not_in:    id_not_in
       }.compact
     end
 
-    subject { described_class.find_with_traces(opts: opts) }
+    subject { described_class.find_with_traces(**opts) }
 
     context 'when no sessions exist' do
       it { expect(subject).to be_empty }

@@ -21,7 +21,7 @@ module UseCases
       def matching_sessions
         distance = course.distance
         sessions = Repositories::SportSessions.where(opts: {
-                                                       'distance.between' => [distance - 500, distance + 500],
+                                                       'distance.between' => [distance - 250, distance + 250],
                                                        'id.not_in'        => course.session_ids,
                                                        'trace.exists'     => true
                                                      })
