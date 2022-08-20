@@ -34,15 +34,15 @@ describe Repositories::SportSessions, :clear_db do
 
     context 'when session exists' do
       let(:sport_session_1) do
-        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2022-08-12T07:08:23Z'),
+        FactoryBot.create(:sport_session, :with_trace, start_time:    Time.parse('2022-08-12T07:08:23Z'),
                                                        sport_type_id: 1)
       end
       let(:sport_session_2) do
-        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2022-07-12T09:26:23Z'),
+        FactoryBot.create(:sport_session, :with_trace, start_time:    Time.parse('2022-07-12T09:26:23Z'),
                                                        sport_type_id: 2)
       end
       let(:sport_session_3) do
-        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2021-08-12T12:56:23Z'),
+        FactoryBot.create(:sport_session, :with_trace, start_time:    Time.parse('2021-08-12T12:56:23Z'),
                                                        sport_type_id: 1)
       end
 

@@ -53,6 +53,7 @@ end
 ##
 ##
 gem 'chartkick'
+gem 'definition'
 gem 'fast-polylines'
 gem 'geokit'
 gem 'jquery-drag-rails'

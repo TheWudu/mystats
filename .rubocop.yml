@@ -32,6 +32,9 @@ Layout/LineLength:
   Ignore:
     - bin/bundle
 
+Layout/HashAlignment:
+  EnforcedColonStyle: table 
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'

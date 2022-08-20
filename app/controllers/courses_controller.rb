@@ -72,10 +72,10 @@ class CoursesController < ApplicationController
     overall_duration = assigned_sessions.sum(&:duration)
     average_pace     = overall_duration / overall_distance.to_f * 1000 # ms / m * 1000 = ms/km
     {
-      overall_distance: (overall_distance / 1000.0).round(2),
-      overall_duration: format_ms(overall_duration),
+      overall_distance:       (overall_distance / 1000.0).round(2),
+      overall_duration:       format_ms(overall_duration),
       overall_elevation_gain: assigned_sessions.sum(&:elevation_gain),
-      average_pace: format_ms(average_pace)
+      average_pace:           format_ms(average_pace)
     }
   end
 
@@ -100,7 +100,7 @@ class CoursesController < ApplicationController
     return [] if course.session_ids.count.zero?
 
     sessions_repo.find_by_ids(
-      ids: course.session_ids,
+      ids:  course.session_ids,
       sort: { attribute: 'start_time', direction: :desc }
     )
   end

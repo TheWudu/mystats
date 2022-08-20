@@ -61,10 +61,10 @@ module Repositories
 
       def prepare(city)
         {
-          name: city[:name],
+          name:     city[:name],
           timezone: city[:timezone],
           location: {
-            type: 'Point',
+            type:        'Point',
             coordinates: [city[:longitude], city[:latitude]]
           }
         }

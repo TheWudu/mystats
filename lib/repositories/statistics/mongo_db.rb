@@ -72,11 +72,11 @@ module Repositories
       def data_per_year(attr)
         data = sessions.aggregate([
                                     { '$match' => matcher },
-                                    { '$group' => { _id: group_by,
-                                                    overall_distance: { '$sum' => '$distance' },
-                                                    overall_duration: { '$sum' => '$duration' },
+                                    { '$group' => { _id:                    group_by,
+                                                    overall_distance:       { '$sum' => '$distance' },
+                                                    overall_duration:       { '$sum' => '$duration' },
                                                     overall_elevation_gain: { '$sum' => '$elevation_gain' },
-                                                    overall_cnt: { '$sum' => 1 } } },
+                                                    overall_cnt:            { '$sum' => 1 } } },
                                     { '$sort' => { _id: 1 } }
                                   ]).to_a
         data.each_with_object({}) do |d, h|
@@ -90,11 +90,11 @@ module Repositories
                                     { '$match' => matcher },
                                     { '$match' => { distance: { '$gt' => 0 } } },
                                     { '$bucket' => {
-                                      groupBy: '$distance',
+                                      groupBy:    '$distance',
                                       boundaries: [0, 5000, 7_500, 10_000, 15_000, 20_000, 100_000],
-                                      default: 'no distance',
-                                      output: {
-                                        total: { '$sum' => 1 },
+                                      default:    'no distance',
+                                      output:     {
+                                        total:        { '$sum' => 1 },
                                         avg_distance: { '$avg' => '$distance' },
                                         sum_distance: { '$sum' => '$distance' },
                                         sum_duration: { '$sum' => '$duration' }
@@ -111,7 +111,7 @@ module Repositories
         data = sessions.aggregate([
                                     { '$match' => matcher },
                                     { '$addFields' => { timezone: { '$ifNull' => ['$timezone', 'UTC'] } } },
-                                    { '$addFields' => { hour: { '$hour' => { date: '$start_time',
+                                    { '$addFields' => { hour: { '$hour' => { date:     '$start_time',
                                                                              timezone: '$timezone' } } } },
                                     { '$group' => { _id: '$hour', count: { '$sum' => 1 } } },
                                     { '$sort' => { _id: 1 } }

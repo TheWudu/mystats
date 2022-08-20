@@ -16,10 +16,10 @@ module UseCases
 
       def course
         Models::Course.new(
-          id: SecureRandom.uuid,
-          name: name,
-          trace: trace,
-          distance: session.distance,
+          id:          SecureRandom.uuid,
+          name:        name,
+          trace:       trace,
+          distance:    session.distance,
           session_ids: [session.id]
         )
       end

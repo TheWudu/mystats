@@ -64,9 +64,9 @@ module Repositories
       end
 
       def exists?(start_time:, sport_type_id:)
-        collection.count({ year: start_time.year,
-                           month: start_time.month,
-                           start_time: {
+        collection.count({ year:          start_time.year,
+                           month:         start_time.month,
+                           start_time:    {
                              '$gte' => (start_time - 1.minute),
                              '$lte' => (start_time + 1.minute)
                            },
@@ -87,7 +87,7 @@ module Repositories
       private
 
       def to_model(doc)
-        Models::SportSession.new(doc.except('_id'))
+        Models::SportSession.new(doc.except('_id').symbolize_keys)
       end
 
       def text_filter(text)
@@ -102,7 +102,7 @@ module Repositories
 
       def prepare_for_write(session)
         session.merge(
-          year: session[:start_time].year,
+          year:  session[:start_time].year,
           month: session[:start_time].month
         ).compact
       rescue NoMethodError => e

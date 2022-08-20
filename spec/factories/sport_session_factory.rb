@@ -5,22 +5,23 @@ require 'models/sport_session'
 
 FactoryBot.define do
   factory :sport_session, class: 'Models::SportSession' do
+    initialize_with { new(attributes) }
     to_create do |instance|
       attrs = {
-        id: instance.id,
-        notes: instance.notes,
-        distance: instance.distance,
-        start_time: instance.start_time,
+        id:                         instance.id,
+        notes:                      instance.notes,
+        distance:                   instance.distance,
+        start_time:                 instance.start_time,
         start_time_timezone_offset: instance.start_time_timezone_offset,
-        end_time: instance.end_time,
-        timezone: instance.timezone,
-        duration: instance.duration,
-        pause: instance.pause,
-        elevation_gain: instance.elevation_gain,
-        elevation_loss: instance.elevation_loss,
-        sport_type_id: instance.sport_type_id,
-        sport_type: instance.sport_type,
-        trace: instance.trace
+        end_time:                   instance.end_time,
+        timezone:                   instance.timezone,
+        duration:                   instance.duration,
+        pause:                      instance.pause,
+        elevation_gain:             instance.elevation_gain,
+        elevation_loss:             instance.elevation_loss,
+        sport_type_id:              instance.sport_type_id,
+        sport_type:                 instance.sport_type,
+        trace:                      instance.trace
       }
       Repositories::SportSessions.insert(session: attrs)
     end
@@ -44,7 +45,12 @@ FactoryBot.define do
     trace          { nil }
 
     trait :with_trace do
-      trace { JSON.parse(File.read('spec/fixtures/traces/running_7km.json')) }
+      trace do 
+        JSON.parse(File.read('spec/fixtures/traces/running_7km.json')).map do |p|
+          p["time"] = Time.parse(p["time"])
+          p
+        end
+      end
     end
   end
 end

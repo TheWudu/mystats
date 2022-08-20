@@ -5,9 +5,9 @@ require 'rails_helper'
 describe Repositories::Statistics::MongoDb, :clear_db do
   let(:instance) do
     described_class.new(
-      years: years,
+      years:          years,
       sport_type_ids: sport_type_ids,
-      group_by: group_by
+      group_by:       group_by
     )
   end
   let(:years) { nil }
@@ -24,10 +24,10 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   context 'when a single session exist' do
     before do
       FactoryBot.create(:sport_session,
-                        duration: 1823,
-                        distance: 5678,
+                        duration:       1823,
+                        distance:       5678,
                         elevation_gain: 123,
-                        start_time: Time.parse('2022-08-12T07:12:32Z'))
+                        start_time:     Time.parse('2022-08-12T07:12:32Z'))
     end
     let(:expected_stats) { { 5000 => 1 } }
 
@@ -37,25 +37,25 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   context 'when multiple sessions exist' do
     before do
       FactoryBot.create(:sport_session,
-                        duration: 1823,
-                        distance: 5678,
+                        duration:       1823,
+                        distance:       5678,
                         elevation_gain: 123,
-                        sport_type_id: 1,
-                        start_time: Time.parse('2022-08-12T07:12:32Z'))
+                        sport_type_id:  1,
+                        start_time:     Time.parse('2022-08-12T07:12:32Z'))
 
       FactoryBot.create(:sport_session,
-                        duration: 3689,
-                        distance: 10_678,
+                        duration:       3689,
+                        distance:       10_678,
                         elevation_gain: 223,
-                        sport_type_id: 1,
-                        start_time: Time.parse('2022-07-12T07:12:32Z'))
+                        sport_type_id:  1,
+                        start_time:     Time.parse('2022-07-12T07:12:32Z'))
 
       FactoryBot.create(:sport_session,
-                        duration: 3189,
-                        distance: 8678,
+                        duration:       3189,
+                        distance:       8678,
                         elevation_gain: 524,
-                        sport_type_id: 2,
-                        start_time: Time.parse('2021-04-12T07:12:32Z'))
+                        sport_type_id:  2,
+                        start_time:     Time.parse('2021-04-12T07:12:32Z'))
     end
 
     let(:expected_stats) do
