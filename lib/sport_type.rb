@@ -14,12 +14,12 @@ class SportType
   end
 
   SPORT_TYPE_MAPPING = {
-    1 => 'running',
-    3 => 'cycling',
-    4 => 'mountain-biking',
-    5 => 'other',
-    7 => 'hiking',
-    9 => 'skiing',
+    1  => 'running',
+    3  => 'cycling',
+    4  => 'mountain-biking',
+    5  => 'other',
+    7  => 'hiking',
+    9  => 'skiing',
     14 => 'treadmill',
     18 => 'swimming',
     19 => 'walking',
@@ -36,7 +36,7 @@ class SportType
     71 => 'ice-hockey',
     72 => 'skateboarding',
     74 => 'gymnastics',
-    76 => 'standup-paddling', 
+    76 => 'standup-paddling',
     81 => 'training',
     91 => 'body-weight training'
   }.freeze

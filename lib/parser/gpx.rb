@@ -26,17 +26,17 @@ module Parser
         duration = ((track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000).to_i
 
         stats.merge({
-                      id: SecureRandom.uuid,
-                      notes: track[:name],
-                      sport_type: track[:type],
-                      sport_type_id: SportType.id_for(name: track[:type]),
-                      start_time: track[:points].first[:time],
-                      end_time: track[:points].last[:time],
-                      duration: duration,
-                      pause: (stats[:pause] * 1000).to_i,
-                      timezone: timezone,
+                      id:                         SecureRandom.uuid,
+                      notes:                      track[:name],
+                      sport_type:                 track[:type],
+                      sport_type_id:              SportType.id_for(name: track[:type]),
+                      start_time:                 track[:points].first[:time],
+                      end_time:                   track[:points].last[:time],
+                      duration:                   duration,
+                      pause:                      (stats[:pause] * 1000).to_i,
+                      timezone:                   timezone,
                       start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]).to_i,
-                      trace: trace_from_track(track)
+                      trace:                      trace_from_track(track)
                     })
       end
     end
@@ -47,9 +47,9 @@ module Parser
       track[:points].map do |p|
         {
           time: p[:time],
-          lat: p[:lat].to_f,
-          lng: p[:lon].to_f,
-          ele: p[:ele]
+          lat:  p[:lat].to_f,
+          lng:  p[:lon].to_f,
+          ele:  p[:ele]
         }
       end
     end
@@ -71,8 +71,8 @@ module Parser
       stats = {
         elevation_gain: 0,
         elevation_loss: 0,
-        distance: 0,
-        pause: 0
+        distance:       0,
+        pause:          0
       }
 
       prev_point = track[:points].first
@@ -114,13 +114,13 @@ module Parser
       gpx = xml.first
       @tracks ||= gpx[:tags].select { |t| t[:tag] == 'trk' }.map do |trk|
         {
-          name: tag_data(trk, 'name'),
-          type: tag_data(trk, 'type'),
+          name:   tag_data(trk, 'name'),
+          type:   tag_data(trk, 'type'),
           points: trk[:tags].select { |t| t[:tag] == 'trkseg' }.map do |trkseg|
             trkseg[:tags].select { |t| t[:tag] == 'trkpt' }.map do |trkpt|
               trkpt[:meta].merge(
                 time: Time.parse(from_tags(trkpt, 'time')),
-                ele: refined_elevation(from_tags(trkpt, 'ele').to_f, trkpt[:meta])
+                ele:  refined_elevation(from_tags(trkpt, 'ele').to_f, trkpt[:meta])
               )
             end
           end.flatten

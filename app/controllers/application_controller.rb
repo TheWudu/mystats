@@ -12,22 +12,22 @@ class ApplicationController < ActionController::Base
 
   def statistics
     @statistics ||= Repositories::Statistics::MongoDb.new(
-      years: years,
+      years:          years,
       sport_type_ids: sport_type_ids,
-      group_by: nil
+      group_by:       nil
     )
   end
 
   def filter_params
     params.reverse_merge!(
       month: Time.now.month.to_s,
-      year: Time.now.year.to_s
+      year:  Time.now.year.to_s
     )
     {
-      year: params[:year],
-      month: params[:month],
+      year:          params[:year],
+      month:         params[:month],
       sport_type_id: params[:sport_type_id],
-      group_by: params[:group_by]
+      group_by:      params[:group_by]
     }
   end
 

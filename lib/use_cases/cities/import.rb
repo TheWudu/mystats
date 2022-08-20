@@ -35,9 +35,9 @@ module UseCases
       def line_to_city(line)
         parts = line.split("\t")
         {
-          name: parts[1],
-          timezone: parts[17],
-          latitude: parts[4].to_f,
+          name:      parts[1],
+          timezone:  parts[17],
+          latitude:  parts[4].to_f,
           longitude: parts[5].to_f
         }
       end

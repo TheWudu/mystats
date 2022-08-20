@@ -5,9 +5,9 @@ require 'rails_helper'
 describe Repositories::Statistics::MongoDb do
   let(:instance) do
     described_class.new(
-      years: [2022],
+      years:          [2022],
       sport_type_ids: [1, 2, 3],
-      group_by: %i[year month]
+      group_by:       %i[year month]
     )
   end
 

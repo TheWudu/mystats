@@ -12,11 +12,11 @@ module Models
 
     def to_h
       {
-        id: id,
-        name: name,
-        distance: distance,
+        id:          id,
+        name:        name,
+        distance:    distance,
         session_ids: session_ids,
-        trace: trace
+        trace:       trace
       }
     end
 

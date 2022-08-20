@@ -22,10 +22,10 @@ module Parser
     def parse_line(line)
       entry = line.split("\t")
       {
-        name: entry[1],
-        latitude: entry[4].to_f,
+        name:      entry[1],
+        latitude:  entry[4].to_f,
         longitude: entry[5].to_f,
-        timezone: entry[17]
+        timezone:  entry[17]
       }
     end
 

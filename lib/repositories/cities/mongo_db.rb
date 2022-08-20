@@ -61,10 +61,10 @@ module Repositories
 
       def prepare(city)
         {
-          name: city[:name],
+          name:     city[:name],
           timezone: city[:timezone],
           location: {
-            type: 'Point',
+            type:        'Point',
             coordinates: [city[:longitude], city[:latitude]]
           }
         }
@@ -74,7 +74,7 @@ module Repositories
         {
           'location' => {
             '$geoNear' => {
-              '$geometry' => { "type": 'Point', coordinates: [lng.to_f, lat.to_f] },
+              '$geometry'    => { "type": 'Point', coordinates: [lng.to_f, lat.to_f] },
               '$maxDistance' => max_dist
             }
           }

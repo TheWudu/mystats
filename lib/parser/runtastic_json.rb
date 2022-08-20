@@ -22,20 +22,20 @@ module Parser
 
     def parse
       {
-        id: json_stats['id'],
-        elevation_gain: json_stats['elevation_gain'],
-        elevation_loss: json_stats['elevation_loss'],
-        distance: json_stats['distance'],
-        pause: json_stats['pause_duration'],
-        notes: json_stats['notes'],
-        sport_type: SportType.name_for(id: json_stats['sport_type_id'].to_i),
-        sport_type_id: json_stats['sport_type_id'].to_i,
-        start_time: Time.at(json_stats['start_time'] / 1000),
-        end_time: Time.at(json_stats['end_time'] / 1000),
-        duration: json_stats['duration'],
+        id:                         json_stats['id'],
+        elevation_gain:             json_stats['elevation_gain'],
+        elevation_loss:             json_stats['elevation_loss'],
+        distance:                   json_stats['distance'],
+        pause:                      json_stats['pause_duration'],
+        notes:                      json_stats['notes'],
+        sport_type:                 SportType.name_for(id: json_stats['sport_type_id'].to_i),
+        sport_type_id:              json_stats['sport_type_id'].to_i,
+        start_time:                 Time.at(json_stats['start_time'] / 1000),
+        end_time:                   Time.at(json_stats['end_time'] / 1000),
+        duration:                   json_stats['duration'],
         start_time_timezone_offset: json_stats['start_time_timezone_offset'] / 1000,
-        timezone: timezone,
-        trace: trace
+        timezone:                   timezone,
+        trace:                      trace
       }.compact
     end
 

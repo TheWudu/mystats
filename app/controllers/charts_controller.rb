@@ -58,9 +58,9 @@ class ChartsController < ApplicationController
 
   def statistics
     @statistics ||= Repositories::Statistics::MongoDb.new(
-      years: years,
+      years:          years,
       sport_type_ids: sport_type_ids,
-      group_by: group_by
+      group_by:       group_by
     )
   end
 end

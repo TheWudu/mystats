@@ -39,10 +39,12 @@ class CoursesController < ApplicationController
 
   def new
     @path_method = 'new_course_path'
-    @possible_sessions = Repositories::SportSessions.find_with_traces(opts: {
-                                                                        'id.not_in' => session_ids_from_courses,
-                                                                        year: years, month: months, sport_type_id: sport_type_ids
-                                                                      })
+    @possible_sessions = Repositories::SportSessions.find_with_traces(
+      id__not_in:    session_ids_from_courses,
+      year:          years,
+      month:         months,
+      sport_type_id: sport_type_ids
+    )
     @pre_selected = Repositories::SportSessions.find_by_id(id: params[:sport_session_id])
     @possible_sessions << @pre_selected unless @possible_sessions.map(&:id).include?(params[:sport_session_id])
   end
@@ -72,10 +74,10 @@ class CoursesController < ApplicationController
     overall_duration = assigned_sessions.sum(&:duration)
     average_pace     = overall_duration / overall_distance.to_f * 1000 # ms / m * 1000 = ms/km
     {
-      overall_distance: (overall_distance / 1000.0).round(2),
-      overall_duration: format_ms(overall_duration),
+      overall_distance:       (overall_distance / 1000.0).round(2),
+      overall_duration:       format_ms(overall_duration),
       overall_elevation_gain: assigned_sessions.sum(&:elevation_gain),
-      average_pace: format_ms(average_pace)
+      average_pace:           format_ms(average_pace)
     }
   end
 
@@ -100,7 +102,7 @@ class CoursesController < ApplicationController
     return [] if course.session_ids.count.zero?
 
     sessions_repo.find_by_ids(
-      ids: course.session_ids,
+      ids:  course.session_ids,
       sort: { attribute: 'start_time', direction: :desc }
     )
   end
@@ -109,8 +111,8 @@ class CoursesController < ApplicationController
     distance = course.distance
     sessions = sessions_repo.where(opts: {
                                      'distance.between' => [distance - 250, distance + 250],
-                                     'id.not_in' => course.session_ids,
-                                     'trace.exists' => true
+                                     'id.not_in'        => course.session_ids,
+                                     'trace.exists'     => true
                                    })
     sessions.each_with_object([]) do |session, ary|
       matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: session.trace)
