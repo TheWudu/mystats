@@ -15,10 +15,9 @@ module Repositories
       end
 
       def find_by_id(id:)
-        sessions = collection.find({ id: id })
+        sessions = find_by_ids(ids: [id])
         return nil unless sessions.count == 1
-
-        to_model(sessions.first)
+        sessions.first
       end
 
       def find_by_ids(ids:, sort: nil)
@@ -38,67 +37,8 @@ module Repositories
         { sort[:attribute].to_s => sort[:direction] == :asc ? 1 : -1 }
       end
 
-      # distance.between
-      # id.not_in
-      # trace.exists
-      # year
-      # month
-      # sport_type_id
-
-      IN_LIST_MATCHER = %w[year month sport_type_id].freeze
-      NOT_IN_LIST_MATCHER = %w[id].freeze
-      EXISTS_MATCHER = %w[trace].freeze
-      RANGE_MATCHER = %w[distance].freeze
-      def generic_where(args)
-        query = {}
-        query.merge!(in_list_matcher(args))
-        query.merge!(not_in_list_matcher(args))
-        query.merge!(exists_matcher(args))
-        query.merge!(range_matcher(args))
-
-        collection.find(query).map do |session|
-          to_model(session)
-        end
-      end
-
-      def in_list_matcher(args)
-        IN_LIST_MATCHER.each_with_object({}) do |attr, q|
-          value = args[attr] || args[attr.to_sym]
-          next unless value
-
-          q[attr] = { '$in' => value }
-        end
-      end
-
-      def not_in_list_matcher(args)
-        NOT_IN_LIST_MATCHER.each_with_object({}) do |attr, q|
-          value = args["#{attr}.not_in"]
-          next unless value
-
-          q[attr] = { '$nin' => value }
-        end
-      end
-
-      def exists_matcher(args)
-        EXISTS_MATCHER.each_with_object({}) do |attr, q|
-          value = args["#{attr}.exists"]
-          next unless value
-
-          q[attr] = { '$exists' => true }
-        end
-      end
-
-      def range_matcher(args)
-        RANGE_MATCHER.each_with_object({}) do |attr, q|
-          value = args["#{attr}.between"]
-          next unless value
-
-          q[attr] = { '$gte' => value.first, '$lte' => value.second }
-        end
-      end
-
       def where(opts: {})
-        generic_where(opts)
+        Where.new.execute(opts)
       end
 
       def find_with_traces(id__not_in: nil, year: nil, month: nil, sport_type_id: nil)
@@ -109,7 +49,7 @@ module Repositories
           'month'         => month,
           'sport_type_id' => sport_type_id
         }
-        generic_where(opts)
+        Where.new.execute(opts)
       end
 
       def exists?(start_time:, sport_type_id:)
@@ -128,9 +68,7 @@ module Repositories
       end
 
       def create_indexes
-        create_year_month_index
-        create_id_distance_index
-        create_notes_text_index
+        Indexes.new.create
       end
 
       private
@@ -164,43 +102,6 @@ module Repositories
         m.merge!(month: { '$in' => months }) if months && !months.empty?
         m.merge!(sport_type_id: { '$in' => sport_type_ids }) if sport_type_ids && !sport_type_ids.empty?
         m
-      end
-
-      def create_year_month_index
-        name = 'year_month_sport_type_id_start_time'
-        index = { year: 1, month: 1, sport_type_id: 1, start_time: 1 }
-
-        create_index_if_not_exist(name, index)
-      end
-
-      def create_id_distance_index
-        name  = 'id_distance'
-        index = { id: 1, distance: 1 }
-
-        create_index_if_not_exist(name, index)
-      end
-
-      def create_notes_text_index
-        name  = 'notes'
-        index = { notes: 'text' }
-
-        create_index_if_not_exist(name, index)
-      end
-
-      def create_index_if_not_exist(name, index)
-        return if find_index(name)
-
-        puts "Create: #{name}, #{index}"
-
-        options = { name: name }
-
-        Mongo::Index::View.new(collection).create_one(index, options)
-      end
-
-      def find_index(name)
-        collection.indexes.find { |index| index['name'] == name }
-      rescue StandardError
-        nil
       end
 
       def collection
