@@ -6,11 +6,11 @@ require 'sport_type'
 module Repositories
   module Statistics
     class MongoDb
-      attr_accessor :years, :sport_type_ids, :group_by
+      attr_accessor :years, :sport_types, :group_by
 
-      def initialize(years:, sport_type_ids:, group_by:)
+      def initialize(years:, sport_types:, group_by:)
         self.years = years
-        self.sport_type_ids = sport_type_ids
+        self.sport_types = sport_types
         self.group_by = group_by
       end
 
@@ -24,12 +24,14 @@ module Repositories
 
       def possible_sport_types
         query = sessions.aggregate([
-                                     { '$group' => { _id: '$sport_type_id', cnt: { "$sum": 1 } } },
+                                     { '$group' => { _id: '$sport_type', cnt: { "$sum": 1 } } },
                                      { '$sort' => { _id: 1 } }
                                    ])
-        query.each_with_object({}) do |d, h|
-          h[d['_id']] = SportType.name_for(id: d['_id'])
-        end
+        # query.each_with_object({}) do |d, h|
+        #   h[d['_id']] = SportType.name_for(id: d['_id'])
+        # end
+
+        query.map { |d| d['_id'] }
       end
 
       def cnt_per_weekday_data
@@ -127,7 +129,7 @@ module Repositories
       def matcher
         m = {}
         m.merge!(year: { '$in' => years }) if years && !years.empty?
-        m.merge!(sport_type_id: { '$in' => sport_type_ids }) if sport_type_ids && !sport_type_ids.empty?
+        m.merge!(sport_type: { '$in' => sport_types }) if sport_types && !sport_types.empty?
         m
       end
 

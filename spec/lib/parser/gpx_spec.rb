@@ -19,7 +19,6 @@ describe Parser::Gpx do
       notes:                      'Samstag Morgenlauf',
       pause:                      167_000,
       sport_type:                 'running',
-      sport_type_id:              1,
       start_time:                 Time.parse('2022-08-13T05:26:41Z'),
       start_time_timezone_offset: 0,
       timezone:                   'UTC',

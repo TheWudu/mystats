@@ -5,13 +5,13 @@ require 'rails_helper'
 describe Repositories::Statistics::MongoDb, :clear_db do
   let(:instance) do
     described_class.new(
-      years:          years,
-      sport_type_ids: sport_type_ids,
-      group_by:       group_by
+      years:       years,
+      sport_types: sport_types,
+      group_by:    group_by
     )
   end
   let(:years) { nil }
-  let(:sport_type_ids) { nil }
+  let(:sport_types) { nil }
   let(:group_by) { { year: '$year' } }
 
   context 'without sessions available' do
@@ -26,28 +26,28 @@ describe Repositories::Statistics::MongoDb, :clear_db do
                         duration:       2823,
                         distance:       9678,
                         elevation_gain: 230,
-                        sport_type_id:  1,
+                        sport_type:     'running',
                         start_time:     Time.parse('2022-08-14T10:12:32Z')) # Sunday W31
 
       FactoryBot.create(:sport_session,
                         duration:       1823,
                         distance:       5678,
                         elevation_gain: 123,
-                        sport_type_id:  1,
+                        sport_type:     'running',
                         start_time:     Time.parse('2022-08-12T07:12:32Z')) # Friday W31
 
       FactoryBot.create(:sport_session,
                         duration:       3689,
                         distance:       10_678,
                         elevation_gain: 223,
-                        sport_type_id:  1,
+                        sport_type:     'running',
                         start_time:     Time.parse('2022-07-12T07:12:32Z'))
 
       FactoryBot.create(:sport_session,
                         duration:       3189,
                         distance:       8678,
                         elevation_gain: 524,
-                        sport_type_id:  3,
+                        sport_type:     'cycling',
                         start_time:     Time.parse('2021-04-12T09:12:32Z'))
     end
 
@@ -82,7 +82,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
 
     context 'with filters' do
       let(:years) { [2021] }
-      let(:sport_type_ids) { [3] }
+      let(:sport_types) { ['cycling'] }
 
       let(:expected_weekday_data) do
         {
@@ -107,7 +107,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
 
     context 'with filters' do
       let(:years) { [2021] }
-      let(:sport_type_ids) { [1] }
+      let(:sport_types) { ['running'] }
 
       let(:expected_weekday_data) { {} }
       let(:expected_week_of_year) { [] }

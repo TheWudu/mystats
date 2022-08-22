@@ -5,8 +5,8 @@ require 'connections/mongo_db'
 module Repositories
   module SportSessions
     class MongoDb
-      def fetch(years:, months:, sport_type_ids:, text: nil)
-        matcher = build_matcher(years: years, months: months, sport_type_ids: sport_type_ids)
+      def fetch(years:, months:, sport_types:, text: nil)
+        matcher = build_matcher(years: years, months: months, sport_types: sport_types)
         matcher.merge!(text_filter(text)) unless text.blank?
 
         collection.find(matcher).sort({ start_time: -1 }).map do |doc|
@@ -17,6 +17,7 @@ module Repositories
       def find_by_id(id:)
         sessions = find_by_ids(ids: [id])
         return nil unless sessions.count == 1
+
         sessions.first
       end
 
@@ -41,25 +42,25 @@ module Repositories
         Where.new.execute(opts)
       end
 
-      def find_with_traces(id__not_in: nil, year: nil, month: nil, sport_type_id: nil)
+      def find_with_traces(id__not_in: nil, year: nil, month: nil, sport_type: nil)
         opts = {
-          'trace.exists'  => true,
-          'id.not_in'     => id__not_in,
-          'year'          => year,
-          'month'         => month,
-          'sport_type_id' => sport_type_id
+          'trace.exists' => true,
+          'id.not_in'    => id__not_in,
+          'year'         => year,
+          'month'        => month,
+          'sport_type'   => sport_type
         }
         Where.new.execute(opts)
       end
 
-      def exists?(start_time:, sport_type_id:)
-        collection.count({ year:          start_time.year,
-                           month:         start_time.month,
-                           start_time:    {
+      def exists?(start_time:, sport_type:)
+        collection.count({ year:       start_time.year,
+                           month:      start_time.month,
+                           start_time: {
                              '$gte' => (start_time - 1.minute),
                              '$lte' => (start_time + 1.minute)
                            },
-                           sport_type_id: sport_type_id }).positive?
+                           sport_type: sport_type }).positive?
       end
 
       def insert(session:)
@@ -73,8 +74,10 @@ module Repositories
 
       private
 
+      IGNORE_DB_KEYS = %w[_id sport_type_id].freeze
+
       def to_model(doc)
-        Models::SportSession.new(doc.except('_id').symbolize_keys)
+        Models::SportSession.new(doc.except(*IGNORE_DB_KEYS).symbolize_keys)
       end
 
       def text_filter(text)
@@ -96,11 +99,11 @@ module Repositories
         raise ArgumentError, 'missing start_time'
       end
 
-      def build_matcher(years: nil, months: nil, sport_type_ids: nil)
+      def build_matcher(years: nil, months: nil, sport_types: nil)
         m = {}
         m.merge!(year: { '$in' => years }) if years && !years.empty?
         m.merge!(month: { '$in' => months }) if months && !months.empty?
-        m.merge!(sport_type_id: { '$in' => sport_type_ids }) if sport_type_ids && !sport_type_ids.empty?
+        m.merge!(sport_type: { '$in' => sport_types }) if sport_types && !sport_types.empty?
         m
       end
 

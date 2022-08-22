@@ -29,7 +29,6 @@ module Parser
                       id:                         SecureRandom.uuid,
                       notes:                      track[:name],
                       sport_type:                 track[:type],
-                      sport_type_id:              SportType.id_for(name: track[:type]),
                       start_time:                 track[:points].first[:time],
                       end_time:                   track[:points].last[:time],
                       duration:                   duration,

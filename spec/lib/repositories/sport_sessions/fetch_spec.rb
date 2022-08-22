@@ -8,10 +8,10 @@ describe Repositories::SportSessions, :clear_db do
 
     let(:years)  { nil }
     let(:months) { nil }
-    let(:sport_type_ids) { nil }
+    let(:sport_types) { nil }
     let(:text) { nil }
 
-    subject { described_class.fetch(years: years, months: months, sport_type_ids: sport_type_ids, text: text) }
+    subject { described_class.fetch(years: years, months: months, sport_types: sport_types, text: text) }
 
     context 'when no sessions exist' do
       it { expect(subject).to be_empty }
@@ -30,7 +30,7 @@ describe Repositories::SportSessions, :clear_db do
         FactoryBot.create(:sport_session, start_time: Time.parse('2022-07-12T00:07:02Z'))
       end
       let(:sport_session_3) do
-        FactoryBot.create(:sport_session, start_time: Time.parse('2021-08-12T00:07:02Z'), sport_type_id: 2)
+        FactoryBot.create(:sport_session, start_time: Time.parse('2021-08-12T00:07:02Z'), sport_type: 'cycling')
       end
 
       before do
@@ -60,21 +60,21 @@ describe Repositories::SportSessions, :clear_db do
       it_behaves_like 'returns sport-sessions' do
         let(:years) { [2022] }
         let(:months) { [8] }
-        let(:sport_type_ids) { [2] }
+        let(:sport_types) { ['cycling'] }
         let(:expected_ids) { [] }
         let(:expected_count) { 0 }
       end
 
       it_behaves_like 'returns sport-sessions' do
         let(:years) { [2021] }
-        let(:sport_type_ids) { [2] }
+        let(:sport_types) { ['cycling'] }
         let(:expected_ids) { [sport_session_3.id] }
         let(:expected_count) { 1 }
       end
 
       it_behaves_like 'returns sport-sessions' do
         let(:years) { [2021, 2022] }
-        let(:sport_type_ids) { [1, 2] }
+        let(:sport_types) { %w[running cycling] }
         let(:expected_ids) { [sport_session_1.id, sport_session_2.id, sport_session_3.id] }
         let(:expected_count) { 3 }
       end

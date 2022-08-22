@@ -2,6 +2,7 @@
 
 class SportType
   def self.id_for(name: nil)
+    raise 'do not use this'
     return 5 unless name
 
     SPORT_TYPE_MAPPING[name]

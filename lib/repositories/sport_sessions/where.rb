@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'mongo_db'
 
 module Repositories
@@ -8,9 +10,9 @@ module Repositories
       # trace.exists
       # year
       # month
-      # sport_type_id
+      # sport_type
 
-      IN_LIST_MATCHER = %w[year month sport_type_id].freeze
+      IN_LIST_MATCHER = %w[year month sport_type].freeze
       NOT_IN_LIST_MATCHER = %w[id].freeze
       EXISTS_MATCHER = %w[trace].freeze
       RANGE_MATCHER = %w[distance].freeze
@@ -61,7 +63,6 @@ module Repositories
           q[attr] = { '$gte' => value.first, '$lte' => value.second }
         end
       end
-
     end
   end
 end

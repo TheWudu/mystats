@@ -12,9 +12,9 @@ class ApplicationController < ActionController::Base
 
   def statistics
     @statistics ||= Repositories::Statistics::MongoDb.new(
-      years:          years,
-      sport_type_ids: sport_type_ids,
-      group_by:       nil
+      years:       years,
+      sport_types: sport_types,
+      group_by:    nil
     )
   end
 
@@ -24,10 +24,10 @@ class ApplicationController < ActionController::Base
       year:  Time.now.year.to_s
     )
     {
-      year:          params[:year],
-      month:         params[:month],
-      sport_type_id: params[:sport_type_id],
-      group_by:      params[:group_by]
+      year:       params[:year],
+      month:      params[:month],
+      sport_type: params[:sport_type],
+      group_by:   params[:group_by]
     }
   end
 
@@ -39,8 +39,8 @@ class ApplicationController < ActionController::Base
     params[:month]&.split(',')&.map(&:to_i)
   end
 
-  def sport_type_ids
-    params[:sport_type_id]&.split(',')&.map(&:to_i)
+  def sport_types
+    params[:sport_type]&.split(',')
   end
 
   def group_by
