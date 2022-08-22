@@ -5,6 +5,7 @@ require 'models/sport_session'
 
 FactoryBot.define do
   factory :sport_session, class: 'Models::SportSession' do
+    initialize_with { new(attributes) }
     to_create do |instance|
       attrs = {
         id:                         instance.id,
@@ -44,7 +45,12 @@ FactoryBot.define do
     trace          { nil }
 
     trait :with_trace do
-      trace { JSON.parse(File.read('spec/fixtures/traces/running_7km.json')) }
+      trace do
+        JSON.parse(File.read('spec/fixtures/traces/running_7km.json')).map do |p|
+          p['time'] = Time.parse(p['time'])
+          p
+        end
+      end
     end
   end
 end

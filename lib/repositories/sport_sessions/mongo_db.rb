@@ -74,7 +74,7 @@ module Repositories
       private
 
       def to_model(doc)
-        Models::SportSession.new(doc.except('_id'))
+        Models::SportSession.new(doc.except('_id').symbolize_keys)
       end
 
       def text_filter(text)
