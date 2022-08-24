@@ -8,9 +8,10 @@ describe Repositories::Courses, :clear_db do
   describe '#update' do
     let(:course) { FactoryBot.create(:course, id: id, name: 'my awesome c') }
     let(:updated_course) do
-      course.dup.tap do |c|
-        c.name = 'my awesome course'
-      end
+      # the following line would work after PR: TBD
+      # is merged to main of defintiion
+      # course.new(name: 'my awesome course')
+      course.class.new(course.merge(name: "my awesome course"))
     end
 
     before do
