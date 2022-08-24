@@ -18,15 +18,12 @@ module UseCases
         Models::Course.new(
           id:          SecureRandom.uuid,
           name:        name,
-          trace:       trace,
+          trace:       session.trace,
           distance:    session.distance,
           session_ids: [session.id]
         )
       end
 
-      def trace
-        session.trace.map { |p| p.slice('lat', 'lng', 'ele') }
-      end
     end
   end
 end
