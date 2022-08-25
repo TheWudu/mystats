@@ -11,9 +11,8 @@ module UseCases
 
       def run
         ids = matching_sessions.map(&:id)
-        course.session_ids += ids
-        course.session_ids.uniq.compact
-        update_course
+        new_ids = (course.session_ids + ids).uniq.compact
+        update_course(new_ids)
       end
 
       private
@@ -36,8 +35,9 @@ module UseCases
         @course ||= Repositories::Courses.find(id: course_id)
       end
 
-      def update_course
-        Repositories::Courses.update(course: course)
+      def update_course(new_ids)
+        updated_course = course.class.new(course.merge(session_ids: new_ids))
+        Repositories::Courses.update(course: updated_course)
       end
     end
   end

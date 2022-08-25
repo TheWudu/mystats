@@ -2,13 +2,16 @@
 
 FactoryBot.define do
   factory :course, class: 'Models::Course' do
+
+    initialize_with { new(attributes) }
+
     to_create do |instance|
       Repositories::Courses.insert(course: instance)
     end
 
     id   { SecureRandom.uuid }
     name { 'my awesome route' }
-    distance { 7.2 }
+    distance { 7200 }
     trace { nil }
     session_ids { [] }
 
