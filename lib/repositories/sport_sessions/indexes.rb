@@ -1,4 +1,6 @@
-require_relative "mongo_db"
+# frozen_string_literal: true
+
+require_relative 'mongo_db'
 
 module Repositories
   module SportSessions
@@ -8,7 +10,7 @@ module Repositories
         create_id_distance_index
         create_notes_text_index
       end
-      
+
       def create_year_month_index
         name = 'year_month_sport_type_id_start_time'
         index = { year: 1, month: 1, sport_type_id: 1, start_time: 1 }
@@ -48,4 +50,3 @@ module Repositories
     end
   end
 end
-

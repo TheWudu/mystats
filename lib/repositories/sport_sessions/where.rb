@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'mongo_db'
 
 module Repositories
@@ -61,7 +63,6 @@ module Repositories
           q[attr] = { '$gte' => value.first, '$lte' => value.second }
         end
       end
-
     end
   end
 end

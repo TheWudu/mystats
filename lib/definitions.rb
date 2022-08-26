@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Definitions
   class GpsPointArray < Definition::ValueObject
     definition(Definition.Each(Definition.Keys do
@@ -7,5 +9,4 @@ module Definitions
       optional 'ele', Definition.CoercibleType(Float)
     end))
   end
-
 end

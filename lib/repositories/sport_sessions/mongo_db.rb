@@ -17,6 +17,7 @@ module Repositories
       def find_by_id(id:)
         sessions = find_by_ids(ids: [id])
         return nil unless sessions.count == 1
+
         sessions.first
       end
 
@@ -111,4 +112,4 @@ module Repositories
   end
 end
 
-require_relative "indexes"
+require_relative 'indexes'

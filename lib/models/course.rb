@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "definitions"
+require 'definitions'
 
 module Models
   class Course < Definition::ValueObject
