@@ -113,3 +113,5 @@ module Repositories
     end
   end
 end
+
+require_relative "indexes"

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "mongo_db"
+
 module Repositories
   module SportSessions
     class Indexes < MongoDb
