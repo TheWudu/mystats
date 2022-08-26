@@ -23,7 +23,6 @@ module UseCases
           session_ids: [session.id]
         )
       end
-
     end
   end
 end

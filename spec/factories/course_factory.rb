@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :course, class: 'Models::Course' do
-
     initialize_with { new(attributes) }
 
     to_create do |instance|

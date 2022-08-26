@@ -28,7 +28,7 @@ module Parser
         distance:                   json_stats['distance'],
         pause:                      json_stats['pause_duration'],
         notes:                      json_stats['notes'],
-        sport_type:                 SportType.name_for(id: json_stats['sport_type_id'].to_i),
+        sport_type:                 SportType.name_for_runtastic_id(id: json_stats['sport_type_id'].to_i),
         start_time:                 Time.at(json_stats['start_time'] / 1000),
         end_time:                   Time.at(json_stats['end_time'] / 1000),
         duration:                   json_stats['duration'],
