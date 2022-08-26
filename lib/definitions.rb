@@ -4,7 +4,7 @@ module Definitions
       required 'time', Definition.Type(Time)
       required 'lat', Definition.Type(Float)
       required 'lng', Definition.Type(Float)
-      optional 'ele', Definition.Type(Float)
+      optional 'ele', Definition.CoercibleType(Float)
     end))
   end
 

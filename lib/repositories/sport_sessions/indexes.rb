@@ -1,3 +1,5 @@
+require_relative "mongo_db"
+
 module Repositories
   module SportSessions
     class Indexes < MongoDb
