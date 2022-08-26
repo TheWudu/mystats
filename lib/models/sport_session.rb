@@ -1,16 +1,9 @@
 # frozen_string_literal: true
 
+require "definitions"
+
 module Models
   class SportSession < Definition::ValueObject
-    class GpsPointArray < Definition::ValueObject
-      definition(Definition.Each(Definition.Keys do
-        required 'time', Definition.Type(Time)
-        required 'lat', Definition.Type(Float)
-        required 'lng', Definition.Type(Float)
-        optional 'ele', Definition.Type(Float)
-      end))
-    end
-
     definition(Definition.Keys do
       required :id, Definition.Type(String)
       optional :sport_type, Definition.Type(String)
@@ -23,7 +16,7 @@ module Models
       optional :month, Definition.Type(Integer)
       optional :notes, Definition.Type(String)
       optional :distance, Definition.Type(Integer)
-      optional :trace, Definition.Nilable(Definition.CoercibleValueObject(GpsPointArray))
+      optional :trace, Definition.Nilable(Definition.CoercibleValueObject(Definitions::GpsPointArray))
       optional :elevation_gain, Definition.Type(Integer)
       optional :elevation_loss, Definition.Type(Integer)
       optional :pause, Definition.Type(Integer)

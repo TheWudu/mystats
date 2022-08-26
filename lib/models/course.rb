@@ -1,27 +1,15 @@
 # frozen_string_literal: true
 
+require "definitions"
+
 module Models
-  class Course
-    attr_accessor :id, :name, :distance, :trace, :session_ids
-
-    def initialize(attrs = {})
-      attrs.each do |k, v|
-        send("#{k}=", v)
-      end
-    end
-
-    def to_h
-      {
-        id:          id,
-        name:        name,
-        distance:    distance,
-        session_ids: session_ids,
-        trace:       trace
-      }
-    end
-
-    def ==(other)
-      other&.as_json == self&.as_json
-    end
+  class Course < Definition::ValueObject
+    definition(Definition.Keys do
+      required :id, Definition.Type(String)
+      required :name, Definition.Type(String)
+      required :distance, Definition.Type(Integer)
+      required :trace, Definition.Nilable(Definition.CoercibleValueObject(Definitions::GpsPointArray))
+      required :session_ids, Definition.Each(Definition.Type(String))
+    end)
   end
 end

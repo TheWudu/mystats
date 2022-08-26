@@ -52,7 +52,7 @@ module Repositories
       private
 
       def to_model(doc)
-        attrs = doc.except('_id')
+        attrs = doc.except('_id').symbolize_keys
         Models::Course.new(attrs)
       end
 
