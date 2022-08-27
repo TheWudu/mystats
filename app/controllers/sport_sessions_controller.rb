@@ -15,10 +15,10 @@ class SportSessionsController < ApplicationController
 
   def index
     @sport_sessions = sport_sessions_repo.fetch(
-      text:           params[:text],
-      years:          years,
-      months:         months,
-      sport_type_ids: sport_type_ids
+      text:        params[:text],
+      years:       years,
+      months:      months,
+      sport_types: sport_types
     )
   end
 
@@ -58,9 +58,9 @@ class SportSessionsController < ApplicationController
 
   def statistics
     @statistics ||= Repositories::Statistics::MongoDb.new(
-      years:          years,
-      sport_type_ids: sport_type_ids,
-      group_by:       group_by
+      years:       years,
+      sport_types: sport_types,
+      group_by:    group_by
     )
   end
 end

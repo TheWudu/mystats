@@ -13,8 +13,8 @@ module UseCases
 
       def exists?(session)
         session_repo.exists?(
-          start_time:    session[:start_time],
-          sport_type_id: session[:sport_type_id]
+          start_time: session[:start_time],
+          sport_type: session[:sport_type]
         )
       end
 

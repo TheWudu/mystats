@@ -65,15 +65,15 @@ deselected_color = "#bbbbbb"
 
 
   <div>
-    <% @possible_sport_types.each do |id, name| 
+    <% @possible_sport_types.each do |name| 
         params = @filter_params.dup
-        selected_sports = params[:sport_type_id]&.split(",") || []
-        params[:sport_type_id] = if selected_sports.include?(id.to_s)
+        selected_sports = params[:sport_type]&.split(",") || []
+        params[:sport_type] = if selected_sports.include?(name)
           button = "button-green"
-          selected_sports - [id.to_s]
+          selected_sports - [name]
         else
           button = "button-gray"
-          selected_sports + [id.to_s]
+          selected_sports + [name]
         end.flatten.join(',')
 
         button = "button-green" if selected_sports.empty?

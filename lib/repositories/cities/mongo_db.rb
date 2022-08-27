@@ -8,8 +8,6 @@ module Repositories
     class MongoDb
       MAX_DISTANCE = 10_000
 
-      attr_accessor :years, :months, :sport_type_ids
-
       def fetch(name: nil, latitude: nil, longitude: nil, timezone: nil)
         matcher = {}
         matcher.merge!(geo_matcher(latitude, longitude, 50_000)) unless latitude.blank? && longitude.blank?

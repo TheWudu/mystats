@@ -6,7 +6,6 @@ module Models
   class SportSession < Definition::ValueObject
     definition(Definition.Keys do
       required :id, Definition.Type(String)
-      optional :sport_type_id, Definition.Type(Integer)
       optional :sport_type, Definition.Type(String)
       required :start_time, Definition.Type(Time)
       required :end_time, Definition.Type(Time)
@@ -33,10 +32,6 @@ module Models
 
     def local_start_time
       start_time.in_time_zone(timezone)
-    end
-
-    def sport
-      SportType.name_for(id: sport_type_id)
     end
 
     def distance_in_km

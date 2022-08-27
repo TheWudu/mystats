@@ -15,8 +15,8 @@ class CoursesController < ApplicationController
     @assigned_sessions = assigned_sessions(@course)
     @assigned_sessions_durations = duration_chart_data(@assigned_sessions)
     slow_fast = @assigned_sessions.sort_by { |sport_session| sport_session.duration / sport_session.distance }
-    @fastest_session_id   = slow_fast.first.id
-    @slowest_session_id   = slow_fast.last.id
+    @fastest_session_id   = slow_fast.first&.id
+    @slowest_session_id   = slow_fast.last&.id
 
     @course_stats = stats_from_assigned(@assigned_sessions)
 
@@ -40,10 +40,10 @@ class CoursesController < ApplicationController
   def new
     @path_method = 'new_course_path'
     @possible_sessions = Repositories::SportSessions.find_with_traces(
-      id__not_in:    session_ids_from_courses,
-      year:          years,
-      month:         months,
-      sport_type_id: sport_type_ids
+      id__not_in: session_ids_from_courses,
+      year:       years,
+      month:      months,
+      sport_type: sport_types
     )
     @pre_selected = Repositories::SportSessions.find_by_id(id: params[:sport_session_id])
     if params[:sport_session_id] &&
@@ -76,7 +76,7 @@ class CoursesController < ApplicationController
   def stats_from_assigned(assigned_sessions)
     overall_distance = assigned_sessions.sum(&:distance)
     overall_duration = assigned_sessions.sum(&:duration)
-    average_pace     = overall_duration / overall_distance.to_f * 1000 # ms / m * 1000 = ms/km
+    average_pace = overall_duration / overall_distance.to_f * 1000 if overall_distance && overall_duration
     {
       overall_distance:       (overall_distance / 1000.0).round(2),
       overall_duration:       format_ms(overall_duration),

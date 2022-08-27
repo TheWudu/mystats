@@ -8,16 +8,16 @@ describe Repositories::SportSessions, :clear_db do
 
     let(:year) { nil }
     let(:month) { nil }
-    let(:sport_type_id) { nil }
+    let(:sport_type) { nil }
     let(:id_not_in) { nil }
     let(:trace_exists) { nil }
 
     let(:opts) do
       {
-        year:          year,
-        month:         month,
-        sport_type_id: sport_type_id,
-        id__not_in:    id_not_in
+        year:       year,
+        month:      month,
+        sport_type: sport_type,
+        id__not_in: id_not_in
       }.compact
     end
 
@@ -34,16 +34,16 @@ describe Repositories::SportSessions, :clear_db do
 
     context 'when session exists' do
       let(:sport_session_1) do
-        FactoryBot.create(:sport_session, :with_trace, start_time:    Time.parse('2022-08-12T07:08:23Z'),
-                                                       sport_type_id: 1)
+        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2022-08-12T07:08:23Z'),
+                                                       sport_type: 'running')
       end
       let(:sport_session_2) do
-        FactoryBot.create(:sport_session, :with_trace, start_time:    Time.parse('2022-07-12T09:26:23Z'),
-                                                       sport_type_id: 2)
+        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2022-07-12T09:26:23Z'),
+                                                       sport_type: 'cycling')
       end
       let(:sport_session_3) do
-        FactoryBot.create(:sport_session, :with_trace, start_time:    Time.parse('2021-08-12T12:56:23Z'),
-                                                       sport_type_id: 1)
+        FactoryBot.create(:sport_session, :with_trace, start_time: Time.parse('2021-08-12T12:56:23Z'),
+                                                       sport_type: 'running')
       end
 
       before do
@@ -71,7 +71,7 @@ describe Repositories::SportSessions, :clear_db do
       end
 
       it_behaves_like 'returns sport-sessions' do
-        let(:sport_type_id) { [2] }
+        let(:sport_type) { ['cycling'] }
         let(:expected_ids) { [sport_session_2.id] }
         let(:expected_count) { 1 }
       end

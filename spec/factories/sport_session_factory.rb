@@ -19,7 +19,6 @@ FactoryBot.define do
         pause:                      instance.pause,
         elevation_gain:             instance.elevation_gain,
         elevation_loss:             instance.elevation_loss,
-        sport_type_id:              instance.sport_type_id,
         sport_type:                 instance.sport_type,
         trace:                      instance.trace
       }
@@ -40,7 +39,6 @@ FactoryBot.define do
     month { start_time.month }
     elevation_gain { 112 }
     elevation_loss { 110 }
-    sport_type_id  { 1 }
     sport_type     { 'running' }
     trace          { nil }
 
