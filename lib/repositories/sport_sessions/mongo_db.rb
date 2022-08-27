@@ -114,4 +114,4 @@ module Repositories
   end
 end
 
-require_relative "indexes"
+require_relative 'indexes'

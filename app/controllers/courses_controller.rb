@@ -47,10 +47,10 @@ class CoursesController < ApplicationController
     )
     @pre_selected = Repositories::SportSessions.find_by_id(id: params[:sport_session_id])
     if params[:sport_session_id] &&
-      @possible_sessions.map(&:id).include?(params[:sport_session_id])
-      @possible_sessions << @pre_selected 
+       @possible_sessions.map(&:id).include?(params[:sport_session_id])
+      @possible_sessions << @pre_selected
     end
-    @possible_sessions = @possible_sessions.sort_by { |e| e.start_time }.reverse
+    @possible_sessions = @possible_sessions.sort_by(&:start_time).reverse
   end
 
   def create_from_session
