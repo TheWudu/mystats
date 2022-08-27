@@ -8,7 +8,7 @@ class SportType
   def self.name_for_runtastic_id(id: nil)
     return 'other' unless id
 
-    SPORT_TYPE_MAPPING.fetch(id)
+    RUNTASTIC_SPORT_TYPE_MAPPING.fetch(id)
   end
 
   SPORT_TYPE_UNIFIED = {
