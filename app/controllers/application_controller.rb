@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  add_flash_types :warning, :success
+  add_flash_types :warning, :success, :error
 
   def filters
     @show_filters         = { month: true }

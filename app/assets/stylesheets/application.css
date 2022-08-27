@@ -37,8 +37,13 @@
   border-radius: 12px;
 }
 
+.flash-error {
+  border: 3px dotted #ffcccb;
+  background-color: #ffcccb; /* light red */ 
+}
+
 .flash-warning {
-  border: 3px dotted orange;
+  border: 3px dotted #fed8b1;
   background-color: #fed8b1; /* light orange */ 
 }
 

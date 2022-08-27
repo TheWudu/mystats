@@ -11,17 +11,25 @@ class ImportsController < ApplicationController
     use_case = UseCases::Session::ImportGpx.new(data: data)
     use_case.run
 
-    if use_case_errors(use_case)
-      flash[:warning] = use_case_errors
+    if (errors = use_case_errors(use_case))
+      flash[:error] = errors
+    elsif (warnings = use_case_warnings(use_case))
+      flash[:warning] = warnings
     else
       flash[:success] = "Successfully imported #{use_case.count} sessions"
     end
     redirect_to sport_sessions_path
   end
 
+  def use_case_warnings(use_case)
+    return nil if use_case.warnings.empty?
+
+    use_case.warnings.uniq.join(";\n")
+  end
+
   def use_case_errors(use_case)
     return nil if use_case.errors.empty?
 
-    use_case.errors.map(&:message).uniq.join("\n")
+    use_case.errors.map(&:message).uniq.join(";\n")
   end
 end

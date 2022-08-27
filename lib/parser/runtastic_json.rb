@@ -20,6 +20,10 @@ module Parser
       @gpx_data  = gpx_data
     end
 
+    def warnings
+      gpx_parser&.warnings
+    end
+
     def parse
       {
         id:                         json_stats['id'],
@@ -38,10 +42,16 @@ module Parser
       }.compact
     end
 
+    def gpx_parser
+      return nil  unless gpx_data
+
+      @gpx_parser ||= Parser::Gpx.new(data: gpx_data)
+    end
+
     def gpx_parsed
       return {} unless gpx_data
 
-      @gpx_parsed ||= Parser::Gpx.new(data: gpx_data).parse.first
+      @gpx_parsed ||= gpx_parser.parse.first
     rescue StandardError => e
       ap e.message
       ap e.backtrace if ENV['VERBOSE']

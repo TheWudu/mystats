@@ -3,13 +3,15 @@
 require 'rails_helper'
 
 describe Parser::RuntasticJson do
+  let(:parser) { described_class.new(json_data: json_data, gpx_data: gpx_data) }
+
+  subject { parser.parse }
+
   context 'with yoga session without trace as input' do
     let(:json_input_file) { 'spec/fixtures/runtastic/yoga.json' }
     let(:json_data) { File.read(json_input_file) }
 
     let(:gpx_data) { nil }
-
-    subject { described_class.new(json_data: json_data, gpx_data: gpx_data).parse }
 
     let(:expected_data) do
       {
@@ -35,8 +37,6 @@ describe Parser::RuntasticJson do
     let(:json_data) { File.read(json_input_file) }
 
     let(:gpx_data) { nil }
-
-    subject { described_class.new(json_data: json_data, gpx_data: gpx_data).parse }
 
     let(:expected_data) do
       {
@@ -66,8 +66,6 @@ describe Parser::RuntasticJson do
     let(:gpx_input_file) { 'spec/fixtures/runtastic/running_8km.gpx' }
     let(:gpx_data) { File.read(gpx_input_file) }
 
-    subject { described_class.new(json_data: json_data, gpx_data: gpx_data).parse }
-
     let(:expected_data) do
       {
         id:                         anything,
@@ -87,5 +85,9 @@ describe Parser::RuntasticJson do
     end
 
     it { expect(subject).to include(expected_data) }
+    it 'adds warning about not imported cities' do
+      subject
+      expect(parser.warnings).to eq(['Cities not imported, timezone might be wrong'])
+    end
   end
 end

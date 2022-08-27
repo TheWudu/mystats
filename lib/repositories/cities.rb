@@ -11,6 +11,7 @@ module Repositories
                  nearest
                  exist?
                  insert
+                 count
                  create_geo_index
                  create_name_index].freeze
 

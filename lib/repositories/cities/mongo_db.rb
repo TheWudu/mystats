@@ -29,6 +29,10 @@ module Repositories
         cities.insert_one(prepare(city))
       end
 
+      def count
+        cities.count({})
+      end
+
       def create_geo_index
         name = 'geolocation'
         return if find_index(name)

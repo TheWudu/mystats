@@ -6,21 +6,28 @@ require_relative 'import'
 module UseCases
   module Session
     class ImportGpx < Import
-      attr_reader :data
+      attr_reader :data, :warns
 
       def initialize(data:)
         super()
         @data = data
+        @warns = []
       end
 
       def run
         sessions.each do |session|
-          store(session)
+          inserted = store(session)
+          add_warning('already exists') unless inserted
         end
       end
 
       def errors
-        parser.errors
+        []
+      end
+
+      def warnings
+        parser.warnings +
+          warns
       end
 
       def count
@@ -28,6 +35,10 @@ module UseCases
       end
 
       private
+
+      def add_warning(txt)
+        warns << txt
+      end
 
       def sessions
         @sessions ||= parser.parse

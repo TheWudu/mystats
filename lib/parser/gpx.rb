@@ -12,11 +12,11 @@ require 'hgt_reader'
 
 module Parser
   class Gpx
-    attr_reader :data, :errors
+    attr_reader :data, :warnings
 
     def initialize(data:)
       @data = data
-      @errors = []
+      @warnings = []
     end
 
     def parse # rubocop:disable Metrics/AbcSize
@@ -56,6 +56,9 @@ module Parser
     def timezone_for(point)
       city = Repositories::Cities.nearest(lat: point[:lat].to_f, lng: point[:lon].to_f)
       return city[:timezone] if city
+
+      cities_count = Repositories::Cities.count
+      @warnings << 'Cities not imported, timezone might be wrong' if cities_count.zero?
 
       'UTC'
     end
@@ -141,7 +144,7 @@ module Parser
 
       HgtReader.new.elevation(lat, lng)
     rescue StandardError => e
-      @errors << e
+      @warnings << e.message unless warnings.include?(e.message)
       ele
     end
 
@@ -158,38 +161,3 @@ module Parser
     end
   end
 end
-
-# data = File.read("/home/martin/coding/mongo_cpp/data/gpx/activity_8987491399.gpx")
-# # data = File.read("test.gpx")
-#
-# ap Parser::Gpx.new(data: data).parse
-
-# <?xml version="1.0" encoding="UTF-8"?>
-# <gpx creator="Garmin Connect" version="1.1"
-#   xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/11.xsd"
-#   xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
-#   xmlns="http://www.topografix.com/GPX/1/1"
-#   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-#   <metadata>
-#     <link href="connect.garmin.com">
-#       <text>Garmin Connect</text>
-#     </link>
-#     <time>2022-06-10T05:39:43.000Z</time>
-#   </metadata>
-#   <trk>
-#     <name>Quick short friday morning run.</name>
-#     <type>running</type>
-#     <trkseg>
-#       <trkpt lat="47.98088229261338710784912109375" lon="13.15221391618251800537109375">
-#         <ele>597.79998779296875</ele>
-#         <time>2022-06-10T05:39:43.000Z</time>
-#         <extensions>
-#           <ns3:TrackPointExtension>
-#             <ns3:hr>82</ns3:hr>
-#             <ns3:cad>0</ns3:cad>
-#           </ns3:TrackPointExtension>
-#        </extensions>
-#      </trkpt>
-#    </trkseg>
-#   </trk>
-# </gpx>
