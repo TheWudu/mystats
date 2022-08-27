@@ -3,11 +3,10 @@
 require 'rails_helper'
 
 describe Parser::RuntasticJson do
-
-  context "with yoga session without trace as input" do
+  context 'with yoga session without trace as input' do
     let(:json_input_file) { 'spec/fixtures/runtastic/yoga.json' }
     let(:json_data) { File.read(json_input_file) }
-    
+
     let(:gpx_data) { nil }
 
     subject { described_class.new(json_data: json_data, gpx_data: gpx_data).parse }
@@ -24,17 +23,17 @@ describe Parser::RuntasticJson do
         start_time:                 Time.parse('2022-07-03T15:39:50Z'),
         start_time_timezone_offset: 7200,
         timezone:                   'Europe/Vienna',
-        trace:                     [] 
+        trace:                      []
       }
     end
 
     it { expect(subject).to include(expected_data) }
   end
-  
-  context "with running session without gpx-trace as input" do
+
+  context 'with running session without gpx-trace as input' do
     let(:json_input_file) { 'spec/fixtures/runtastic/running_8km.json' }
     let(:json_data) { File.read(json_input_file) }
-    
+
     let(:gpx_data) { nil }
 
     subject { described_class.new(json_data: json_data, gpx_data: gpx_data).parse }
@@ -53,17 +52,17 @@ describe Parser::RuntasticJson do
         start_time:                 Time.parse('2022-07-02T05:11:00Z'),
         start_time_timezone_offset: 7200,
         timezone:                   'Europe/Vienna',
-        trace:                     [] 
+        trace:                      []
       }
     end
 
     it { expect(subject).to include(expected_data) }
   end
 
-  context "when running session with trace as input" do
+  context 'when running session with trace as input' do
     let(:json_input_file) { 'spec/fixtures/runtastic/running_8km.json' }
     let(:json_data) { File.read(json_input_file) }
-    
+
     let(:gpx_input_file) { 'spec/fixtures/runtastic/running_8km.gpx' }
     let(:gpx_data) { File.read(gpx_input_file) }
 
@@ -89,6 +88,4 @@ describe Parser::RuntasticJson do
 
     it { expect(subject).to include(expected_data) }
   end
-
-  
 end
