@@ -24,22 +24,37 @@ module Parser
       gpx_parser&.warnings
     end
 
+    DIRECT_JSON_ATTRIBUTES = %w[id elevation_gain elevation_loss distance
+                                pause_duration notes duration].freeze
+
     def parse
-      {
-        id:                         json_stats['id'],
-        elevation_gain:             json_stats['elevation_gain'],
-        elevation_loss:             json_stats['elevation_loss'],
-        distance:                   json_stats['distance'],
-        pause:                      json_stats['pause_duration'],
-        notes:                      json_stats['notes'],
-        sport_type:                 SportType.name_for_runtastic_id(id: json_stats['sport_type_id'].to_i),
-        start_time:                 Time.at(json_stats['start_time'] / 1000),
-        end_time:                   Time.at(json_stats['end_time'] / 1000),
-        duration:                   json_stats['duration'],
-        start_time_timezone_offset: json_stats['start_time_timezone_offset'] / 1000,
-        timezone:                   timezone,
-        trace:                      trace
-      }.compact
+      json_stats.slice(*DIRECT_JSON_ATTRIBUTES).merge(
+        {
+          pause:                      json_stats['pause_duration'],
+          sport_type:                 sport_type,
+          start_time:                 start_time,
+          end_time:                   end_time,
+          start_time_timezone_offset: start_time_timezone_offset,
+          timezone:                   timezone,
+          trace:                      trace
+        }
+      ).symbolize_keys.compact
+    end
+
+    def sport_type
+      SportType.name_for_runtastic_id(id: json_stats['sport_type_id'].to_i)
+    end
+
+    def start_time
+      Time.at(json_stats['start_time'] / 1000)
+    end
+
+    def end_time
+      Time.at(json_stats['end_time'] / 1000)
+    end
+
+    def start_time_timezone_offset
+      json_stats['start_time_timezone_offset'] / 1000
     end
 
     def gpx_parser
@@ -67,7 +82,7 @@ module Parser
     end
 
     def json_stats
-      JSON.parse(json_data)
+      @json_stats ||= JSON.parse(json_data)
     end
   end
 end
