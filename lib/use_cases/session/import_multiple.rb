@@ -37,17 +37,17 @@ module UseCases
       end
 
       def check_cities_imported
-        return true if Repositories::Cities.count > 0
+        return true if Repositories::Cities.count.positive?
 
-        puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-        puts "Cities not imported, timezone related information might be wrong"
-        puts "Use:"
-        puts "  rake import:cities[filename]"
-        puts "to import"
-        puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        puts 'Cities not imported, timezone related information might be wrong'
+        puts 'Use:'
+        puts '  rake import:cities[filename]'
+        puts 'to import'
+        puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
-        puts "Continue? [yN] "
-        STDIN.gets.chomp == "y"
+        puts 'Continue? [yN] '
+        $stdin.gets.chomp == 'y'
       end
     end
   end

@@ -112,18 +112,25 @@ class CoursesController < ApplicationController
   end
 
   def matched_sessions(course)
-    distance = course.distance
-    sessions = sessions_repo.where(opts: {
-                                     'distance.between' => [distance - 250, distance + 250],
-                                     'id.not_in'        => course.session_ids,
-                                     'trace.exists'     => true
-                                   })
-    matching_sessions = sessions.each_with_object([]) do |session, ary|
+    sessions = sessions_with_similar_distance(course.distance, course.session_ids)
+    matching_sessions = analyse_match_rate(course, sessions)
+    matching_sessions.compact.sort_by { |s| s[:session].start_time }.reverse
+  end
+
+  def sessions_with_similar_distance(distance, session_ids)
+    sessions_repo.where(opts: {
+                          'distance.between' => [distance - 250, distance + 250],
+                          'id.not_in'        => session_ids,
+                          'trace.exists'     => true
+                        })
+  end
+
+  def analyse_match_rate(course, sessions)
+    sessions.each_with_object([]) do |session, ary|
       matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: session.trace)
       matcher.analyse
       ary << { session: session, match_rate: matcher.match_in_percent } if matcher.matching?
     end
-    matching_sessions.compact.sort_by { |s| s[:session].start_time }.reverse
   end
 
   def sessions_repo
