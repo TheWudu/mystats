@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'fast_polylines'
-
 module UseCases
   module Traces
     class Matcher
