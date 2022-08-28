@@ -42,6 +42,10 @@ module Models
       format_ms(duration)
     end
 
+    def pause_as_str
+      format_ms(pause)
+    end
+
     def elevation
       format_elevation(elevation_gain, elevation_loss)
     end
@@ -49,7 +53,7 @@ module Models
     def avg_pace
       return '-' if distance.zero?
 
-      format_ms(duration / distance * 1000)
+      format_ms((duration - pause.to_i) / distance * 1000)
     end
 
     def format_ms(millis)
