@@ -50,14 +50,7 @@ module Repositories
       end
 
       def cnt_per_week_of_year
-        query = [{ '$match' => matcher },
-                 { '$addFields' => { 'week'          => { '$isoWeek' => '$start_time' },
-                                     'iso_week_year' => { "$isoWeekYear": '$start_time' } } }]
-        query << { '$match' => { iso_week_year: { '$in' => years } } } if years && !years.empty?
-        query << { '$group' => { _id: { year: '$year', week: '$week' }, cnt: { '$sum' => 1 } } }
-        query << { '$sort' => { _id: 1 } }
-
-        docs = sessions.aggregate(query).to_a
+        docs = sessions.aggregate(cnt_per_week_of_year_query).to_a
 
         # multiline data per year
         data = docs.each_with_object({}) do |d, h|
@@ -68,6 +61,16 @@ module Repositories
         data.map do |k, v|
           { name: k, data: v }
         end
+      end
+
+      def cnt_per_week_of_year_query
+        query = [{ '$match' => matcher },
+                 { '$addFields' => { 'week'          => { '$isoWeek' => '$start_time' },
+                                     'iso_week_year' => { "$isoWeekYear": '$start_time' } } }]
+        query << { '$match' => { iso_week_year: { '$in' => years } } } if years && !years.empty?
+        query << { '$group' => { _id: { year: '$year', week: '$week' }, cnt: { '$sum' => 1 } } }
+        query << { '$sort' => { _id: 1 } }
+        query
       end
 
       def data_per_year(attr)
