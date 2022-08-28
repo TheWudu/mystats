@@ -6,9 +6,8 @@ module UseCases
       BLOCK_SIZE_IN_METERS = 30
       MIN_OVERLAP = 60 # %
 
-      attr_accessor :trace1, :trace2, :blocks1, :blocks2, :match_in_percent,
-                    :block_size, :min_overlap, :orig1, :orig2,
-                    :lat_lng_blocks1, :lat_lng_blocks2
+      attr_accessor :trace1, :trace2, :match_in_percent,
+                    :block_size, :min_overlap
 
       def initialize(trace1:, trace2:, block_size: nil, min_overlap: nil)
         self.trace1 = trace1
@@ -20,16 +19,32 @@ module UseCases
       def analyse
         return unless trace1 || trace2
 
-        self.blocks1 = trace1.map { |p| blockify(p) }.uniq
-        self.blocks2 = trace2.map { |p| blockify(p) }.uniq
-        self.orig1   = trace1.map { |p| blockify(p, 1) }
-        self.orig2   = trace2.map { |p| blockify(p, 1) }
-
-        self.lat_lng_blocks1 = bounds(blocks1)
-        self.lat_lng_blocks2 = bounds(blocks2)
-
         diffs = find_matches
         self.match_in_percent = ((diffs.count(true).to_f / diffs.count) * 100).round(2)
+      end
+
+      def blocks1
+        @blocks1 ||= trace1.map { |p| blockify(p) }.uniq
+      end
+
+      def blocks2
+        @blocks2 ||= trace2.map { |p| blockify(p) }.uniq
+      end
+
+      def orig1
+        @orig1   ||= trace1.map { |p| blockify(p, 1) }
+      end
+
+      def orig2
+        @orig2   ||= trace2.map { |p| blockify(p, 1) }
+      end
+
+      def lat_lng_blocks1
+        @lat_lng_blocks1 ||= bounds(blocks1)
+      end
+
+      def lat_lng_blocks2
+        @lat_lng_blocks2 ||= bounds(blocks2)
       end
 
       def find_matches
