@@ -13,6 +13,8 @@ module UseCases
       end
 
       def run
+        return unless check_cities_imported
+
         puts "Read and parse #{filenames.count} files"
         sport_sessions = read_files
         puts "Store #{sport_sessions.count} sport sessions"
@@ -32,6 +34,20 @@ module UseCases
       def with_progress
         bar = ProgressBar.create(title: 'Items', total: filenames.size, format: "%c/%C (%j \%) - %e - %B")
         yield bar
+      end
+
+      def check_cities_imported
+        return true if Repositories::Cities.count > 0
+
+        puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        puts "Cities not imported, timezone related information might be wrong"
+        puts "Use:"
+        puts "  rake import:cities[filename]"
+        puts "to import"
+        puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
+        puts "Continue? [yN] "
+        STDIN.gets.chomp == "y"
       end
     end
   end
