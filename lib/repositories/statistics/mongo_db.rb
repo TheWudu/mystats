@@ -57,16 +57,15 @@ module Repositories
         query << { '$group' => { _id: { year: '$year', week: '$week' }, cnt: { '$sum' => 1 } } }
         query << { '$sort' => { _id: 1 } }
 
-        data = sessions.aggregate(query).to_a
-        data.each_with_object({}) do |d, h|
-          h[d['_id']] = d['cnt']
-        end
+        docs = sessions.aggregate(query).to_a
 
         # multiline data per year
-        data.each_with_object({}) do |d, h|
+        data = docs.each_with_object({}) do |d, h|
           h[d['_id']['year']] ||= {}
           h[d['_id']['year']].merge!({ d['_id']['week'] => d['cnt'] })
-        end.map do |k, v|
+        end
+
+        data.map do |k, v|
           { name: k, data: v }
         end
       end

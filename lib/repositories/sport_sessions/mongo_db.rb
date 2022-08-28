@@ -95,7 +95,7 @@ module Repositories
           year:  session[:start_time].year,
           month: session[:start_time].month
         ).compact
-      rescue NoMethodError => e
+      rescue NoMethodError
         raise ArgumentError, 'missing start_time'
       end
 

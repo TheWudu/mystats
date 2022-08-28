@@ -42,13 +42,13 @@ module UseCases
         result
       end
 
-      def store_km(cur_point, last_km_point, pause, m = :to_i)
+      def store_km(cur_point, last_km_point, pause, convert = :to_i)
         distance_diff = cur_point['distance'] - last_km_point['distance']
         duration_diff = cur_point['time'] - last_km_point['time'] - pause
 
         f = (1000 / distance_diff)
 
-        km = (cur_point['distance'] / 1000).send(m).round(2)
+        km = (cur_point['distance'] / 1000).send(convert).round(2)
         result[km.to_f] = (duration_diff * f).round(2)
       end
 

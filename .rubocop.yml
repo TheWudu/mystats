@@ -27,6 +27,9 @@ Metrics/ClassLength:
   Exclude:
     - 'spec/**/*'
 
+Metrics/AbcSize:
+  Max: 20
+
 Layout/LineLength:
   Max: 120
   Ignore:
