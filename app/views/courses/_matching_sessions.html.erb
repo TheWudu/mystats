@@ -32,7 +32,7 @@
           <td><%= link_to(hash[:match_rate], trace_matcher_path(session1: @assigned_session_id, session2: session.id), { data: {  turbo_frame: '_top' } })  %></td>
           <td><%= link_to("add", 
               course_session_index_path(course_id: @course.id, id: session.id), 
-              { data: { turbo_method: :post }, class: "button-green" }) %></td>
+              { data: { turbo_method: :post, turbo_frame: '_top' }, class: "button-green" }) %></td>
         </tr>
       <% end %>
     </table>
