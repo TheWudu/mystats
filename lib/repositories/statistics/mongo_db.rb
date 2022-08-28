@@ -25,7 +25,7 @@ module Repositories
       def possible_sport_types
         query = sessions.aggregate([
                                      { '$group' => { _id: '$sport_type', cnt: { "$sum": 1 } } },
-                                     { '$sort' => { _id: 1 } }
+                                     { '$sort' => { cnt: -1 } }
                                    ])
         # query.each_with_object({}) do |d, h|
         #   h[d['_id']] = SportType.name_for(id: d['_id'])
