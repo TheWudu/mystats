@@ -67,7 +67,6 @@ module Parser
       # and assume to slow is 1/10th of it
       avg_speed = points.sum { |p| p[:speed] } / points.size
       @to_slow = avg_speed / 10
-ap "avg speed: #{avg_speed} -> to_slow: #{to_slow}"
 
       # get the average durations between the gps points
       # and remove the lower and upper 10% to remove the
@@ -79,7 +78,6 @@ ap "avg speed: #{avg_speed} -> to_slow: #{to_slow}"
 
       # assume the pause has to have a duration > the average * 2
       @pause_threshold = most_durations.sum / most_durations.size * 2
-ap "pause threshold: #{pause_threshold}"
     end
 
     def trace_from_track(track)
