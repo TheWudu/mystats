@@ -20,4 +20,11 @@ describe Parser::Gpx do
     # has a pause of 17:58 (1078 s) regarding runtastic 
     it { expect(subject.first[:pause]).to eq(1105000) }
   end
+  
+  context 'with swimming session' do
+    let(:input_file) { 'spec/fixtures/traces/swimming_short.gpx' }
+
+    it { expect(subject.first[:pause]).to eq(0) }
+  end
+
 end
