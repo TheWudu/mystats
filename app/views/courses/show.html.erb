@@ -158,7 +158,7 @@ function sortTable(n) {
           <% end %>
         </td>
         <td><%= link_to(session.id, sport_session_path(id: session.id)) %></td>
-        <td><%= session.start_time %></td>
+        <td><%= session.local_start_time %></td>
         <td><%= session.sport_type %></td>
         <td><%= session.distance_in_km %></td>
         <td><%= session.duration_as_str %></td>
