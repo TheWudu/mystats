@@ -33,7 +33,13 @@
       <% if @course %>
         <%= link_to(@course.name, course_path(id: @course.id)) %>
       <% else %>
-        <%= link_to("create course", new_course_path(sport_session_id: @sport_session.id) ) %>
+        <div>
+          <%= turbo_frame_tag "matching_courses_turbo", src: "#{@sport_session.id}/matching_courses" do %>
+            <div>
+              <%= image_tag  "loading_icon.gif", height: 50 %>
+            </div>
+          <% end %>
+        </div>
       <% end %>
       </td></tr>
     </table>

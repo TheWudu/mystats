@@ -30,6 +30,32 @@ class SportSessionsController < ApplicationController
     @chart_title = 'elevation'
   end
 
+  def matching_courses
+    @sport_session = Repositories::SportSessions.find_by_id(id: params[:sport_session_id])
+    @matched_courses = matched_courses(@sport_session)
+
+    render 'sport_sessions/_matching_courses'
+  end
+
+  def matched_courses(sport_session)
+    courses = courses_with_similar_distance(sport_session.distance)
+    matching_courses = analyse_match_rate(sport_session, courses)
+    matching_courses.compact.sort_by { |c| c[:course].name }
+  end
+
+  def courses_with_similar_distance(distance)
+    Repositories::Courses.find_by_distance(distance__gte: distance - 250,
+                                           distance__lte: distance + 250)
+  end
+
+  def analyse_match_rate(sport_session, courses)
+    courses.each_with_object([]) do |course, ary|
+      matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: sport_session.trace)
+      matcher.analyse
+      ary << { course: course, match_rate: matcher.match_in_percent } if matcher.matching?
+    end
+  end
+
   def elevation_chart(sport_session)
     sport_session.trace.each_with_object({}) do |p, h|
       key = p['time'].in_time_zone(sport_session.timezone).strftime('%H:%M:%S')

@@ -1,0 +1,13 @@
+<%= turbo_frame_tag "matching_courses_turbo" do %>
+  <% if @matched_courses.count > 0 %>
+      Matching:<br>
+      <% @matched_courses.each do |hash|
+        course = hash[:course]
+      %>
+      <%= link_to("#{course.name}", course_path(id: course.id)) %>
+      <%= link_to(hash[:match_rate], trace_matcher_path(session1: @sport_session.id, session2: course.session_ids.first), { data: {  turbo_frame: '_top' } })  %>
+      <% end %>
+  <% end %>
+  <p>
+  <%= link_to("create course", new_course_path(sport_session_id: @sport_session.id) ) %>
+<% end %>

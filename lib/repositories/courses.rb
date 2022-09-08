@@ -7,6 +7,7 @@ module Repositories
     METHODS = %w[fetch
                  find
                  find_by_session_id
+                 find_by_distance
                  insert
                  update
                  session_ids

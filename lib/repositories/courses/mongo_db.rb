@@ -18,6 +18,18 @@ module Repositories
         to_model(doc)
       end
 
+      def find_by_distance(distance__gte:, distance__lte:)
+        docs = collection.find({
+                                 "distance": {
+                                   "$gte": distance__gte,
+                                   "$lte": distance__lte
+                                 }
+                               })
+        docs.map do |doc|
+          to_model(doc)
+        end
+      end
+
       def find_by_session_id(id:)
         doc = collection.find({ "session_ids": id }).first
         return nil unless doc
