@@ -6,6 +6,9 @@
       %>
       <%= link_to("#{course.name}", course_path(id: course.id)) %>
       <%= link_to(hash[:match_rate], trace_matcher_path(session1: @sport_session.id, session2: course.session_ids.first), { data: {  turbo_frame: '_top' } })  %>
+      <%= link_to("add", 
+            course_session_index_path(course_id: course.id, id: @sport_session.id), 
+            { data: { turbo_method: :post, turbo_frame: '_top' }, class: "button-green" }) %>
       <% end %>
   <% end %>
   <p>
