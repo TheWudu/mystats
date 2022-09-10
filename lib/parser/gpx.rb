@@ -48,7 +48,8 @@ module Parser
           time: p[:time],
           lat:  p[:lat].to_f,
           lng:  p[:lon].to_f,
-          ele:  p[:ele]
+          ele:  p[:ele],
+          hr:   p[:heart_rate]
         }
       end
     end
