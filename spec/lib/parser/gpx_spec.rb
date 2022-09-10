@@ -22,6 +22,8 @@ describe Parser::Gpx do
       start_time:                 Time.parse('2022-08-13T05:26:41Z'),
       start_time_timezone_offset: 0,
       timezone:                   'UTC',
+      heart_rate_avg:             145,
+      heart_rate_max:             179,
       trace:                      anything
     }
   end
