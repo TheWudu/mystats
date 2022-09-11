@@ -20,6 +20,8 @@ module Models
       optional :elevation_gain, Definition.Type(Integer)
       optional :elevation_loss, Definition.Type(Integer)
       optional :pause, Definition.Type(Integer)
+      optional :heart_rate_max, Definition.Type(Integer)
+      optional :heart_rate_avg, Definition.Type(Integer)
     end)
 
     def ==(other)

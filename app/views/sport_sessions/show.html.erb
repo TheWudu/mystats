@@ -23,11 +23,13 @@
       <tr><th>id</th>        <td><%= @sport_session.id %></td></tr>
       <tr><th>sport</th>     <td><%= @sport_session.sport_type %></td></tr>
       <tr><th>start time</th><td><%= @sport_session.local_start_time %></td></tr>
-      <tr><th>distance</th>  <td><%= @sport_session.distance_in_km %></td></tr>
+      <tr><th>distance</th>  <td><%= @sport_session.distance_in_km %> [km] </td></tr>
       <tr><th>duration</th>  <td><%= @sport_session.duration_as_str %></td></tr>
       <tr><th>pause</th>     <td><%= @sport_session.pause_as_str %></td></tr>
-      <tr><th>elevation</th> <td><%= @sport_session.elevation %></td></tr>
+      <tr><th>elevation</th> <td><%= @sport_session.elevation %> [m]</td></tr>
       <tr><th>avg pace</th>  <td><%= @sport_session.avg_pace  %></td></tr>
+      <tr><th>avg hr</th>    <td><%= @sport_session.heart_rate_avg || "-" %> [bpm]</td></tr>
+      <tr><th>max hr</th>    <td><%= @sport_session.heart_rate_max || "-" %> [bpm]</td></tr>
       <tr><th>notes</th>     <td><%= @sport_session.notes %></td></tr>
       <tr><th>course</th>    <td>
       <% if @course %>
@@ -55,8 +57,14 @@
     </table>
   </div>
   <div class="item-right" style="grid-row: 2 / span 1;">
-    <%= area_chart @chart_data, points: false, xtitle: @chart_title, min: @chart_data.values.min - 10, max: @chart_data.values.max + 10 %>
+    <%= area_chart @elevation_chart, points: false, xtitle: 'elevation', min: @elevation_chart.values.min - 10, max: @elevation_chart.values.max + 10 %>
   </div>
+
+  <% if @heart_rate_chart %>
+  <div class="item-right" style="grid-row: 3 / span 1;">
+    <%= area_chart @heart_rate_chart, points: false, xtitle: 'heart_rate', min: @heart_rate_chart.values.min - 10, max: @heart_rate_chart.values.max + 10, colors: ["red"] %>
+  </div>
+  <% end %>
   
 </div>
 

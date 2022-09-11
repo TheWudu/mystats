@@ -29,8 +29,8 @@ describe Parser::Gpx do
     }
   end
 
-  it "has correct hr values" do
+  it 'has correct hr values' do
     expect(trace.first).to include(hr: 66)
-    expect(trace.last).to include(hr: 173) 
+    expect(trace.last).to include(hr: 173)
   end
 end

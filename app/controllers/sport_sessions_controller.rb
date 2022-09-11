@@ -26,8 +26,8 @@ class SportSessionsController < ApplicationController
     @sport_session = Repositories::SportSessions.find_by_id(id: params[:id])
     @course = Repositories::Courses.find_by_session_id(id: @sport_session.id)
     @split_table = UseCases::Traces::SplitTable.new(trace: @sport_session.trace).run
-    @chart_data = elevation_chart(@sport_session)
-    @chart_title = 'elevation'
+    @elevation_chart = elevation_chart(@sport_session)
+    @heart_rate_chart = heart_rate_chart(@sport_session)
   end
 
   def matching_courses
@@ -60,6 +60,15 @@ class SportSessionsController < ApplicationController
     sport_session.trace.each_with_object({}) do |p, h|
       key = p['time'].in_time_zone(sport_session.timezone).strftime('%H:%M:%S')
       h[key] = p['ele'].to_f.round(2)
+    end
+  end
+
+  def heart_rate_chart(sport_session)
+    return unless sport_session.trace.first['hr']
+
+    sport_session.trace.each_with_object({}) do |p, h|
+      key = p['time'].in_time_zone(sport_session.timezone).strftime('%H:%M:%S')
+      h[key] = p['hr'] if p['hr']
     end
   end
 

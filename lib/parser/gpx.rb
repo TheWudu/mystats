@@ -87,7 +87,7 @@ module Parser
         calc_distance(cur_point, prev_point, stats)
         prev_point = cur_point
       end
-        
+
       calc_hr_values(track[:points], stats)
 
       stats.transform_values!(&:to_i)
@@ -133,8 +133,8 @@ module Parser
           points: trk[:tags].select { |t| t[:tag] == 'trkseg' }.map do |trkseg|
             trkseg[:tags].select { |t| t[:tag] == 'trkpt' }.map do |trkpt|
               trkpt[:meta].merge(
-                time: Time.parse(from_tags(trkpt, 'time')),
-                ele:  refined_elevation(from_tags(trkpt, 'ele').to_f, trkpt[:meta]),
+                time:       Time.parse(from_tags(trkpt, 'time')),
+                ele:        refined_elevation(from_tags(trkpt, 'ele').to_f, trkpt[:meta]),
                 heart_rate: heart_rate_value(trkpt)
               )
             end
@@ -165,8 +165,10 @@ module Parser
     def heart_rate_value(trkpt)
       extensions = trkpt[:tags].select { |t| t[:tag] == 'extensions' }.first
       return unless extensions
+
       ns3_extensions = extensions[:tags].select { |t| t[:tag] == 'ns3:TrackPointExtension' }.first
       return unless ns3_extensions
+
       from_tags(ns3_extensions, 'ns3:hr')&.to_i
     end
 
