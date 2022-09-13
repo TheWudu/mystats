@@ -50,7 +50,7 @@ module Parser
           lng:  p[:lon].to_f,
           ele:  p[:ele],
           hr:   p[:heart_rate]
-        }
+        }.compact
       end
     end
 
