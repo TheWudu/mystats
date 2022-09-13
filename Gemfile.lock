@@ -103,7 +103,6 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    fast-polylines (2.2.2)
     geokit (1.13.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -283,7 +282,6 @@ DEPENDENCIES
   debug
   definition
   factory_bot_rails
-  fast-polylines
   geokit
   importmap-rails
   jbuilder
