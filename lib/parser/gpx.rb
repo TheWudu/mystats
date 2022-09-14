@@ -12,16 +12,20 @@ require 'hgt_reader'
 
 module Parser
   class Gpx
-    attr_reader :data, :warnings
+    attr_reader :data, :warnings, :pause_threshold, :to_slow
 
     def initialize(data:)
       @data = data
       @warnings = []
+      
+      Geokit.default_units = :meters
     end
 
     def parse # rubocop:disable Metrics/AbcSize
       tracks.map do |track|
-        stats = calculate_track(track)
+        enhanced_trace = enhance_trace(track[:points])
+        set_thresholds(enhanced_trace)
+        stats = calculate_stats(enhanced_trace)
         timezone = timezone_for(track[:points].first)
         duration = ((track[:points].last[:time] - track[:points].first[:time] - stats[:pause]) * 1000).to_i
 
@@ -41,6 +45,40 @@ module Parser
     end
 
     private
+
+    def enhance_trace(points)
+      prev_point = points.first
+      points[1..].each_with_object([]) do |cur_point, et|
+        duration = cur_point[:time].to_f - prev_point[:time].to_f
+        
+        prev = Geokit::LatLng.new(prev_point[:lat].to_f, prev_point[:lon].to_f)
+        cur  = Geokit::LatLng.new(cur_point[:lat].to_f, cur_point[:lon].to_f)
+        distance = prev.distance_to(cur)
+        
+        speed = distance / duration / 1000 * 3600
+        
+        et << cur_point.merge(distance: distance, duration: duration, speed: speed)
+        prev_point = cur_point
+      end
+    end
+
+    def set_thresholds(points)
+      # calculate average speed
+      # and assume to slow is 1/10th of it
+      avg_speed = points.sum { |p| p[:speed] } / points.size
+      @to_slow = avg_speed / 10
+
+      # get the average durations between the gps points
+      # and remove the lower and upper 10% to remove the
+      # superfast and the superslow points 
+      # calculate the average time between the points
+      # based on those 80% of the values.
+      durations = points.map { |p| p[:duration] }.sort
+      most_durations = durations[((points.size * 0.1).to_i)..((points.size*0.9).to_i)]
+
+      # assume the pause has to have a duration > the average * 2
+      @pause_threshold = most_durations.sum / most_durations.size * 2
+    end
 
     def trace_from_track(track)
       track[:points].map do |p|
@@ -67,9 +105,7 @@ module Parser
       TZInfo::Timezone.get(timezone).to_local(time).utc_offset
     end
 
-    def calculate_track(track)
-      Geokit.default_units = :meters
-
+    def calculate_stats(points)
       stats = {
         elevation_gain: 0,
         elevation_loss: 0,
@@ -77,11 +113,11 @@ module Parser
         pause:          0
       }
 
-      prev_point = track[:points].first
-      track[:points][1..].each do |cur_point|
-        calc_pause(cur_point, prev_point, stats)
+      prev_point = points.first
+      points[1..].each do |cur_point|
+        calc_pause(cur_point, stats)
         calc_elevation(cur_point, prev_point, stats)
-        calc_distance(cur_point, prev_point, stats)
+        calc_distance(cur_point, stats)
         prev_point = cur_point
       end
 
@@ -99,16 +135,14 @@ module Parser
 
     PAUSE_THRESHOLD = 10
 
-    def calc_pause(cur_point, prev_point, stats)
-      duration = cur_point[:time].to_f - prev_point[:time].to_f
-      stats[:pause] += duration if duration > PAUSE_THRESHOLD
-      duration > PAUSE_THRESHOLD
+    def calc_pause(cur_point, stats)
+      if cur_point[:speed] < to_slow && cur_point[:duration] > pause_threshold
+        stats[:pause] += cur_point[:duration]
+      end
     end
 
-    def calc_distance(cur_point, prev_point, stats)
-      prev = Geokit::LatLng.new(prev_point[:lat].to_f, prev_point[:lon].to_f)
-      cur  = Geokit::LatLng.new(cur_point[:lat].to_f, cur_point[:lon].to_f)
-      stats[:distance] += prev.distance_to(cur)
+    def calc_distance(cur_point, stats)
+      stats[:distance] += cur_point[:distance]
     end
 
     def tracks # rubocop:disable Metrics/AbcSize
