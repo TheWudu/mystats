@@ -124,7 +124,7 @@ module Parser
         prev_point = cur_point
       end
 
-      calc_hr_values(track[:points], stats)
+      calc_hr_values(points, stats)
 
       stats.transform_values!(&:to_i)
     end

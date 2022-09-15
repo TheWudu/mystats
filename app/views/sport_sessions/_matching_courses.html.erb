@@ -12,5 +12,5 @@
       <% end %>
   <% end %>
   <p>
-  <%= link_to("create course", new_course_path(sport_session_id: @sport_session.id) ) %>
+  <%= link_to("create course", new_course_path(sport_session_id: @sport_session.id), { data: { turbo_frame: '_top' } } ) %>
 <% end %>
