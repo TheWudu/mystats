@@ -86,8 +86,9 @@ module Parser
           time: p[:time],
           lat:  p[:lat].to_f,
           lng:  p[:lon].to_f,
-          ele:  p[:ele]
-        }
+          ele:  p[:ele],
+          hr:   p[:heart_rate]
+        }.compact
       end
     end
 
@@ -110,7 +111,9 @@ module Parser
         elevation_gain: 0,
         elevation_loss: 0,
         distance:       0,
-        pause:          0
+        pause:          0,
+        heart_rate_avg: 0,
+        heart_rate_max: 0
       }
 
       prev_point = points.first
@@ -120,6 +123,8 @@ module Parser
         calc_distance(cur_point, stats)
         prev_point = cur_point
       end
+
+      calc_hr_values(points, stats)
 
       stats.transform_values!(&:to_i)
     end
@@ -131,6 +136,14 @@ module Parser
       else
         stats[:elevation_gain] += elevation
       end
+    end
+
+    def calc_hr_values(points, stats)
+      hr_values = points.map { |p| p[:heart_rate] }.compact
+      return if hr_values.blank?
+
+      stats[:heart_rate_max] = hr_values.max
+      stats[:heart_rate_avg] = (hr_values.sum / hr_values.size).to_i
     end
 
     PAUSE_THRESHOLD = 10
@@ -154,8 +167,9 @@ module Parser
           points: trk[:tags].select { |t| t[:tag] == 'trkseg' }.map do |trkseg|
             trkseg[:tags].select { |t| t[:tag] == 'trkpt' }.map do |trkpt|
               trkpt[:meta].merge(
-                time: Time.parse(from_tags(trkpt, 'time')),
-                ele:  refined_elevation(from_tags(trkpt, 'ele').to_f, trkpt[:meta])
+                time:       Time.parse(from_tags(trkpt, 'time')),
+                ele:        refined_elevation(from_tags(trkpt, 'ele').to_f, trkpt[:meta]),
+                heart_rate: heart_rate_value(trkpt)
               )
             end
           end.flatten
@@ -180,6 +194,16 @@ module Parser
     rescue StandardError => e
       @warnings << e.message unless warnings.include?(e.message)
       ele
+    end
+
+    def heart_rate_value(trkpt)
+      extensions = trkpt[:tags].select { |t| t[:tag] == 'extensions' }.first
+      return unless extensions
+
+      ns3_extensions = extensions[:tags].select { |t| t[:tag] == 'ns3:TrackPointExtension' }.first
+      return unless ns3_extensions
+
+      from_tags(ns3_extensions, 'ns3:hr')&.to_i
     end
 
     def from_tags(tag, type)

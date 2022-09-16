@@ -1,1 +1,26 @@
-{"start_time":1656738660000,"end_time":1656741688000,"created_at":1656741870000,"updated_at":1656742037000,"start_time_timezone_offset":7200000,"end_time_timezone_offset":7200000,"distance":8749,"duration":2905000,"elevation_gain":127,"elevation_loss":125,"average_speed":10.842,"calories":657,"longitude":"13.152250042185187","latitude":"47.980871982872486","max_speed":12.93120002746582,"pause_duration":123510,"duration_per_km":332038,"notes":"Morning run starting below the high fog","pulse_avg":153,"pulse_max":174,"manual":false,"completed":true,"id":"0290dd9f-c341-4af8-aed1-a9eb97fd4b7d","sport_type_id":"1"}
+{
+    "start_time": 1656738660000,
+    "end_time": 1656741688000,
+    "created_at": 1656741870000,
+    "updated_at": 1656742037000,
+    "start_time_timezone_offset": 7200000,
+    "end_time_timezone_offset": 7200000,
+    "distance": 8749,
+    "duration": 2905000,
+    "elevation_gain": 127,
+    "elevation_loss": 125,
+    "average_speed": 10.842,
+    "calories": 657,
+    "longitude": "13.152250042185187",
+    "latitude": "47.980871982872486",
+    "max_speed": 12.93120002746582,
+    "pause_duration": 123510,
+    "duration_per_km": 332038,
+    "notes": "Morning run starting below the high fog",
+    "pulse_avg": 153,
+    "pulse_max": 174,
+    "manual": false,
+    "completed": true,
+    "id": "0290dd9f-c341-4af8-aed1-a9eb97fd4b7d",
+    "sport_type_id": "1"
+}

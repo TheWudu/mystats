@@ -25,7 +25,7 @@ module Parser
     end
 
     DIRECT_JSON_ATTRIBUTES = %w[id elevation_gain elevation_loss distance
-                                pause_duration notes duration].freeze
+                                notes duration].freeze
 
     def parse
       json_stats.slice(*DIRECT_JSON_ATTRIBUTES).merge(
