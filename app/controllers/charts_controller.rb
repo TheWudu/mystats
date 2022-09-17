@@ -36,7 +36,7 @@ class ChartsController < ApplicationController
 
   def duration_per_year
     data = statistics.data_per_year('overall_duration')
-    data.transform_values! { |v| v / 1000 }
+    data.transform_values! { |v| (v / 1000 / 3600.0).round(2) }
     render json: data
   end
 

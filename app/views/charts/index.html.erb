@@ -8,11 +8,11 @@
   </div>
 
   <div class="chart">
-    <%= bar_chart charts_duration_per_year_path(@chart_params), xtitle: "duration [s]", ytitle: @chart_params[:group_by] %>
+    <%= bar_chart charts_duration_per_year_path(@chart_params), xtitle: "duration [h]", ytitle: @chart_params[:group_by] %>
   </div>
   
   <div class="chart">
-    <%= bar_chart charts_pace_per_year_path(@chart_params), xtitle: "pace [s/km]", ytitle: @chart_params[:group_by] %>
+    <%= bar_chart charts_pace_per_year_path(@chart_params), xtitle: "pace [min/km]", ytitle: @chart_params[:group_by] %>
   </div>
 
   <div class="chart">
