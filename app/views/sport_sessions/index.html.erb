@@ -23,7 +23,8 @@
     <th style="width:10%">distance [km]</th>
     <th style="width:10%">duration [hh:mm]</th>
     <th style="width:10%">elevation gain/loss</th>
-    <th style="width:30%">notes</th>
+    <th style="width:5%" >avg pace</th>
+    <th style="width:25%">notes</th>
     <th style="width:5%">&nbsp;</th>
   </tr>
 <% @sport_sessions.each do |sport_session| %>
@@ -33,11 +34,12 @@
     <% else %>
       <td><%= link_to(sport_session.id, sport_session_path(id: sport_session.id)) %></td>
     <% end %>
-    <td><%= sport_session.start_time %></td>
+    <td><%= sport_session.local_start_time %></td>
     <td><%= sport_session.sport_type %></td>
     <td><%= sport_session.distance_in_km %></td>
     <td><%= sport_session.duration_as_str %></td>
     <td><%= sport_session.elevation %></td>
+    <td><%= sport_session.avg_pace %></td>
     <td><%= sport_session.notes %></td>
     <td><%= link_to("delete", sport_session_path(id: sport_session.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "button-red") %></td>
   </tr>
