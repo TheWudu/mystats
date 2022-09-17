@@ -10,6 +10,10 @@
   <div class="chart">
     <%= bar_chart charts_duration_per_year_path(@chart_params), xtitle: "duration [s]", ytitle: @chart_params[:group_by] %>
   </div>
+  
+  <div class="chart">
+    <%= bar_chart charts_pace_per_year_path(@chart_params), xtitle: "pace [s/km]", ytitle: @chart_params[:group_by] %>
+  </div>
 
   <div class="chart">
     <%= bar_chart charts_elevation_per_year_path(@chart_params), xtitle: "elevation [m]", ytitle: @chart_params[:group_by]  %>

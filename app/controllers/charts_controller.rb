@@ -40,6 +40,12 @@ class ChartsController < ApplicationController
     render json: data
   end
 
+  def pace_per_year
+    data = statistics.data_per_year('overall_pace')
+    data.transform_values! { |v| (v / 60).round(2) }
+    render json: data
+  end
+
   def elevation_per_year
     render json: statistics.data_per_year('overall_elevation_gain')
   end

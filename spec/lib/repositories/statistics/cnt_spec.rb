@@ -66,9 +66,9 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       [
         { name: 2021, data: base_cnt_week_of_year_data.merge({ 15 => 1 }) },
         { name: 2022, data: base_cnt_week_of_year_data.merge({
-          28 => 1,
-          32 => 2
-        }) }
+                                                               28 => 1,
+                                                               32 => 2
+                                                             }) }
       ]
     end
     let(:expected_hour_per_day) do

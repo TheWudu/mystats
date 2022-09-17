@@ -53,6 +53,11 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       let(:attr) { 'overall_cnt' }
       let(:expected_stats) { { '2022' => 1 } }
     end
+
+    it_behaves_like 'returning correct values' do
+      let(:attr) { 'overall_pace' }
+      let(:expected_stats) { { '2022' => (1823.0 / 5678) } }
+    end
   end
 
   context 'when multiple sessions exist' do
@@ -123,6 +128,16 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       end
     end
 
+    it_behaves_like 'returning correct values' do
+      let(:attr) { 'overall_pace' }
+      let(:expected_stats) do
+        {
+          '2022' => ((1823 + 3689).to_f / (5678 + 10_678)),
+          '2021' => (3189.0 / 8678)
+        }
+      end
+    end
+
     context 'with filters' do
       let(:years) { [2021] }
       let(:group_by) { { year: '$year', month: '$month' } }
@@ -145,6 +160,11 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       it_behaves_like 'returning correct values' do
         let(:attr) { 'overall_cnt' }
         let(:expected_stats) { { '2021-4' => 1 } }
+      end
+
+      it_behaves_like 'returning correct values' do
+        let(:attr) { 'overall_pace' }
+        let(:expected_stats) { { '2021-4' => (3189.0 / 8678) } }
       end
     end
   end

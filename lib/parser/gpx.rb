@@ -17,7 +17,7 @@ module Parser
     def initialize(data:)
       @data = data
       @warnings = []
-      
+
       Geokit.default_units = :meters
     end
 
@@ -50,13 +50,13 @@ module Parser
       prev_point = points.first
       points[1..].each_with_object([]) do |cur_point, et|
         duration = cur_point[:time].to_f - prev_point[:time].to_f
-        
+
         prev = Geokit::LatLng.new(prev_point[:lat].to_f, prev_point[:lon].to_f)
         cur  = Geokit::LatLng.new(cur_point[:lat].to_f, cur_point[:lon].to_f)
         distance = prev.distance_to(cur)
-        
+
         speed = distance / duration / 1000 * 3600
-        
+
         et << cur_point.merge(distance: distance, duration: duration, speed: speed)
         prev_point = cur_point
       end
@@ -70,11 +70,11 @@ module Parser
 
       # get the average durations between the gps points
       # and remove the lower and upper 10% to remove the
-      # superfast and the superslow points 
+      # superfast and the superslow points
       # calculate the average time between the points
       # based on those 80% of the values.
       durations = points.map { |p| p[:duration] }.sort
-      most_durations = durations[((points.size * 0.1).to_i)..((points.size*0.9).to_i)]
+      most_durations = durations[((points.size * 0.1).to_i)..((points.size * 0.9).to_i)]
 
       # assume the pause has to have a duration > the average * 2
       @pause_threshold = most_durations.sum / most_durations.size * 2
@@ -149,9 +149,7 @@ module Parser
     PAUSE_THRESHOLD = 10
 
     def calc_pause(cur_point, stats)
-      if cur_point[:speed] < to_slow && cur_point[:duration] > pause_threshold
-        stats[:pause] += cur_point[:duration]
-      end
+      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow && cur_point[:duration] > pause_threshold
     end
 
     def calc_distance(cur_point, stats)
