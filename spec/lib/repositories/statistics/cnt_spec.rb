@@ -14,6 +14,8 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   let(:sport_types) { nil }
   let(:group_by) { { year: '$year' } }
 
+  let(:base_cnt_week_of_year_data) { (0..52).each_with_object({}) { |w, h| h[w] = 0 } }
+
   context 'without sessions available' do
     it { expect(instance.cnt_per_weekday_data).to eq({}) }
     it { expect(instance.cnt_per_week_of_year).to eq([]) }
@@ -62,11 +64,11 @@ describe Repositories::Statistics::MongoDb, :clear_db do
 
     let(:expected_week_of_year) do
       [
-        { name: 2021, data: { 15 => 1 } },
-        { name: 2022, data: {
+        { name: 2021, data: base_cnt_week_of_year_data.merge({ 15 => 1 }) },
+        { name: 2022, data: base_cnt_week_of_year_data.merge({
           28 => 1,
           32 => 2
-        } }
+        }) }
       ]
     end
     let(:expected_hour_per_day) do
@@ -92,7 +94,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
 
       let(:expected_week_of_year) do
         [
-          { name: 2021, data: { 15 => 1 } }
+          { name: 2021, data: base_cnt_week_of_year_data.merge({ 15 => 1 }) }
         ]
       end
       let(:expected_hour_per_day) do
