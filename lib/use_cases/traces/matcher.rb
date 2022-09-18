@@ -24,19 +24,19 @@ module UseCases
       end
 
       def blocks1
-        @blocks1 ||= trace1.map { |p| blockify(p) }.uniq
+        @blocks1 ||= trace1&.map { |p| blockify(p) }&.uniq
       end
 
       def blocks2
-        @blocks2 ||= trace2.map { |p| blockify(p) }.uniq
+        @blocks2 ||= trace2&.map { |p| blockify(p) }&.uniq
       end
 
       def orig1
-        @orig1   ||= trace1.map { |p| blockify(p, 1) }
+        @orig1   ||= trace1&.map { |p| blockify(p, 1) }
       end
 
       def orig2
-        @orig2   ||= trace2.map { |p| blockify(p, 1) }
+        @orig2   ||= trace2&.map { |p| blockify(p, 1) }
       end
 
       def lat_lng_blocks1

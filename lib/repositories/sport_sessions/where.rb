@@ -32,6 +32,7 @@ module Repositories
         IN_LIST_MATCHER.each_with_object({}) do |attr, q|
           value = args[attr] || args[attr.to_sym]
           next unless value
+          next if value.empty?
 
           q[attr] = { '$in' => value }
         end
