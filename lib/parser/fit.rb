@@ -32,7 +32,7 @@ module Parser
         distance:                   fit_file.total_distance.to_i,
         duration:                   (fit_file.total_timer_time * 1000).to_i,
         end_time:                   fit_file.timestamp,
-        notes:                      'Lunchrun mit Gustavo und Sebastian',
+        notes:                      nil,
         sport_type:                 fit_file.sport,
         start_time:                 start_time,
         start_time_timezone_offset: timezone_offset(timezone, start_time),
