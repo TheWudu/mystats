@@ -11,6 +11,10 @@ class SportType
     RUNTASTIC_SPORT_TYPE_MAPPING.fetch(id)
   end
 
+  def self.default
+    'unknown'
+  end
+
   SPORT_TYPE_UNIFIED = {
     'open_water_swimming' => 'swimming'
   }.freeze

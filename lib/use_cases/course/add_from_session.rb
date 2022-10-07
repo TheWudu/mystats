@@ -11,13 +11,13 @@ module UseCases
       end
 
       def run
-        Repositories::Courses.insert(course: course)
+        Repositories::Courses.insert(course:)
       end
 
       def course
         Models::Course.new(
           id:          SecureRandom.uuid,
-          name:        name,
+          name:,
           trace:       session.trace,
           distance:    session.distance,
           session_ids: [session.id]

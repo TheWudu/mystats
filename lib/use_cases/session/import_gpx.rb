@@ -45,7 +45,7 @@ module UseCases
       end
 
       def parser
-        @parser ||= Parser::Gpx.new(data: data)
+        @parser ||= Parser::Gpx.new(data:)
       end
     end
   end

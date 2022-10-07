@@ -31,12 +31,12 @@ module Parser
       json_stats.slice(*DIRECT_JSON_ATTRIBUTES).merge(
         {
           pause:                      json_stats['pause_duration'],
-          sport_type:                 sport_type,
-          start_time:                 start_time,
-          end_time:                   end_time,
-          start_time_timezone_offset: start_time_timezone_offset,
-          timezone:                   timezone,
-          trace:                      trace
+          sport_type:,
+          start_time:,
+          end_time:,
+          start_time_timezone_offset:,
+          timezone:,
+          trace:
         }
       ).symbolize_keys.compact
     end

@@ -12,7 +12,7 @@ module Repositories
         matcher = {}
         matcher.merge!(geo_matcher(latitude, longitude, 50_000)) unless latitude.blank? && longitude.blank?
         matcher.merge!(name: /#{name}/) unless name.blank?
-        matcher.merge!(timezone: timezone) unless timezone.blank?
+        matcher.merge!(timezone:) unless timezone.blank?
 
         cities.find(matcher).limit(500).to_a
       end
@@ -22,7 +22,7 @@ module Repositories
       end
 
       def exist?(name:)
-        cities.find({ name: name }).limit(1).first
+        cities.find({ name: }).limit(1).first
       end
 
       def insert(city:)
@@ -38,7 +38,7 @@ module Repositories
         return if find_index(name)
 
         index = { location: '2dsphere' }
-        options = { name: name }
+        options = { name: }
 
         Mongo::Index::View.new(cities).create_one(index, options)
       end
@@ -48,7 +48,7 @@ module Repositories
         return if find_index(name)
 
         index = { name: 1 }
-        options = { name: name }
+        options = { name: }
 
         Mongo::Index::View.new(cities).create_one(index, options)
       end

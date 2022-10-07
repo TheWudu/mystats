@@ -6,7 +6,7 @@ describe Parser::Gpx do
   let(:input_file) { 'spec/fixtures/traces/running_8km.gpx' }
   let(:data) { File.read(input_file) }
 
-  subject { described_class.new(data: data).parse }
+  subject { described_class.new(data:).parse }
 
   let(:expected_data) do
     {
@@ -29,4 +29,15 @@ describe Parser::Gpx do
   end
 
   it { expect(subject.first).to include(expected_data) }
+
+  context 'when sport-type is not given' do
+    let(:input_file) { 'spec/fixtures/traces/runtastic_with_gpxtpx.gpx' }
+    let(:data) { File.read(input_file) }
+
+    subject { described_class.new(data:).parse }
+
+    it 'sets default value' do
+      expect(subject.first[:sport_type]).to eq(SportType.default)
+    end
+  end
 end

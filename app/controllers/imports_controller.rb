@@ -8,7 +8,7 @@ class ImportsController < ApplicationController
   def create
     data = File.open(params['input'].tempfile, 'r:UTF-8').read
 
-    use_case = UseCases::Session::ImportGpx.new(data: data)
+    use_case = UseCases::Session::ImportGpx.new(data:)
     use_case.run
 
     if (errors = use_case_errors(use_case))

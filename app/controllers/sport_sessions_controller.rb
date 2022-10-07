@@ -16,9 +16,9 @@ class SportSessionsController < ApplicationController
   def index
     @sport_sessions = sport_sessions_repo.fetch(
       text:        params[:text],
-      years:       years,
-      months:      months,
-      sport_types: sport_types
+      years:,
+      months:,
+      sport_types:
     )
   end
 
@@ -52,7 +52,7 @@ class SportSessionsController < ApplicationController
     courses.each_with_object([]) do |course, ary|
       matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: sport_session.trace)
       matcher.analyse
-      ary << { course: course, match_rate: matcher.match_in_percent } if matcher.matching?
+      ary << { course:, match_rate: matcher.match_in_percent } if matcher.matching?
     end
   end
 
@@ -96,9 +96,9 @@ class SportSessionsController < ApplicationController
 
   def statistics
     @statistics ||= Repositories::Statistics::MongoDb.new(
-      years:       years,
-      sport_types: sport_types,
-      group_by:    group_by
+      years:,
+      sport_types:,
+      group_by:
     )
   end
 end

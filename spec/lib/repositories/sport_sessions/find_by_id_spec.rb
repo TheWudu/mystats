@@ -6,7 +6,7 @@ describe Repositories::SportSessions do
   describe 'find_by_id' do
     let(:id) { SecureRandom.uuid }
 
-    subject { described_class.find_by_id(id: id) }
+    subject { described_class.find_by_id(id:) }
 
     context 'when session does not exist' do
       it { expect(subject).to be_nil }
@@ -14,7 +14,7 @@ describe Repositories::SportSessions do
 
     context 'when session exists' do
       let(:sport_session) do
-        FactoryBot.create(:sport_session, id: id)
+        FactoryBot.create(:sport_session, id:)
       end
 
       before do

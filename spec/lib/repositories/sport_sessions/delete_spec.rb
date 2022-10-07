@@ -6,7 +6,7 @@ describe Repositories::SportSessions do
   describe 'delete' do
     let(:id) { SecureRandom.uuid }
 
-    subject { described_class.delete(id: id) }
+    subject { described_class.delete(id:) }
 
     context 'when session does not exist' do
       it { expect(subject).to be_falsey }
@@ -14,7 +14,7 @@ describe Repositories::SportSessions do
 
     context 'when session exists' do
       let(:sport_session) do
-        FactoryBot.create(:sport_session, id: id)
+        FactoryBot.create(:sport_session, id:)
       end
 
       before do
@@ -23,7 +23,7 @@ describe Repositories::SportSessions do
 
       it { expect(subject).to be_truthy }
       it "can't find session after delete" do
-        expect { subject }.to change { Repositories::SportSessions.find_by_id(id: id) }.from(sport_session).to(nil)
+        expect { subject }.to change { Repositories::SportSessions.find_by_id(id:) }.from(sport_session).to(nil)
       end
     end
   end

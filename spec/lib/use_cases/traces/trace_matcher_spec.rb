@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe UseCases::Traces::Matcher do
   subject(:matcher) do
-    described_class.new(trace1: trace1, trace2: trace2, block_size: block_size, min_overlap: min_overlap)
+    described_class.new(trace1:, trace2:, block_size:, min_overlap:)
   end
 
   let(:block_size) { nil }

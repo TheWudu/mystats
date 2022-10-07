@@ -51,7 +51,7 @@ end
 ##
 ##
 gem 'chartkick'
-gem 'definition', "= 0.7.0"
+gem 'definition', '= 0.7.0'
 gem 'geokit'
 gem 'jquery-drag-rails'
 gem 'mongo'

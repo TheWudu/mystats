@@ -129,7 +129,7 @@ class CoursesController < ApplicationController
     sessions.each_with_object([]) do |session, ary|
       matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: session.trace)
       matcher.analyse
-      ary << { session: session, match_rate: matcher.match_in_percent } if matcher.matching?
+      ary << { session:, match_rate: matcher.match_in_percent } if matcher.matching?
     end
   end
 

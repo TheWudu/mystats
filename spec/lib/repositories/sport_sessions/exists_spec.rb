@@ -6,7 +6,7 @@ describe Repositories::SportSessions do
   describe 'exists?' do
     let(:id) { SecureRandom.uuid }
 
-    subject { described_class.exists?(start_time: start_time, sport_type: sport_type) }
+    subject { described_class.exists?(start_time:, sport_type:) }
 
     context 'when session does not exist' do
       let(:start_time) { Time.now }
@@ -17,7 +17,7 @@ describe Repositories::SportSessions do
 
     context 'when session exists' do
       let(:sport_session) do
-        FactoryBot.create(:sport_session, id: id)
+        FactoryBot.create(:sport_session, id:)
       end
       let(:start_time) { sport_session.start_time }
       let(:sport_type) { sport_session.sport_type }

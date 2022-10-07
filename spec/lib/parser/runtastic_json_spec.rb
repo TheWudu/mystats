@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Parser::RuntasticJson do
-  let(:parser) { described_class.new(json_data: json_data, gpx_data: gpx_data) }
+  let(:parser) { described_class.new(json_data:, gpx_data:) }
 
   subject { parser.parse }
 

@@ -11,7 +11,7 @@ describe Repositories::SportSessions, :clear_db do
     let(:sport_types) { nil }
     let(:text) { nil }
 
-    subject { described_class.fetch(years: years, months: months, sport_types: sport_types, text: text) }
+    subject { described_class.fetch(years:, months:, sport_types:, text:) }
 
     context 'when no sessions exist' do
       it { expect(subject).to be_empty }

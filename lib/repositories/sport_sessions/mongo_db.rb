@@ -6,7 +6,7 @@ module Repositories
   module SportSessions
     class MongoDb
       def fetch(years:, months:, sport_types:, text: nil)
-        matcher = build_matcher(years: years, months: months, sport_types: sport_types)
+        matcher = build_matcher(years:, months:, sport_types:)
         matcher.merge!(text_filter(text)) unless text.blank?
 
         collection.find(matcher).sort({ start_time: -1 }).map do |doc|
@@ -30,7 +30,7 @@ module Repositories
       end
 
       def delete(id:)
-        resp = collection.delete_one(id: id)
+        resp = collection.delete_one(id:)
         resp.n == 1
       end
 
@@ -60,7 +60,7 @@ module Repositories
                              '$gte' => (start_time - 1.minute),
                              '$lte' => (start_time + 1.minute)
                            },
-                           sport_type: sport_type }).positive?
+                           sport_type: }).positive?
       end
 
       def insert(session:)

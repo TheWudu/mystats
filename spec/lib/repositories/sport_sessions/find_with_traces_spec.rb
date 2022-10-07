@@ -14,9 +14,9 @@ describe Repositories::SportSessions, :clear_db do
 
     let(:opts) do
       {
-        year:       year,
-        month:      month,
-        sport_type: sport_type,
+        year:,
+        month:,
+        sport_type:,
         id__not_in: id_not_in
       }.compact
     end

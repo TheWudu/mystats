@@ -12,7 +12,7 @@ module Repositories
       end
 
       def find(id:)
-        doc = collection.find({ id: id }).first
+        doc = collection.find({ id: }).first
         return nil unless doc
 
         to_model(doc)
@@ -57,7 +57,7 @@ module Repositories
       end
 
       def delete(id:)
-        resp = collection.find({ id: id }).delete_one
+        resp = collection.find({ id: }).delete_one
         resp.n == 1
       end
 

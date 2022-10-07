@@ -51,7 +51,7 @@ module UseCases
       end
 
       def store(city)
-        repo.insert(city: city)
+        repo.insert(city:)
       end
 
       def create_indexes

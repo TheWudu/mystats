@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Parser::Gpx do
   let(:data) { File.read(input_file) }
 
-  let(:parser) { described_class.new(data: data) }
+  let(:parser) { described_class.new(data:) }
   subject { parser.parse }
 
   context 'with running session' do

@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
 
   def statistics
     @statistics ||= Repositories::Statistics::MongoDb.new(
-      years:       years,
-      sport_types: sport_types,
+      years:,
+      sport_types:,
       group_by:    nil
     )
   end

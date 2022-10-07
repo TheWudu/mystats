@@ -8,7 +8,7 @@ module UseCases
       def store(session)
         return false if exists?(session)
 
-        session_repo.insert(session: session)
+        session_repo.insert(session:)
       end
 
       def exists?(session)

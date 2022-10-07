@@ -28,6 +28,6 @@ class SessionController < ApplicationController
   end
 
   def update_course
-    Repositories::Courses.update(course: course)
+    Repositories::Courses.update(course:)
   end
 end

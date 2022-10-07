@@ -32,12 +32,12 @@ module Parser
         stats.merge({
                       id:                         SecureRandom.uuid,
                       notes:                      track[:name],
-                      sport_type:                 SportType.unified(name: track[:type]),
+                      sport_type:                 SportType.unified(name: track[:type]) || SportType.default,
                       start_time:                 track[:points].first[:time],
                       end_time:                   track[:points].last[:time],
-                      duration:                   duration,
+                      duration:,
                       pause:                      (stats[:pause] * 1000).to_i,
-                      timezone:                   timezone,
+                      timezone:,
                       start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]).to_i,
                       trace:                      trace_from_track(track)
                     })
@@ -57,7 +57,7 @@ module Parser
 
         speed = distance / duration / 1000 * 3600
 
-        et << cur_point.merge(distance: distance, duration: duration, speed: speed)
+        et << cur_point.merge(distance:, duration:, speed:)
         prev_point = cur_point
       end
     end
@@ -198,10 +198,11 @@ module Parser
       extensions = trkpt[:tags].select { |t| t[:tag] == 'extensions' }.first
       return unless extensions
 
-      ns3_extensions = extensions[:tags].select { |t| t[:tag] == 'ns3:TrackPointExtension' }.first
-      return unless ns3_extensions
-
-      from_tags(ns3_extensions, 'ns3:hr')&.to_i
+      if ns3_extensions = extensions[:tags].select { |t| t[:tag] == 'ns3:TrackPointExtension' }.first
+        from_tags(ns3_extensions, 'ns3:hr')&.to_i
+      elsif gpxtpx_extension = extensions[:tags].select { |t| t[:tag] == 'gpxtpx:TrackPointExtension' }.first
+        from_tags(gpxtpx_extension, 'gpxtpx:hr')&.to_i
+      end
     end
 
     def from_tags(tag, type)
@@ -213,7 +214,7 @@ module Parser
     end
 
     def xml
-      @xml ||= Parser::Xml.new(data: data).parse
+      @xml ||= Parser::Xml.new(data:).parse
     end
   end
 end
