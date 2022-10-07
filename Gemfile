@@ -3,8 +3,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.0'
-
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.3'
 
@@ -53,7 +51,7 @@ end
 ##
 ##
 gem 'chartkick'
-gem 'definition'
+gem 'definition', "= 0.7.0"
 gem 'geokit'
 gem 'jquery-drag-rails'
 gem 'mongo'
