@@ -23,6 +23,13 @@ describe Parser::Gpx do
     it { expect(subject.first[:pause]).to eq(1_144_000) }
   end
 
+  context 'with a running session through the wood' do
+    let(:input_file) { 'spec/fixtures/traces/running_through_the_wood.gpx' }
+
+    # has a pause of 0 regarding runtastic
+    it { expect(subject.first[:pause]).to eq(24_000) }
+  end
+
   context 'with swimming session' do
     let(:input_file) { 'spec/fixtures/traces/swimming_short.gpx' }
 
