@@ -65,7 +65,8 @@ module Parser
     def set_thresholds(points)
       # calculate average speed
       # and assume to slow is 1/10th of it
-      avg_speed = points.sum { |p| p[:speed] } / points.size
+      valid_points = points.select { |p| p[:speed] != Float::INFINITY && p[:speed] != 0 }
+      avg_speed = valid_points.sum { |p| p[:speed] } / valid_points.size
       @to_slow = avg_speed / 10
 
       # get the average durations between the gps points
@@ -73,11 +74,11 @@ module Parser
       # superfast and the superslow points
       # calculate the average time between the points
       # based on those 80% of the values.
-      durations = points.map { |p| p[:duration] }.sort
-      most_durations = durations[((points.size * 0.1).to_i)..((points.size * 0.9).to_i)]
+      durations = valid_points.map { |p| p[:duration] }.sort
+      most_durations = durations[((valid_points.size * 0.1).to_i)..((valid_points.size * 0.9).to_i)]
 
       # assume the pause has to have a duration > the average * 2
-      @pause_threshold = most_durations.sum / most_durations.size * 2
+      @pause_threshold = most_durations.sum / most_durations.size * 3
     end
 
     def trace_from_track(track)
@@ -146,10 +147,8 @@ module Parser
       stats[:heart_rate_avg] = (hr_values.sum / hr_values.size).to_i
     end
 
-    PAUSE_THRESHOLD = 10
-
     def calc_pause(cur_point, stats)
-      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow && cur_point[:duration] > pause_threshold
+      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow # && cur_point[:duration] > pause_threshold
     end
 
     def calc_distance(cur_point, stats)
