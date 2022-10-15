@@ -92,7 +92,7 @@ GEM
     debug (1.6.2)
       irb (>= 1.3.6)
       reline (>= 0.3.1)
-    definition (0.7.0)
+    definition (0.8.1)
       activesupport
       i18n
     diff-lcs (1.5.0)
@@ -274,7 +274,7 @@ DEPENDENCIES
   capybara
   chartkick
   debug
-  definition (= 0.7.0)
+  definition
   factory_bot_rails
   geokit
   importmap-rails

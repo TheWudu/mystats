@@ -40,7 +40,6 @@ FactoryBot.define do
     elevation_gain { 112 }
     elevation_loss { 110 }
     sport_type     { 'running' }
-    trace          { nil }
 
     trait :with_trace do
       trace do

@@ -8,10 +8,7 @@ describe Repositories::Courses, :clear_db do
   describe '#update' do
     let(:course) { FactoryBot.create(:course, id:, name: 'my awesome c') }
     let(:updated_course) do
-      # the following line would work with this PR:
-      # https://github.com/Goltergaul/definition/pull/36
-      # course.new(name: 'my awesome course')
-      course.class.new(course.merge(name: 'my awesome course'))
+      course.new(name: 'my awesome course')
     end
 
     before do
