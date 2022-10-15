@@ -36,7 +36,7 @@ module UseCases
       end
 
       def update_course(new_ids)
-        updated_course = course.class.new(course.merge(session_ids: new_ids))
+        updated_course = course.new(session_ids: new_ids)
         Repositories::Courses.update(course: updated_course)
       end
     end
