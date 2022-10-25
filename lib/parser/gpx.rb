@@ -12,7 +12,7 @@ require 'hgt_reader'
 
 module Parser
   class Gpx
-    attr_reader :data, :warnings, :pause_threshold, :to_slow
+    attr_reader :data, :warnings, :to_slow
 
     def initialize(data:)
       @data = data
@@ -68,17 +68,6 @@ module Parser
       valid_points = points.select { |p| p[:speed] != Float::INFINITY && p[:speed] != 0 }
       avg_speed = valid_points.sum { |p| p[:speed] } / valid_points.size
       @to_slow = avg_speed / 10
-
-      # get the average durations between the gps points
-      # and remove the lower and upper 10% to remove the
-      # superfast and the superslow points
-      # calculate the average time between the points
-      # based on those 80% of the values.
-      durations = valid_points.map { |p| p[:duration] }.sort
-      most_durations = durations[((valid_points.size * 0.1).to_i)..((valid_points.size * 0.9).to_i)]
-
-      # assume the pause has to have a duration > the average * 2
-      @pause_threshold = most_durations.sum / most_durations.size * 3
     end
 
     def trace_from_track(track)
@@ -148,7 +137,7 @@ module Parser
     end
 
     def calc_pause(cur_point, stats)
-      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow # && cur_point[:duration] > pause_threshold
+      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow 
     end
 
     def calc_distance(cur_point, stats)
