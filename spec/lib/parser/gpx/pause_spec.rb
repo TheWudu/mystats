@@ -13,14 +13,21 @@ describe Parser::Gpx do
 
     # has a pause of 02:29 (149 s) regarding runtastic
     # it { expect(subject.first[:pause]).to eq(149000) }
-    it { expect(subject.first[:pause]).to eq(110_000) }
+    it { expect(subject.first[:pause]).to eq(119_000) }
   end
 
   context 'with a hiking session' do
     let(:input_file) { 'spec/fixtures/traces/hiking_20220830_gradlspitz.gpx' }
 
     # has a pause of 17:58 (1078 s) regarding runtastic
-    it { expect(subject.first[:pause]).to eq(1_105_000) }
+    it { expect(subject.first[:pause]).to eq(1_144_000) }
+  end
+
+  context 'with a running session through the wood' do
+    let(:input_file) { 'spec/fixtures/traces/running_through_the_wood.gpx' }
+
+    # has a pause of 0 regarding runtastic
+    it { expect(subject.first[:pause]).to eq(24_000) }
   end
 
   context 'with swimming session' do
