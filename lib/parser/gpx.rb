@@ -137,7 +137,7 @@ module Parser
     end
 
     def calc_pause(cur_point, stats)
-      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow 
+      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow
     end
 
     def calc_distance(cur_point, stats)
