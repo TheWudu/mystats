@@ -71,6 +71,7 @@ describe Parser::RuntasticJson do
         id:                         anything,
         distance:                   8749,
         duration:                   2_905_000,
+        duration_up:                1_565_000,
         elevation_gain:             127,
         elevation_loss:             125,
         end_time:                   Time.parse('2022-07-02T06:01:28Z'),

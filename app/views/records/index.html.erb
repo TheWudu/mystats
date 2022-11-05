@@ -21,4 +21,8 @@
   <div class="chart">
     <%= bar_chart records_average_pace_path(@records_params), xtitle: "average_pace [min/km]", ytitle: @records_params[:group_by], thousands: "." %>
   </div>
+  
+  <div class="chart">
+    <%= bar_chart records_vam_path(@records_params), xtitle: "vam [m/h]", ytitle: @records_params[:group_by], thousands: "." %>
+  </div>
 </div>

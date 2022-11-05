@@ -12,6 +12,7 @@ module Repositories
       distance_per_week
       distance
       average_pace
+      vam
     ].freeze
 
     create_methods(METHODS)

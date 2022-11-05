@@ -19,7 +19,7 @@ module UseCases
         sport_sessions = read_files
         puts "Store #{sport_sessions.count} sport sessions"
         result = store_sessions(sport_sessions)
-        puts "Inserted #{result.count(true)}, skipped #{result.count(false)}"
+        puts "Inserted #{result.count(:inserted)}, updated #{result.count(:updated)}, failed #{result.count(:failed)}"
       end
 
       def store_sessions(sport_sessions)

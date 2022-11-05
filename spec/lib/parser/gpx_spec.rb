@@ -13,6 +13,7 @@ describe Parser::Gpx do
       id:                         anything,
       distance:                   8732,
       duration:                   2_961_000,
+      duration_up:                1_821_000,
       elevation_gain:             169,
       elevation_loss:             167,
       end_time:                   Time.parse('2022-08-13T06:18:01Z'),

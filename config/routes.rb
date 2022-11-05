@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'records/distance_per_week'
   get 'records/distance'
   get 'records/average_pace'
+  get 'records/vam'
 
   resources :sport_sessions, only: [:index, :destroy]
 

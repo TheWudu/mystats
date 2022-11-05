@@ -72,6 +72,26 @@ module Repositories
         end
       end
 
+      def vam(years:, sport_types:)
+        matcher_with_duration_up = matcher(years:, sport_types:).merge('duration_up' => { "$gt": 0 })
+
+        q = [{ '$match' => matcher_with_duration_up }]
+        q << { '$project' => {
+          _id: 0, id: 1, start_time: 1, duration_up: 1, timezone: 1, elevation_gain: 1
+        } }
+        q << { '$addFields' => {
+          vam: { '$divide' => ['$elevation_gain', '$duration_up'] }
+        } }
+        q << { '$sort' => { vam: -1 } }
+        q << { '$limit' => LIMIT }
+
+        data = sessions.aggregate(q)
+        data.each_with_object({}) do |doc, h|
+          key = start_time_key(doc)
+          h[key] = (doc['vam'] * 3_600_000).round(2)
+        end
+      end
+
       private
 
       def matcher(years:, sport_types:)
