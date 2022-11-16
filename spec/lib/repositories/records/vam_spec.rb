@@ -23,6 +23,12 @@ describe Repositories::Records, :clear_db do
                         elevation_gain: 250,
                         sport_type:     'running',
                         start_time:     Time.parse('2022-08-14T10:12:32Z')) # Sunday W31
+      
+      FactoryBot.create(:sport_session,
+                        duration_up:    3_600_000,
+                        elevation_gain: 750,
+                        sport_type:     'cycling',
+                        start_time:     Time.parse('2022-06-14T06:35:00Z'))
     end
 
     describe '#vam' do
@@ -31,6 +37,7 @@ describe Repositories::Records, :clear_db do
       let(:expected_data) do
         {
           '2022.07.12 10:21:56' => 841.37,
+          '2022.06.14 08:35:00' => 750.0,
           '2022.08.14 12:12:32' => 318.81
         }
       end

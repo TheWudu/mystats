@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'connections/mongo_db'
-require 'sport_type'
 
 module Repositories
   module Records
