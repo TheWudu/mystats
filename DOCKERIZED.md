@@ -35,7 +35,23 @@ http://localhost:3000/
 
 # Import Data
 
-To be able to import data just enter the container 
+To be able to import data just enter the container. This for you need
+the name of the started container. This can be listed by:
+
+```
+docker ps
+```
+
+E.g.
+
+```
+$ docker ps
+CONTAINER ID   IMAGE                    COMMAND                  CREATED      STATUS      PORTS                                           NAMES
+decbcf640cec   thewudu/mystats:latest   "rails s -b 0.0.0.0"     2 days ago   Up 2 days   0.0.0.0:80->3000/tcp, :::80->3000/tcp           mystats_mystats_1
+923ec6c573b5   mongo:latest             "docker-entrypoint.s…"   2 days ago   Up 2 days   0.0.0.0:27017->27017/tcp, :::27017->27017/tcp   mystats_mongodb_1
+```
+
+Enter the container then using the NAME. 
 
 ```
 docker exec -it mystats_mystats_1 bash
