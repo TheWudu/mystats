@@ -2,9 +2,13 @@
 
 
 To start the application without installing ruby and any dependencies, just
-use the provided docker-compose.yml
+use the provided docker-compose.yml. You obviously need to have
+docker + docker-compose installed. See
 
-Just run
+https://docs.docker.com/engine/install/
+
+If this is installed, just download docker-compose.yml (or git clone this project)
+and run:
 
 ```
 docker-compose up
