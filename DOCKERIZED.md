@@ -21,6 +21,18 @@ docker-compose start
 instead to run it in the background.
 
 
+When the container starts properly, you should be able to access the application
+in a browser of your choice under
+
+http://localhost/
+
+
+If it complains about not being able to start at port 80, change the 80:3000 port
+mapping in docker-compose.yml to something else. E.g. 3000:3000 and use
+
+http://localhost:3000/
+
+
 # Import Data
 
 To be able to import data just enter the container 
