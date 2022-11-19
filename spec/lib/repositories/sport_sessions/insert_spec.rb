@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Repositories::SportSessions do
   describe 'insert' do
-    subject { described_class.insert(session: session_hash) }
+    subject { described_class.insert(session_hash:) }
 
     let(:session_hash) { FactoryBot.attributes_for(:sport_session) }
 

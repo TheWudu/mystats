@@ -36,6 +36,7 @@ module Parser
           end_time:,
           start_time_timezone_offset:,
           timezone:,
+          duration_up:,
           trace:
         }
       ).symbolize_keys.compact
@@ -79,6 +80,10 @@ module Parser
 
     def timezone
       gpx_parsed[:timezone] || 'Europe/Vienna'
+    end
+
+    def duration_up
+      gpx_parsed[:duration_up]
     end
 
     def json_stats

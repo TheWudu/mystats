@@ -5,16 +5,34 @@ require 'repositories/sport_sessions'
 module UseCases
   module Session
     class Import
-      def store(session)
-        return false if exists?(session)
-
-        session_repo.insert(session:)
+      def store(session_hash)
+        if exists?(session_hash)
+          update(session_hash)
+        else
+          insert(session_hash)
+        end
       end
 
-      def exists?(session)
+      def update(session_hash)
+        if session_repo.update(session_hash:)
+          :updated
+        else
+          :failed
+        end
+      end
+
+      def insert(session_hash)
+        if session_repo.insert(session_hash:)
+          :inserted
+        else
+          :failed
+        end
+      end
+
+      def exists?(session_hash)
         session_repo.exists?(
-          start_time: session[:start_time],
-          sport_type: session[:sport_type]
+          start_time: session_hash[:start_time],
+          sport_type: session_hash[:sport_type]
         )
       end
 

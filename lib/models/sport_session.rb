@@ -11,6 +11,7 @@ module Models
     required :timezone, Definition.Type(String)
     required :start_time_timezone_offset, Definition.Type(Integer)
     required :duration, Definition.Type(Integer)
+    optional :duration_up, Definition.Type(Integer)
     optional :year, Definition.Type(Integer)
     optional :month, Definition.Type(Integer)
     optional :notes, Definition.Type(String)
@@ -48,6 +49,13 @@ module Models
 
     def elevation
       format_elevation(elevation_gain, elevation_loss)
+    end
+
+    # [m/h]
+    def vam
+      return unless duration_up
+
+      (elevation_gain.to_f / (duration_up / 1000.0) * 3600).round(2)
     end
 
     def avg_pace
