@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'repositories/records/mongo_db'
+require 'repositories/records'
 
 class RecordsController < ApplicationController
   before_action :filters

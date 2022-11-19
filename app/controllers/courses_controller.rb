@@ -86,12 +86,16 @@ class CoursesController < ApplicationController
   end
 
   def format_ms(millis)
+    return "-" unless millis
+
     secs, = millis.divmod(1000) # divmod returns [quotient, modulus]
     mins, secs = secs.divmod(60)
     hours, mins = mins.divmod(60)
     hours = nil if hours.zero?
 
     [hours, mins, secs].compact.map { |e| e.to_s.rjust(2, '0') }.join ':'
+  rescue FloatDomainError
+    "NaN"
   end
 
   def session_ids_from_courses
