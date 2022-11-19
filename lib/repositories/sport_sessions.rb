@@ -14,6 +14,7 @@ module Repositories
                  find_with_traces
                  exists?
                  insert
+                 update
                  delete
                  create_indexes].freeze
 

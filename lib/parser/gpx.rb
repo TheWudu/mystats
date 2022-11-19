@@ -36,6 +36,7 @@ module Parser
                       start_time:                 track[:points].first[:time],
                       end_time:                   track[:points].last[:time],
                       duration:,
+                      duration_up:                (stats[:duration_up] * 1000).to_i,
                       pause:                      (stats[:pause] * 1000).to_i,
                       timezone:,
                       start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]).to_i,
@@ -100,6 +101,7 @@ module Parser
       stats = {
         elevation_gain: 0,
         elevation_loss: 0,
+        duration_up:    0,
         distance:       0,
         pause:          0,
         heart_rate_avg: 0,
@@ -121,9 +123,11 @@ module Parser
 
     def calc_elevation(cur_point, prev_point, stats)
       elevation = cur_point[:ele] - prev_point[:ele]
+      time_diff = cur_point[:time] - prev_point[:time]
       if elevation.negative?
         stats[:elevation_loss] += elevation.abs
       else
+        stats[:duration_up] += time_diff
         stats[:elevation_gain] += elevation
       end
     end
