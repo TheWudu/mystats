@@ -27,7 +27,15 @@ class SessionController < ApplicationController
     @course ||= Repositories::Courses.find(id: params[:course_id])
   end
 
+  def fix_session_ids
+    existing_ids = Repositories::SportSessions.find_by_ids(ids: 
+      course.session_ids
+    ).map(&:id)
+    @course = course.new(session_ids: existing_ids)
+  end
+
   def update_course
+    fix_session_ids
     Repositories::Courses.update(course:)
   end
 end

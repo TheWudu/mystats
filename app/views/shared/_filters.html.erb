@@ -63,7 +63,6 @@ deselected_color = "#bbbbbb"
   </div>
   <% end %>
 
-
   <div>
     <% @possible_sport_types.each do |name| 
         params = @filter_params.dup
@@ -82,3 +81,4 @@ deselected_color = "#bbbbbb"
       <%= link_to(name, path, { class: button }) %>
     <% end %>
   </div>
+
