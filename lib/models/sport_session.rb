@@ -59,7 +59,7 @@ module Models
     end
 
     def avg_pace
-      return '-' if distance.zero?
+      return '-' if distance.nil? || distance.zero?
 
       format_ms(duration / distance * 1000)
     end

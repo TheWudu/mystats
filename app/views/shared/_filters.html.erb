@@ -3,6 +3,8 @@ selected_color   = "#81d99a"
 deselected_color = "#bbbbbb"
 %>
 
+<div class="container" style="grid-template-columns:30% 5% 65%; grid-template-rows: auto">
+  <div class="item-left">
   <div>
     <% @possible_years.each do |year| 
         params = @filter_params.dup
@@ -62,8 +64,9 @@ deselected_color = "#bbbbbb"
     <% end %>
   </div>
   <% end %>
+  </div>
 
-  <div>
+  <div class="item-right">
     <% @possible_sport_types.each do |name| 
         params = @filter_params.dup
         selected_sports = params[:sport_type]&.split(",") || []
@@ -81,4 +84,4 @@ deselected_color = "#bbbbbb"
       <%= link_to(name, path, { class: button }) %>
     <% end %>
   </div>
-
+</div>
