@@ -16,9 +16,8 @@ describe Parser::RuntasticJson do
     let(:expected_data) do
       {
         id:                         anything,
-        distance:                   0,
         duration:                   805_000,
-        end_time:                   Time.parse('2022-07-03T15:53:57Z'),
+        end_time:                   Time.parse('2022-07-03T15:53:53Z'),
         notes:                      'A bit hard, or was it to much barbecue? Yoga plan W2D3 ',
         pause:                      38_000,
         sport_type:                 'training',

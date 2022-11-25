@@ -24,13 +24,11 @@ module Parser
       gpx_parser&.warnings
     end
 
-    DIRECT_JSON_ATTRIBUTES = %w[id elevation_gain elevation_loss distance
-                                notes duration].freeze
+    DIRECT_JSON_ATTRIBUTES = %w[id notes duration pause].freeze
 
     def parse
       json_stats.slice(*DIRECT_JSON_ATTRIBUTES).merge(
         {
-          pause:                      json_stats['pause_duration'],
           sport_type:,
           start_time:,
           end_time:,
@@ -38,7 +36,7 @@ module Parser
           timezone:,
           duration_up:,
           trace:
-        }
+        }.merge(track_metrics)
       ).symbolize_keys.compact
     end
 
@@ -47,15 +45,31 @@ module Parser
     end
 
     def start_time
-      Time.at(json_stats['start_time'] / 1000)
+      Time.at(json_stats['start_time']  / 1000).utc
     end
 
     def end_time
-      Time.at(json_stats['end_time'] / 1000)
+      Time.at(json_stats['end_time'] / 1000).utc
     end
 
     def start_time_timezone_offset
       json_stats['start_time_timezone_offset'] / 1000
+    end
+    
+    def end_time_timezone_offset
+      json_stats['end_time_timezone_offset'] / 1000
+    end
+
+    def track_metrics
+      feature = json_stats['features']&.find { |h| h['type'] == 'track_metrics' }
+      return {} unless feature
+      attrs = feature['attributes']
+
+      {
+        elevation_gain: attrs['elevation_gain'],
+        elevation_loss: attrs['elevation_loss'],
+        distance:       attrs['distance']
+      }
     end
 
     def gpx_parser
