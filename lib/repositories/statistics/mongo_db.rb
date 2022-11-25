@@ -85,11 +85,8 @@ module Repositories
                                                     overall_duration:       { '$sum' => '$duration' },
                                                     overall_elevation_gain: { '$sum' => '$elevation_gain' },
                                                     overall_cnt:            { '$sum' => 1 } } },
-                                    { '$addFields' => { overall_distance: { '$cond' => [
-                                      { '$gt': ['$overall_distance', 0] }, '$overall_distance', '$overall_duration'
-                                    ] } } },
-                                    { '$addFields' => { overall_pace: { '$divide' => ['$overall_duration',
-                                                                                      '$overall_distance'] } } },
+                                    { '$addFields' => { overall_pace: { '$cond' => [
+                                      { '$gt': ['$overall_distance', 0] }, { '$divide' => ['$overall_duration', '$overall_distance'] }, 0] } } },
                                     { '$sort' => { _id: 1 } }
                                   ]).to_a
         data.each_with_object({}) do |d, h|
