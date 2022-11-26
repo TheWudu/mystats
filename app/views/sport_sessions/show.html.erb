@@ -65,7 +65,7 @@
 
   <% if @heart_rate_chart %>
   <div class="item-right" style="grid-row: 3 / span 1;">
-    <%= area_chart @heart_rate_chart, points: false, xtitle: 'heart_rate', min: @heart_rate_chart.values.min - 10, max: @heart_rate_chart.values.max + 10, colors: ["red"] %>
+    <%= line_chart @heart_rate_chart, points: false, xtitle: 'heart_rate', min: @heart_rate_min - 10, max: @heart_rate_max + 10, colors: ["red","#FF9999","#990000"] %>
   </div>
   <% end %>
   

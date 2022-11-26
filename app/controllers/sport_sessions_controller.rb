@@ -66,10 +66,23 @@ class SportSessionsController < ApplicationController
   def heart_rate_chart(sport_session)
     return unless sport_session.trace.first['hr']
 
-    sport_session.trace.each_with_object({}) do |p, h|
+    avg_hr      = nil
+    rolling_avg = {}
+    hr = sport_session.trace.each_with_object({}) do |p, h|
       key = p['time'].in_time_zone(sport_session.timezone).strftime('%H:%M:%S')
       h[key] = p['hr'] if p['hr']
+      rolling_avg[key] = ((h.values.sum + p['hr']).to_f / (h.count + 1)).round(1)
     end
+    avg_val = hr.values.sum / hr.count
+    avg = hr.each_with_object({}) { |(k,v),h| h[k] = avg_val  }
+    @heart_rate_min = hr.values.min
+    @heart_rate_max = hr.values.max
+
+    [
+      { name: "heart rate", data: hr },
+      { name: "rolling avg hr", data: rolling_avg },
+      { name: "avg hr", data: avg }
+    ]
   end
 
   def destroy
