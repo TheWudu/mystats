@@ -1,26 +1,155 @@
 {
-    "start_time": 1656738660000,
-    "end_time": 1656741688000,
-    "created_at": 1656741870000,
-    "updated_at": 1656742037000,
+    "version": 8,
+    "duration": 2905000,
+    "pause": 123510,
+    "notes": "Morning run starting below the high fog",
+    "calories": 657,
+    "dehydration_volume": 914,
+    "plausible": true,
     "start_time_timezone_offset": 7200000,
     "end_time_timezone_offset": 7200000,
-    "distance": 8749,
-    "duration": 2905000,
-    "elevation_gain": 127,
-    "elevation_loss": 125,
-    "average_speed": 10.842,
-    "calories": 657,
-    "longitude": "13.152250042185187",
-    "latitude": "47.980871982872486",
-    "max_speed": 12.93120002746582,
-    "pause_duration": 123510,
-    "duration_per_km": 332038,
-    "notes": "Morning run starting below the high fog",
-    "pulse_avg": 153,
-    "pulse_max": 174,
-    "manual": false,
-    "completed": true,
+    "tracking_method": "tracked",
+    "start_time": 1656738660000,
+    "end_time": 1656741688000,
+    "user_perceived_start_time": 1656745860000,
+    "user_perceived_end_time": 1656748888000,
+    "created_at": 1656741870000,
+    "updated_at": 1656742037000,
+    "features": [
+        {
+            "type": "map",
+            "attributes": {
+                "encoded_trace": "mgzcHqxgoA?A`@m@?u@HeEBaACcA]oBaAaBgCmE}BeE}B}EsBaFaCsCsBgBoAeBiCgEiCaEmB}BoCaAyBiCqAkGw@gDkAqBwCaBwDo@{De@kB}CVgHEcHQkEGo@KeDQuDSyF_@}Ft@iCpCKhAJnAh@jBOlAL~Bv@`CpApDu@pAsCG_HmAeEaDm@_CmEiCaDkDj@eCFsBf@}@vCo@|ByB~E_DjCyCpBw@X{C@{D^iD~B}DBqCxBcBdG~@hDrAxCn@`DbBzFzBvEpDT`ER|CArC?bDvCrCxAfC`DrDrAjDj@bDp@hC`C`A~Bp@bDXfBf@pBrB|BzBt@rCfD`BlCfCxDrBvCXhC]~BmAjD@pEB~Fl@~DhAdAx@~An@dCRlC~@rG~AtD|@~BhA~ArCj@jC{BMsGB}B",
+                "trace_available": true,
+                "start_latitude": "47.980871982872486",
+                "start_longitude": "13.152250042185187"
+            }
+        },
+        {
+            "type": "track_metrics",
+            "attributes": {
+                "distance": 8749,
+                "average_speed": "3.0117039586919105",
+                "average_pace": 0.332037947193965,
+                "max_speed": "3.5920000076293945",
+                "elevation_gain": 127,
+                "elevation_loss": 125
+            }
+        },
+        {
+            "type": "fastest_segments",
+            "attributes": {
+                "segments": [
+                    {
+                        "distance": "1km",
+                        "duration": 287820,
+                        "started_at": 1656739069000
+                    },
+                    {
+                        "distance": "1mi",
+                        "duration": 474247,
+                        "started_at": 1656738766000
+                    },
+                    {
+                        "distance": "3mi",
+                        "duration": 1494818,
+                        "started_at": 1656738766000
+                    },
+                    {
+                        "distance": "5km",
+                        "duration": 1546591,
+                        "started_at": 1656738748000
+                    }
+                ]
+            }
+        },
+        {
+            "type": "heart_rate",
+            "attributes": {
+                "average": 153,
+                "maximum": 174,
+                "trace_available": true
+            }
+        },
+        {
+            "type": "initial_values",
+            "attributes": {
+                "distance": 8749,
+                "duration": 2905940,
+                "pause": 123510,
+                "sport_type": {
+                    "id": "1",
+                    "type": "sport_type"
+                },
+                "start_time": 1656738717000,
+                "end_time": 1656741746000
+            }
+        },
+        {
+            "type": "events",
+            "attributes": {
+                "events": [
+                    {
+                        "id": "5fd55d54-4989-43b2-b1a6-4488efe20b19",
+                        "type": "competition_challenge_event",
+                        "owner": {
+                            "id": "137929951",
+                            "type": "user"
+                        }
+                    },
+                    {
+                        "id": "30d9b1e8-ca72-4c34-bfd9-3c9a3312ea2e",
+                        "type": "competition_challenge_event",
+                        "owner": {
+                            "id": "137929951",
+                            "type": "user"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "groups",
+            "attributes": {
+                "groups": [
+                    {
+                        "id": "3c4107d2-48f3-480b-afcd-239514ecc981",
+                        "type": "group"
+                    },
+                    {
+                        "id": "74f85e39-a70b-4e96-844b-25c056561fc5",
+                        "type": "group"
+                    },
+                    {
+                        "id": "850cd9da-8f2c-4de4-bcb5-1b84b5dc4626",
+                        "type": "group"
+                    },
+                    {
+                        "id": "938c6846-441c-4a7d-b27b-a1d6c0ed794a",
+                        "type": "group"
+                    },
+                    {
+                        "id": "a43b605e-8e39-409a-9420-50147512b8f4",
+                        "type": "group"
+                    },
+                    {
+                        "id": "d8cf4a1b-040b-4334-a744-42997dcb9a90",
+                        "type": "group"
+                    },
+                    {
+                        "id": "b0f54875-5968-41ea-84d6-a4752924921d",
+                        "type": "country_group"
+                    },
+                    {
+                        "id": "c97e4412-c9ed-4b3f-946b-986141242ef5",
+                        "type": "country_group"
+                    }
+                ]
+            }
+        }
+    ],
     "id": "0290dd9f-c341-4af8-aed1-a9eb97fd4b7d",
-    "sport_type_id": "1"
+    "user_id": "D9VAIW9XA1EPLC04",
+    "sport_type_id": "1",
+    "creation_application_id": "2948"
 }
