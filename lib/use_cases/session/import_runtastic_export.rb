@@ -30,7 +30,7 @@ module UseCases
       end
 
       def parse(json_data, gpx_data)
-        parser = Parser::RuntasticJson.new(json_data: json_data, gpx_data: gpx_data)
+        parser = Parser::RuntasticJson.new(json_data:, gpx_data:)
         parser.parse
       end
     end

@@ -18,10 +18,10 @@ class TraceMatcherController < ApplicationController
 
   def index
     @matcher = UseCases::Traces::Matcher.new(
-      trace1:      trace1,
-      trace2:      trace2,
-      block_size:  block_size,
-      min_overlap: min_overlap
+      trace1:,
+      trace2:,
+      block_size:,
+      min_overlap:
     )
     @matcher.analyse
     @possible_sessions = Repositories::SportSessions.find_with_traces(

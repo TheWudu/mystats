@@ -7,22 +7,7 @@ FactoryBot.define do
   factory :sport_session, class: 'Models::SportSession' do
     initialize_with { new(attributes) }
     to_create do |instance|
-      attrs = {
-        id:                         instance.id,
-        notes:                      instance.notes,
-        distance:                   instance.distance,
-        start_time:                 instance.start_time,
-        start_time_timezone_offset: instance.start_time_timezone_offset,
-        end_time:                   instance.end_time,
-        timezone:                   instance.timezone,
-        duration:                   instance.duration,
-        pause:                      instance.pause,
-        elevation_gain:             instance.elevation_gain,
-        elevation_loss:             instance.elevation_loss,
-        sport_type:                 instance.sport_type,
-        trace:                      instance.trace
-      }
-      Repositories::SportSessions.insert(session: attrs)
+      Repositories::SportSessions.insert(session_hash: instance.to_h)
     end
 
     id { SecureRandom.uuid }
@@ -34,13 +19,13 @@ FactoryBot.define do
     end_time { Time.at(30.minutes.ago.to_i).utc }
     timezone { 'Europe/Vienna' }
     duration { 30 * 60 }
+    duration_up { 18 * 60 }
     pause { 0 }
     year { start_time.year }
     month { start_time.month }
     elevation_gain { 112 }
     elevation_loss { 110 }
     sport_type     { 'running' }
-    trace          { nil }
 
     trait :with_trace do
       trace do

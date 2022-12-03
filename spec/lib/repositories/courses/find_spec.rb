@@ -4,14 +4,14 @@ require 'rails_helper'
 
 describe Repositories::Courses do
   let(:id) { SecureRandom.uuid }
-  subject { described_class.find(id: id) }
+  subject { described_class.find(id:) }
 
   context 'when no courses exist' do
     it { expect(subject).to eq(nil) }
   end
 
   context 'when a course exist' do
-    let(:course) { FactoryBot.create(:course, id: id) }
+    let(:course) { FactoryBot.create(:course, id:) }
 
     before do
       course
@@ -23,7 +23,7 @@ describe Repositories::Courses do
 
   context 'when multiple courses exist' do
     let(:course_abc) { FactoryBot.create(:course, name: 'route abc') }
-    let(:course_xzv) { FactoryBot.create(:course, id: id, name: 'route xzv') }
+    let(:course_xzv) { FactoryBot.create(:course, id:, name: 'route xzv') }
 
     before do
       course_xzv

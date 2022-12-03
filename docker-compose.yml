@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  mongodb_container:
+  mongodb:
     image: mongo:latest
     # environment:
     #  MONGO_INITDB_ROOT_USERNAME: root
@@ -9,3 +9,12 @@ services:
       - 27017:27017
     volumes:
       - ./mongodb_data:/data/db
+  mystats:
+    image: thewudu/mystats:latest
+    ports: 
+      - 80:3000
+    environment:
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+    volumes:
+      - ./import:/data/import

@@ -6,7 +6,7 @@ describe Parser::Gpx do
   let(:input_file) { 'spec/fixtures/traces/running_8km.gpx' }
   let(:data) { File.read(input_file) }
 
-  let(:parser) { described_class.new(data: data) }
+  let(:parser) { described_class.new(data:) }
   subject { parser.parse }
 
   context 'when cities are not imported' do

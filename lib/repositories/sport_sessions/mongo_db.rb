@@ -6,7 +6,7 @@ module Repositories
   module SportSessions
     class MongoDb
       def fetch(years:, months:, sport_types:, text: nil)
-        matcher = build_matcher(years: years, months: months, sport_types: sport_types)
+        matcher = build_matcher(years:, months:, sport_types:)
         matcher.merge!(text_filter(text)) unless text.blank?
 
         collection.find(matcher).sort({ start_time: -1 }).map do |doc|
@@ -30,7 +30,7 @@ module Repositories
       end
 
       def delete(id:)
-        resp = collection.delete_one(id: id)
+        resp = collection.delete_one(id:)
         resp.n == 1
       end
 
@@ -54,17 +54,32 @@ module Repositories
       end
 
       def exists?(start_time:, sport_type:)
-        collection.count({ year:       start_time.year,
-                           month:      start_time.month,
-                           start_time: {
-                             '$gte' => (start_time - 1.minute),
-                             '$lte' => (start_time + 1.minute)
-                           },
-                           sport_type: sport_type }).positive?
+        !!find_by_start_time_and_sport_type(start_time:, sport_type:)
       end
 
-      def insert(session:)
-        resp = collection.insert_one(prepare_for_write(session))
+      def insert(session_hash:)
+        resp = collection.insert_one(prepare_for_write(session_hash))
+        resp.n == 1
+      end
+
+      def find_by_start_time_and_sport_type(start_time:, sport_type:)
+        collection.find({ year:       start_time.year,
+                          month:      start_time.month,
+                          start_time: {
+                            '$gte' => (start_time - 1.minute),
+                            '$lte' => (start_time + 1.minute)
+                          },
+                          sport_type: }).first
+      end
+
+      def update(session_hash:)
+        start_time = session_hash[:start_time]
+        sport_type = session_hash[:sport_type]
+        doc = find_by_start_time_and_sport_type(start_time:, sport_type:)
+        return false unless doc
+
+        resp = collection.find({ _id: doc['_id'] }).update_one({ '$set' => prepare_for_update(doc['id'],
+                                                                                              session_hash) })
         resp.n == 1
       end
 
@@ -90,10 +105,18 @@ module Repositories
                      } }
       end
 
-      def prepare_for_write(session)
-        session.merge(
-          year:  session[:start_time].year,
-          month: session[:start_time].month
+      PROTECTED_ATTRIBUTES = %i[
+        _id id
+      ].freeze
+
+      def prepare_for_update(id, session_hash)
+        prepare_for_write(session_hash).except(*PROTECTED_ATTRIBUTES)
+      end
+
+      def prepare_for_write(session_hash)
+        session_hash.merge(
+          year:  session_hash[:start_time].year,
+          month: session_hash[:start_time].month
         ).compact
       rescue NoMethodError
         raise ArgumentError, 'missing start_time'

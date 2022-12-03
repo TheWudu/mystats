@@ -37,7 +37,7 @@ module Repositories
 
         puts "Create: #{name}, #{index}"
 
-        options = { name: name }
+        options = { name: }
 
         Mongo::Index::View.new(collection).create_one(index, options)
       end

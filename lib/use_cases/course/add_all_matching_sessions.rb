@@ -12,7 +12,8 @@ module UseCases
       def run
         ids = matching_sessions.map(&:id)
         new_ids = (course.session_ids + ids).uniq.compact
-        update_course(new_ids)
+        existing_ids = Repositories::SportSessions.find_by_ids(ids: new_ids).map(&:id)
+        update_course(existing_ids)
       end
 
       private
@@ -36,7 +37,7 @@ module UseCases
       end
 
       def update_course(new_ids)
-        updated_course = course.class.new(course.merge(session_ids: new_ids))
+        updated_course = course.new(session_ids: new_ids)
         Repositories::Courses.update(course: updated_course)
       end
     end

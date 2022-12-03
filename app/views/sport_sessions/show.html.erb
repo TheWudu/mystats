@@ -26,7 +26,10 @@
       <tr><th>distance</th>  <td><%= @sport_session.distance_in_km %> [km] </td></tr>
       <tr><th>duration</th>  <td><%= @sport_session.duration_as_str %></td></tr>
       <tr><th>pause</th>     <td><%= @sport_session.pause_as_str %></td></tr>
-      <tr><th>elevation</th> <td><%= @sport_session.elevation %> [m]</td></tr>
+      <tr><th>elevation</th> <td><%= @sport_session.elevation %> [m] </td></tr>
+      <% if @sport_session.vam %>
+        <tr><th>vam</th>     <td><%= @sport_session.vam %> [m/h] </td></tr>
+      <% end %>
       <tr><th>avg pace</th>  <td><%= @sport_session.avg_pace  %></td></tr>
       <tr><th>avg hr</th>    <td><%= @sport_session.heart_rate_avg || "-" %> [bpm]</td></tr>
       <tr><th>max hr</th>    <td><%= @sport_session.heart_rate_max || "-" %> [bpm]</td></tr>
@@ -62,7 +65,7 @@
 
   <% if @heart_rate_chart %>
   <div class="item-right" style="grid-row: 3 / span 1;">
-    <%= area_chart @heart_rate_chart, points: false, xtitle: 'heart_rate', min: @heart_rate_chart.values.min - 10, max: @heart_rate_chart.values.max + 10, colors: ["red"] %>
+    <%= line_chart @heart_rate_chart, points: false, xtitle: 'heart_rate', min: @heart_rate_min - 10, max: @heart_rate_max + 10, colors: ["red","#FF9999","#990000"] %>
   </div>
   <% end %>
   

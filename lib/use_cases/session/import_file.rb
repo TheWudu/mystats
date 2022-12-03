@@ -17,8 +17,9 @@ module UseCases
 
       def run
         sessions.each do |session|
-          inserted = store(session)
-          add_warning('already exists') unless inserted
+          action = store(session)
+          add_warning('already exists - updated') if action == :updated
+          add_error('can not store') if action == :failed
         end
       end
 
@@ -36,6 +37,10 @@ module UseCases
       end
 
       private
+
+      def add_error(txt)
+        errors << txt
+      end
 
       def add_warning(txt)
         warns << txt

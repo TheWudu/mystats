@@ -16,9 +16,9 @@ class SportSessionsController < ApplicationController
   def index
     @sport_sessions = sport_sessions_repo.fetch(
       text:        params[:text],
-      years:       years,
-      months:      months,
-      sport_types: sport_types
+      years:,
+      months:,
+      sport_types:
     )
   end
 
@@ -52,7 +52,7 @@ class SportSessionsController < ApplicationController
     courses.each_with_object([]) do |course, ary|
       matcher = UseCases::Traces::Matcher.new(trace1: course.trace, trace2: sport_session.trace)
       matcher.analyse
-      ary << { course: course, match_rate: matcher.match_in_percent } if matcher.matching?
+      ary << { course:, match_rate: matcher.match_in_percent } if matcher.matching?
     end
   end
 
@@ -66,10 +66,23 @@ class SportSessionsController < ApplicationController
   def heart_rate_chart(sport_session)
     return unless sport_session.trace.first['hr']
 
-    sport_session.trace.each_with_object({}) do |p, h|
+    avg_hr      = nil
+    rolling_avg = {}
+    hr = sport_session.trace.each_with_object({}) do |p, h|
       key = p['time'].in_time_zone(sport_session.timezone).strftime('%H:%M:%S')
       h[key] = p['hr'] if p['hr']
+      rolling_avg[key] = ((h.values.sum + p['hr']).to_f / (h.count + 1)).round(1)
     end
+    avg_val = hr.values.sum / hr.count
+    avg = hr.each_with_object({}) { |(k,v),h| h[k] = avg_val  }
+    @heart_rate_min = hr.values.min
+    @heart_rate_max = hr.values.max
+
+    [
+      { name: "heart rate", data: hr },
+      { name: "rolling avg hr", data: rolling_avg },
+      { name: "avg hr", data: avg }
+    ]
   end
 
   def destroy
@@ -96,9 +109,9 @@ class SportSessionsController < ApplicationController
 
   def statistics
     @statistics ||= Repositories::Statistics::MongoDb.new(
-      years:       years,
-      sport_types: sport_types,
-      group_by:    group_by
+      years:,
+      sport_types:,
+      group_by:
     )
   end
 end

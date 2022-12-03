@@ -9,7 +9,7 @@ describe Repositories::SportSessions do
     let(:ids) { [id1, id2] }
     let(:sort) { nil }
 
-    subject { described_class.find_by_ids(ids: ids, sort: sort) }
+    subject { described_class.find_by_ids(ids:, sort:) }
 
     context 'when sessions does not exist' do
       it { expect(subject).to eq([]) }

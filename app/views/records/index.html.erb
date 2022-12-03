@@ -1,0 +1,28 @@
+<div class="filters">
+  <%= render "shared/filters" %>
+</div>
+
+<div class="flexbox">
+  <div class="chart">
+    <%= bar_chart records_distance_per_month_path(@records_params), xtitle: "distance per month [km]", ytitle: @records_params[:group_by], thousands: "." %>
+  </div>
+  
+  <div class="chart">
+    <%= bar_chart records_distance_per_week_path(@records_params), xtitle: "distance per week [km]", ytitle: @records_params[:group_by], thousands: "." %>
+  </div>
+  
+  <div class="chart">
+    <%= bar_chart records_distance_path(@records_params), xtitle: "distance [km]", ytitle: @records_params[:group_by], thousands: "." %>
+  </div>
+</div>
+
+<div class="flexbox">
+  
+  <div class="chart">
+    <%= bar_chart records_average_pace_path(@records_params), xtitle: "average_pace [min/km]", ytitle: @records_params[:group_by], thousands: "." %>
+  </div>
+  
+  <div class="chart">
+    <%= bar_chart records_vam_path(@records_params), xtitle: "vam [m/h]", ytitle: @records_params[:group_by], thousands: "." %>
+  </div>
+</div>

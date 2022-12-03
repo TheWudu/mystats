@@ -1,1 +1,112 @@
-{"start_time":1656862790000,"end_time":1656863637000,"created_at":1656863677000,"updated_at":1656863758000,"start_time_timezone_offset":7200000,"end_time_timezone_offset":7200000,"distance":0,"duration":805000,"calories":109,"pause_duration":38000,"notes":"A bit hard, or was it to much barbecue? Yoga plan W2D3 ","manual":false,"edited":false,"completed":true,"live_tracking_active":false,"live_tracking_enabled":false,"cheering_enabled":false,"indoor":true,"location_context":"home","workout_data":{"workout_id":"7xUmtR6ctv41jo6Lhw8yI2","workout_incomplete":false,"workout_type":"standalone"},"subjective_intensity":"medium","id":"bcf8eec7-cd62-4d58-8b7e-a2d60e35962f","subjective_feeling_id":"5","sport_type_id":"81"}
+{
+    "version": 5,
+    "duration": 805000,
+    "pause": 38000,
+    "notes": "A bit hard, or was it to much barbecue? Yoga plan W2D3 ",
+    "calories": 109,
+    "subjective_feeling": "good",
+    "plausible": true,
+    "start_time_timezone_offset": 7200000,
+    "end_time_timezone_offset": 7200000,
+    "tracking_method": "tracked",
+    "start_time": 1656862790000,
+    "end_time": 1656863633000,
+    "user_perceived_start_time": 1656869990000,
+    "user_perceived_end_time": 1656870833000,
+    "created_at": 1656863677000,
+    "updated_at": 1656863758000,
+    "features": [
+        {
+            "type": "workout",
+            "attributes": {
+                "source_content": {
+                    "id": "7xUmtR6ctv41jo6Lhw8yI2",
+                    "type": "video_workout"
+                }
+            }
+        },
+        {
+            "type": "workout_user_feedback",
+            "attributes": {
+                "subjective_intensity": "just_right"
+            }
+        },
+        {
+            "type": "initial_values",
+            "attributes": {
+                "duration": 805000,
+                "pause": 38000,
+                "sport_type": {
+                    "id": "81",
+                    "type": "sport_type"
+                },
+                "start_time": 1656862790000,
+                "end_time": 1656863633000
+            }
+        },
+        {
+            "type": "origin",
+            "attributes": {
+                "device": {
+                    "name": "SM-G965F",
+                    "vendor": "samsung",
+                    "os_version": "Android 10"
+                }
+            }
+        },
+        {
+            "type": "events",
+            "attributes": {
+                "events": [
+                    {
+                        "id": "5d7e93a1-2824-456f-af5d-312c36379447",
+                        "type": "competition_challenge_event",
+                        "owner": {
+                            "id": "137929951",
+                            "type": "user"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "groups",
+            "attributes": {
+                "groups": [
+                    {
+                        "id": "3c4107d2-48f3-480b-afcd-239514ecc981",
+                        "type": "group"
+                    },
+                    {
+                        "id": "74f85e39-a70b-4e96-844b-25c056561fc5",
+                        "type": "group"
+                    },
+                    {
+                        "id": "850cd9da-8f2c-4de4-bcb5-1b84b5dc4626",
+                        "type": "group"
+                    },
+                    {
+                        "id": "938c6846-441c-4a7d-b27b-a1d6c0ed794a",
+                        "type": "group"
+                    },
+                    {
+                        "id": "a43b605e-8e39-409a-9420-50147512b8f4",
+                        "type": "group"
+                    },
+                    {
+                        "id": "d8cf4a1b-040b-4334-a744-42997dcb9a90",
+                        "type": "group"
+                    },
+                    {
+                        "id": "92c5423c-a0cf-4f47-b6dd-e90b9e27ed4d",
+                        "type": "country_group"
+                    }
+                ]
+            }
+        }
+    ],
+    "id": "bcf8eec7-cd62-4d58-8b7e-a2d60e35962f",
+    "user_id": "D9VAIW9XA1EPLC04",
+    "sport_type_id": "81",
+    "creation_application_id": "3048"
+}

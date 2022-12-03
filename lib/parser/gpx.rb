@@ -12,7 +12,7 @@ require 'hgt_reader'
 
 module Parser
   class Gpx
-    attr_reader :data, :warnings, :pause_threshold, :to_slow
+    attr_reader :data, :warnings, :to_slow
 
     def initialize(data:)
       @data = data
@@ -32,12 +32,13 @@ module Parser
         stats.merge({
                       id:                         SecureRandom.uuid,
                       notes:                      track[:name],
-                      sport_type:                 SportType.unified(name: track[:type]),
+                      sport_type:                 SportType.unified(name: track[:type]) || SportType.default,
                       start_time:                 track[:points].first[:time],
                       end_time:                   track[:points].last[:time],
-                      duration:                   duration,
+                      duration:,
+                      duration_up:                (stats[:duration_up] * 1000).to_i,
                       pause:                      (stats[:pause] * 1000).to_i,
-                      timezone:                   timezone,
+                      timezone:,
                       start_time_timezone_offset: timezone_offset(timezone, track[:points].first[:time]).to_i,
                       trace:                      trace_from_track(track)
                     })
@@ -57,7 +58,7 @@ module Parser
 
         speed = distance / duration / 1000 * 3600
 
-        et << cur_point.merge(distance: distance, duration: duration, speed: speed)
+        et << cur_point.merge(distance:, duration:, speed:)
         prev_point = cur_point
       end
     end
@@ -65,19 +66,9 @@ module Parser
     def set_thresholds(points)
       # calculate average speed
       # and assume to slow is 1/10th of it
-      avg_speed = points.sum { |p| p[:speed] } / points.size
+      valid_points = points.select { |p| p[:speed] != Float::INFINITY && p[:speed] != 0 }
+      avg_speed = valid_points.sum { |p| p[:speed] } / valid_points.size
       @to_slow = avg_speed / 10
-
-      # get the average durations between the gps points
-      # and remove the lower and upper 10% to remove the
-      # superfast and the superslow points
-      # calculate the average time between the points
-      # based on those 80% of the values.
-      durations = points.map { |p| p[:duration] }.sort
-      most_durations = durations[((points.size * 0.1).to_i)..((points.size * 0.9).to_i)]
-
-      # assume the pause has to have a duration > the average * 2
-      @pause_threshold = most_durations.sum / most_durations.size * 2
     end
 
     def trace_from_track(track)
@@ -110,6 +101,7 @@ module Parser
       stats = {
         elevation_gain: 0,
         elevation_loss: 0,
+        duration_up:    0,
         distance:       0,
         pause:          0,
         heart_rate_avg: 0,
@@ -131,9 +123,11 @@ module Parser
 
     def calc_elevation(cur_point, prev_point, stats)
       elevation = cur_point[:ele] - prev_point[:ele]
+      time_diff = cur_point[:time] - prev_point[:time]
       if elevation.negative?
         stats[:elevation_loss] += elevation.abs
       else
+        stats[:duration_up] += time_diff
         stats[:elevation_gain] += elevation
       end
     end
@@ -146,10 +140,8 @@ module Parser
       stats[:heart_rate_avg] = (hr_values.sum / hr_values.size).to_i
     end
 
-    PAUSE_THRESHOLD = 10
-
     def calc_pause(cur_point, stats)
-      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow && cur_point[:duration] > pause_threshold
+      stats[:pause] += cur_point[:duration] if cur_point[:speed] < to_slow
     end
 
     def calc_distance(cur_point, stats)
@@ -198,10 +190,11 @@ module Parser
       extensions = trkpt[:tags].select { |t| t[:tag] == 'extensions' }.first
       return unless extensions
 
-      ns3_extensions = extensions[:tags].select { |t| t[:tag] == 'ns3:TrackPointExtension' }.first
-      return unless ns3_extensions
-
-      from_tags(ns3_extensions, 'ns3:hr')&.to_i
+      if ns3_extensions = extensions[:tags].select { |t| t[:tag] == 'ns3:TrackPointExtension' }.first
+        from_tags(ns3_extensions, 'ns3:hr')&.to_i
+      elsif gpxtpx_extension = extensions[:tags].select { |t| t[:tag] == 'gpxtpx:TrackPointExtension' }.first
+        from_tags(gpxtpx_extension, 'gpxtpx:hr')&.to_i
+      end
     end
 
     def from_tags(tag, type)
@@ -213,7 +206,7 @@ module Parser
     end
 
     def xml
-      @xml ||= Parser::Xml.new(data: data).parse
+      @xml ||= Parser::Xml.new(data:).parse
     end
   end
 end

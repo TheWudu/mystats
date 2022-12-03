@@ -18,7 +18,7 @@ describe Repositories::SportSessions, :clear_db do
       }.compact
     end
 
-    subject { described_class.where(opts: opts) }
+    subject { described_class.where(opts:) }
 
     context 'when no sessions exist' do
       it { expect(subject).to be_empty }

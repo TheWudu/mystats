@@ -14,6 +14,14 @@ Rails.application.routes.draw do
   get 'charts/distance_buckets'
   get 'charts/hour_per_day'
 
+  get 'records', to: 'records#index'
+  get 'records/index'
+  get 'records/distance_per_month'
+  get 'records/distance_per_week'
+  get 'records/distance'
+  get 'records/average_pace'
+  get 'records/vam'
+
   resources :sport_sessions, only: [:index, :destroy]
 
   get 'charts', to: 'charts#index'

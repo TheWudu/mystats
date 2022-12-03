@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Parser::RuntasticJson do
-  let(:parser) { described_class.new(json_data: json_data, gpx_data: gpx_data) }
+  let(:parser) { described_class.new(json_data:, gpx_data:) }
 
   subject { parser.parse }
 
@@ -16,9 +16,8 @@ describe Parser::RuntasticJson do
     let(:expected_data) do
       {
         id:                         anything,
-        distance:                   0,
         duration:                   805_000,
-        end_time:                   Time.parse('2022-07-03T15:53:57Z'),
+        end_time:                   Time.parse('2022-07-03T15:53:53Z'),
         notes:                      'A bit hard, or was it to much barbecue? Yoga plan W2D3 ',
         pause:                      38_000,
         sport_type:                 'training',
@@ -71,6 +70,7 @@ describe Parser::RuntasticJson do
         id:                         anything,
         distance:                   8749,
         duration:                   2_905_000,
+        duration_up:                1_565_000,
         elevation_gain:             127,
         elevation_loss:             125,
         end_time:                   Time.parse('2022-07-02T06:01:28Z'),

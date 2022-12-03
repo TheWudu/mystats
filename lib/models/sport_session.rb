@@ -3,26 +3,25 @@
 require 'definitions'
 
 module Models
-  class SportSession < Definition::ValueObject
-    definition(Definition.Keys do
-      required :id, Definition.Type(String)
-      optional :sport_type, Definition.Type(String)
-      required :start_time, Definition.Type(Time)
-      required :end_time, Definition.Type(Time)
-      required :timezone, Definition.Type(String)
-      required :start_time_timezone_offset, Definition.Type(Integer)
-      required :duration, Definition.Type(Integer)
-      optional :year, Definition.Type(Integer)
-      optional :month, Definition.Type(Integer)
-      optional :notes, Definition.Type(String)
-      optional :distance, Definition.Type(Integer)
-      optional :trace, Definition.Nilable(Definition.CoercibleValueObject(Definitions::GpsPointArray))
-      optional :elevation_gain, Definition.Type(Integer)
-      optional :elevation_loss, Definition.Type(Integer)
-      optional :pause, Definition.Type(Integer)
-      optional :heart_rate_max, Definition.Type(Integer)
-      optional :heart_rate_avg, Definition.Type(Integer)
-    end)
+  class SportSession < Definition::Model
+    required :id, Definition.Type(String)
+    optional :sport_type, Definition.Type(String)
+    required :start_time, Definition.Type(Time)
+    required :end_time, Definition.Type(Time)
+    required :timezone, Definition.Type(String)
+    required :start_time_timezone_offset, Definition.Type(Integer)
+    required :duration, Definition.Type(Integer)
+    optional :duration_up, Definition.Type(Integer)
+    optional :year, Definition.Type(Integer)
+    optional :month, Definition.Type(Integer)
+    optional :notes, Definition.Type(String)
+    optional :distance, Definition.Type(Integer)
+    optional :elevation_gain, Definition.Type(Integer)
+    optional :elevation_loss, Definition.Type(Integer)
+    optional :pause, Definition.Type(Integer)
+    optional :heart_rate_max, Definition.Type(Integer)
+    optional :heart_rate_avg, Definition.Type(Integer)
+    optional :trace, Definition.Nilable(Definition.Each(Definitions::GpsPoint))
 
     def ==(other)
       other.as_json&.compact == as_json&.compact
@@ -52,10 +51,17 @@ module Models
       format_elevation(elevation_gain, elevation_loss)
     end
 
-    def avg_pace
-      return '-' if distance.zero?
+    # [m/h]
+    def vam
+      return unless duration_up
 
-      format_ms((duration - pause.to_i) / distance * 1000)
+      (elevation_gain.to_f / (duration_up / 1000.0) * 3600).round(2)
+    end
+
+    def avg_pace
+      return '-' if distance.nil? || distance.zero?
+
+      format_ms(duration / distance * 1000)
     end
 
     def format_ms(millis)

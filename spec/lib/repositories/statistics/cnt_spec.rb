@@ -5,9 +5,9 @@ require 'rails_helper'
 describe Repositories::Statistics::MongoDb, :clear_db do
   let(:instance) do
     described_class.new(
-      years:       years,
-      sport_types: sport_types,
-      group_by:    group_by
+      years:,
+      sport_types:,
+      group_by:
     )
   end
   let(:years) { nil }

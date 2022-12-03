@@ -5,10 +5,10 @@ require 'rails_helper'
 describe Repositories::Courses do
   let(:id) { SecureRandom.uuid }
 
-  subject { described_class.find_by_session_id(id: id) }
+  subject { described_class.find_by_session_id(id:) }
 
-  let(:sport_session) { FactoryBot.create(:sport_session, id: id) }
-  let(:course) { FactoryBot.create(:course, session_ids: session_ids) }
+  let(:sport_session) { FactoryBot.create(:sport_session, id:) }
+  let(:course) { FactoryBot.create(:course, session_ids:) }
 
   before do
     course
