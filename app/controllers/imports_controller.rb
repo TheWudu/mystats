@@ -7,9 +7,9 @@ class ImportsController < ApplicationController
 
   def create
     data = File.open(params['input'].tempfile, 'r:UTF-8').read
-    extension = params['input'].original_filename.split(".").last
+    extension = params['input'].original_filename.split('.').last
 
-    use_case = UseCases::Session::ImportFile.new(data: data, type: extension) 
+    use_case = UseCases::Session::ImportFile.new(data:, type: extension)
     use_case.run
 
     if (errors = use_case_errors(use_case))

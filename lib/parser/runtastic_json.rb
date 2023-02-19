@@ -45,7 +45,7 @@ module Parser
     end
 
     def start_time
-      Time.at(json_stats['start_time']  / 1000).utc
+      Time.at(json_stats['start_time'] / 1000).utc
     end
 
     def end_time
@@ -55,7 +55,7 @@ module Parser
     def start_time_timezone_offset
       json_stats['start_time_timezone_offset'] / 1000
     end
-    
+
     def end_time_timezone_offset
       json_stats['end_time_timezone_offset'] / 1000
     end
@@ -63,6 +63,7 @@ module Parser
     def track_metrics
       feature = json_stats['features']&.find { |h| h['type'] == 'track_metrics' }
       return {} unless feature
+
       attrs = feature['attributes']
 
       {

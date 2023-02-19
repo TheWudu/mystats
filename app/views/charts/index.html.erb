@@ -43,3 +43,23 @@
     <%= line_chart charts_cnt_per_week_of_year_path(@chart_params), xtitle: "Count per week of year" %>
   </div>
 </div>
+
+<div class="flexbox">
+  
+  <div class="chart">
+    <%= line_chart charts_yoy_path(@chart_params), xtitle: "YoY distance", points: true, colors: ["#F00","#9CF"] %>
+  </div>
+  
+  <div>
+    <div style="font-size: 32px;">
+      Year over year, <%= @yoy_years.last %> to <%= @yoy_years.first %>
+      <div style="font-size: 24px;">
+        (until week <%= @yoy_date %>)
+      </div>
+      <div style="font-weight: bold;">
+        <%= @yoy_value %> %
+      </div>
+    </div>
+  </div>
+
+</div>

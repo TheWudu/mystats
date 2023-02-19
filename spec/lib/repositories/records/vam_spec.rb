@@ -23,7 +23,7 @@ describe Repositories::Records, :clear_db do
                         elevation_gain: 250,
                         sport_type:     'running',
                         start_time:     Time.parse('2022-08-14T10:12:32Z')) # Sunday W31
-      
+
       FactoryBot.create(:sport_session,
                         duration_up:    3_600_000,
                         elevation_gain: 750,

@@ -38,10 +38,16 @@ describe Repositories::SportSessions, :clear_db do
         end
 
         it { expect(subject).to be(true) }
-        it { subject; expect(described_class.find_by_id(id: insert_hash[:id])).to be_a(Models::SportSession) }
-        it { subject; expect(described_class.find_by_id(id: update_hash[:id])).to be_nil }
+        it {
+          subject
+          expect(described_class.find_by_id(id: insert_hash[:id])).to be_a(Models::SportSession)
+        }
+        it {
+          subject
+          expect(described_class.find_by_id(id: update_hash[:id])).to be_nil
+        }
 
-        it { expect{subject}.not_to change{ count_sessions } }
+        it { expect { subject }.not_to change { count_sessions } }
       end
     end
   end

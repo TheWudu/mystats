@@ -28,9 +28,8 @@ class SessionController < ApplicationController
   end
 
   def fix_session_ids
-    existing_ids = Repositories::SportSessions.find_by_ids(ids: 
-      course.session_ids
-    ).map(&:id)
+    existing_ids = Repositories::SportSessions.find_by_ids(ids:
+                                                                course.session_ids).map(&:id)
     @course = course.new(session_ids: existing_ids)
   end
 

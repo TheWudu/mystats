@@ -86,7 +86,9 @@ module Repositories
                                                     overall_elevation_gain: { '$sum' => '$elevation_gain' },
                                                     overall_cnt:            { '$sum' => 1 } } },
                                     { '$addFields' => { overall_pace: { '$cond' => [
-                                      { '$gt': ['$overall_distance', 0] }, { '$divide' => ['$overall_duration', '$overall_distance'] }, 0] } } },
+                                      { '$gt': ['$overall_distance',
+                                                0] }, { '$divide' => ['$overall_duration', '$overall_distance'] }, 0
+                                    ] } } },
                                     { '$sort' => { _id: 1 } }
                                   ]).to_a
         data.each_with_object({}) do |d, h|
@@ -130,6 +132,57 @@ module Repositories
         data.each_with_object({}) do |d, h|
           h[d['_id']] = d['count']
         end
+      end
+
+      def yoy
+        data = sessions.aggregate([
+                                    { '$match' => matcher },
+                                    { '$addFields' => {
+                                      timezone: { '$ifNull' => ['$timezone', 'UTC'] },
+                                       date: { '$dateToString' => { date:     '$start_time',
+                                                                    timezone: '$timezone',
+                                                                    format:   '%Y-%m-%d' } },
+                                      'iso_week'      => { '$isoWeek' => '$start_time' },
+                                      'iso_week_year' => { "$isoWeekYear": '$start_time' }
+                                    } },
+                                    { '$group' => { _id:      { year: '$iso_week_year', week: '$iso_week' },
+                                                    distance: { '$sum' => '$distance' } } },
+                                    { '$sort' => { _id: 1 } }
+                                  ])
+
+        result = []
+        years.each do |year|
+          result << { name: year, data: fill_days(year, data) }
+        end
+
+        result
+      end
+
+      def fill_days(year, data)
+        year_sum = 0
+
+        r = {}
+        # (Date.parse("#{year}-01-01")..Date.parse("#{year}-12-31")).each do |day|
+        #  r["#{day.day}.#{day.month}."] = 0
+        # end
+        # (Date.parse("#{year}-01-01").cweek..Date.parse("#{year}-12-31").cweek).each do |week|
+        53.times do |week|
+          r[week] = 0
+        end
+
+        data.each do |d|
+          # date = Date.parse(d['_id'])
+          # next if date.year != year
+          next if d.dig('_id', 'year') != year
+
+          r[d.dig('_id', 'week')] = d['distance'] / 1000.0
+        end
+
+        r.each do |k, v|
+          year_sum += v
+          r[k] = year_sum.round(2)
+        end
+        r
       end
 
       private
