@@ -2,11 +2,12 @@
 
 require 'rails_helper'
 
-describe UseCases::Session::ImportGpx, :clear_db do
+describe UseCases::Session::ImportFile, :clear_db do
   let(:input_file) { 'spec/fixtures/traces/running_8km.gpx' }
   let(:data) { File.read(input_file) }
+  let(:type) { input_file.split(".").last }
 
-  subject { described_class.new(data:).run }
+  subject { described_class.new(data:, type:).run }
 
   def sport_sessions_count
     Repositories::SportSessions.fetch(years: [2022], months: nil, sport_types: nil).count

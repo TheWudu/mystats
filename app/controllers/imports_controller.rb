@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
-require 'use_cases/session/import_gpx'
+require 'use_cases/session/import_file'
 
 class ImportsController < ApplicationController
   def index; end
 
   def create
     data = File.open(params['input'].tempfile, 'r:UTF-8').read
+    extension = params['input'].original_filename.split(".").last
 
-    use_case = UseCases::Session::ImportGpx.new(data:)
+    use_case = UseCases::Session::ImportFile.new(data: data, type: extension) 
     use_case.run
 
     if (errors = use_case_errors(use_case))

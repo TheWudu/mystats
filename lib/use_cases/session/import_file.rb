@@ -5,12 +5,13 @@ require_relative 'import'
 
 module UseCases
   module Session
-    class ImportGpx < Import
-      attr_reader :data, :warns
+    class ImportFile < Import
+      attr_reader :data, :type, :warns
 
-      def initialize(data:)
+      def initialize(data:, type:)
         super()
         @data = data
+        @type = type
         @warns = []
       end
 
@@ -50,7 +51,14 @@ module UseCases
       end
 
       def parser
-        @parser ||= Parser::Gpx.new(data:)
+        @parser ||= case type 
+          when "gpx"
+            Parser::Gpx.new(data: data)
+          when "fit"
+            Parser::Fit.new(data: data) 
+          else
+            raise "Unknown type" 
+          end
       end
     end
   end
