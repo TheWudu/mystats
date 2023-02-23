@@ -40,12 +40,14 @@ class ChartsController < ApplicationController
   end
 
   def yoy_years
-    years_sorted = years.last(2)
+    years_sorted = years.sort.last(2)
     @yoy_years ||= [years_sorted.last, years_sorted.first].sort
   end
 
   def yoy_value
     stats = statistics.yoy(@chart_params[:yoy_group])
+    return "-" if stats.empty?
+
     yoy_last = stats.find { |s| s[:name] == yoy_years.last }[:data][yoy_date].to_f
     yoy_first = stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f
 

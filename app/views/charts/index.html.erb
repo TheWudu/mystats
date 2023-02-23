@@ -58,7 +58,7 @@
   
   <div>
     <div style="font-size: 32px;">
-      Year over year, <%= @yoy_years.last %> to <%= @yoy_years.first %>
+      Year over year, <%= @yoy_years&.last %> to <%= @yoy_years&.first %>
       <div style="font-size: 24px;">
         (until <%= @yoy_end %>)
       </div>
