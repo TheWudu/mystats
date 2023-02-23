@@ -47,17 +47,47 @@
 <div class="flexbox">
   
   <div class="chart">
-    <%= line_chart charts_yoy_path(@chart_params), xtitle: "YoY distance", points: true, colors: ["#F00","#9CF"] %>
+    <%=
+      if @chart_params[:yoy_group] == "week"
+        line_chart charts_yoy_week_path(@chart_params), xtitle: "YoY distance", points: true, colors: ["#F00","#9CF"]
+      else
+        line_chart charts_yoy_day_path(@chart_params), xtitle: "YoY distance", points: false, colors: ["#F00","#9CF"] 
+      end
+    %>
   </div>
   
   <div>
     <div style="font-size: 32px;">
       Year over year, <%= @yoy_years.last %> to <%= @yoy_years.first %>
       <div style="font-size: 24px;">
-        (until week <%= @yoy_date %>)
+        (until <%= @yoy_end %>)
       </div>
       <div style="font-weight: bold;">
         <%= @yoy_value %> %
+      </div>
+      <div>
+        <%
+          button = if @chart_params[:yoy_group] == "day"
+            "button-green" 
+          else
+            "button-gray"
+          end
+          
+          path = send(@path_method, @chart_params.merge(yoy_group: "day"))
+          title = "Day"
+        %>
+        <%= link_to(title, path, { class: button }) %>
+
+        <%
+          button = if @chart_params[:yoy_group] == "week"
+            "button-green" 
+          else
+            "button-gray"
+          end
+          path = send(@path_method, @chart_params.merge(yoy_group: "week"))
+          title = "Week"
+        %>
+        <%=  link_to(title, path, { class: button }) %>
       </div>
     </div>
   </div>

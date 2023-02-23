@@ -15,14 +15,28 @@ class ChartsController < ApplicationController
   end
 
   def index
-    @yoy_value = yoy_value
     @chart_params = {
-      group_by: params[:group_by]
+      group_by:  params[:group_by],
+      yoy_group: params[:yoy_group] || "week"
     }.merge(@filter_params)
+    @yoy_value = yoy_value
+    @yoy_end   = yoy_end
+  end
+
+  def yoy_end
+    @yoy_end ||= if @chart_params[:yoy_group] == 'week'
+                   "week #{yoy_date}"
+                 else
+                   "day: #{yoy_date}"
+                 end
   end
 
   def yoy_date
-    @yoy_date ||= Time.now.strftime('%-W').to_i
+    @yoy_date ||= if @chart_params[:yoy_group] == 'week'
+                    Time.now.strftime('%-W').to_i
+                  else
+                    Time.now.strftime('%-d.%-m.')
+                  end
   end
 
   def yoy_years
@@ -31,7 +45,7 @@ class ChartsController < ApplicationController
   end
 
   def yoy_value
-    stats = statistics.yoy
+    stats = statistics.yoy(@chart_params[:yoy_group])
     yoy_last = stats.find { |s| s[:name] == yoy_years.last }[:data][yoy_date].to_f
     yoy_first = stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f
 
@@ -46,8 +60,12 @@ class ChartsController < ApplicationController
     render json: statistics.cnt_per_week_of_year
   end
 
-  def yoy
-    render json: statistics.yoy
+  def yoy_week
+    render json: statistics.yoy('week')
+  end
+
+  def yoy_day
+    render json: statistics.yoy('day')
   end
 
   def distance_per_year
