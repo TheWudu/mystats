@@ -17,7 +17,7 @@ class ChartsController < ApplicationController
   def index
     @chart_params = {
       group_by:  params[:group_by],
-      yoy_group: params[:yoy_group] || "week"
+      yoy_group: params[:yoy_group] || 'week'
     }.merge(@filter_params)
     @yoy_value = yoy_value
     @yoy_end   = yoy_end
@@ -46,7 +46,7 @@ class ChartsController < ApplicationController
 
   def yoy_value
     stats = statistics.yoy(@chart_params[:yoy_group])
-    return "-" if stats.empty?
+    return '-' if stats.empty?
 
     yoy_last = stats.find { |s| s[:name] == yoy_years.last }[:data][yoy_date].to_f
     yoy_first = stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f

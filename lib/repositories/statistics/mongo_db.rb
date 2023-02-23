@@ -3,9 +3,13 @@
 require 'connections/mongo_db'
 require 'sport_type'
 
+require_relative 'concern/year_over_year'
+
 module Repositories
   module Statistics
     class MongoDb
+      include YearOverYear
+
       attr_accessor :years, :sport_types, :group_by
 
       def initialize(years:, sport_types:, group_by:)
@@ -135,69 +139,7 @@ module Repositories
       end
 
       def yoy(grouping = 'week')
-        group = if grouping == 'week'
-                  { year: '$iso_week_year', week: '$iso_week' }
-                else
-                  '$date'
-                end
-        data = sessions.aggregate([
-                                    { '$match' => matcher },
-                                    { '$addFields' => {
-                                      timezone: { '$ifNull' => ['$timezone', 'UTC'] },
-                                       date: { '$dateToString' => { date:     '$start_time',
-                                                                    timezone: '$timezone',
-                                                                    format:   '%Y-%m-%d' } },
-                                      'iso_week'      => { '$isoWeek' => '$start_time' },
-                                      'iso_week_year' => { "$isoWeekYear": '$start_time' }
-                                    } },
-                                    { '$group' => { _id:      group,
-                                                    distance: { '$sum' => '$distance' } } },
-                                    { '$sort' => { _id: 1 } }
-                                  ])
-
-        result = []
-        years.each do |year|
-          result << { name: year, data: fill_days(year, grouping, data) }
-        end
-
-        result
-      end
-
-      def fill_days(year, grouping, data)
-        year_sum = 0
-
-        r = {}
-        if grouping == 'day'
-          (Date.parse("#{year}-01-01")..Date.parse("#{year}-12-31")).each do |day|
-            r["#{day.day}.#{day.month}."] = 0
-          end
-
-          data.each do |d|
-            date = Date.parse(d['_id'])
-            next if date.year != year
-
-            r[date.strftime('%-d.%-m.')] = d['distance'] / 1000.0
-          end
-        else
-          # (Date.parse("#{year}-01-01").cweek..Date.parse("#{year}-12-31").cweek).each do |week|
-          53.times do |week|
-            r[week] = 0
-          end
-
-          data.each do |d|
-            # date = Date.parse(d['_id'])
-            # next if date.year != year
-            next if d.dig('_id', 'year') != year
-
-            r[d.dig('_id', 'week')] = d['distance'] / 1000.0
-          end
-        end
-
-        r.each do |k, v|
-          year_sum += v
-          r[k] = year_sum.round(2)
-        end
-        r
+        yoy_execute(grouping)
       end
 
       private
