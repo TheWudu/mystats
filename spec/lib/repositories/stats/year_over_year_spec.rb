@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Repositories::Statistics::MongoDb, :clear_db do
+describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
   let(:instance) do
     described_class.new(
       years:,
@@ -12,9 +12,9 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   end
   let(:years) { [2022, 2021] }
   let(:sport_types) { nil }
-  let(:group_by) { { year: '$year' } }
+  let(:group_by) { 'week' }
 
-  subject { instance.yoy }
+  subject { instance.execute }
 
   context 'without sessions available' do
     it { expect(subject.map { |s| s[:name] }.sort).to eq([2021, 2022]) }

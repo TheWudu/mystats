@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'repositories/statistics/mongo_db'
+require 'repositories/stats'
 
 class ChartsController < ApplicationController
   before_action :filters
@@ -11,14 +12,15 @@ class ChartsController < ApplicationController
     @show_filters[:month] = false
     @show_filters[:group_by] = true
 
-    @possible_groups = %w[year year,month year,sport_type sport_type]
-  end
-
-  def index
     @chart_params = {
       group_by:  params[:group_by],
       yoy_group: params[:yoy_group] || 'week'
     }.merge(@filter_params)
+
+    @possible_groups = %w[year year,month year,sport_type sport_type]
+  end
+
+  def index
     @yoy_value = yoy_value
     @yoy_end   = yoy_end
   end
@@ -44,14 +46,19 @@ class ChartsController < ApplicationController
     @yoy_years ||= [years_sorted.last, years_sorted.first].sort
   end
 
+  def yoy_stats
+    @yoy_stats ||= Repositories::Stats.year_over_year(years:,
+                                                      sport_types:,
+                                                      group_by:    @chart_params[:yoy_group])
+  end
+
   def yoy_value
-    stats = statistics.yoy(@chart_params[:yoy_group])
-    return '-' if stats.empty?
+    return '-' if yoy_stats.empty?
 
-    yoy_last = stats.find { |s| s[:name] == yoy_years.last }[:data][yoy_date].to_f
-    yoy_first = stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f
+    yoy_last = yoy_stats.find { |s| s[:name] == yoy_years.last }[:data][yoy_date].to_f
+    yoy_first = yoy_stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f
 
-    (yoy_last / yoy_first).round(2) * 100
+    (yoy_last / yoy_first * 100).round(1)
   end
 
   def cnt_per_weekday
@@ -62,12 +69,8 @@ class ChartsController < ApplicationController
     render json: statistics.cnt_per_week_of_year
   end
 
-  def yoy_week
-    render json: statistics.yoy('week')
-  end
-
-  def yoy_day
-    render json: statistics.yoy('day')
+  def yoy
+    render json: yoy_stats
   end
 
   def distance_per_year

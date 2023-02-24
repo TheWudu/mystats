@@ -3,13 +3,9 @@
 require 'connections/mongo_db'
 require 'sport_type'
 
-require_relative 'concern/year_over_year'
-
 module Repositories
   module Statistics
     class MongoDb
-      include YearOverYear
-
       attr_accessor :years, :sport_types, :group_by
 
       def initialize(years:, sport_types:, group_by:)
@@ -136,10 +132,6 @@ module Repositories
         data.each_with_object({}) do |d, h|
           h[d['_id']] = d['count']
         end
-      end
-
-      def yoy(grouping = 'week')
-        yoy_execute(grouping)
       end
 
       private
