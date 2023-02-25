@@ -22,7 +22,7 @@ module Repositories
         end
 
         private
-  
+
         def yoy_end
           @yoy_end ||= case group_by
                        when 'week'
@@ -33,7 +33,7 @@ module Repositories
                          "day: #{yoy_date}"
                        end
         end
-  
+
         def yoy_date
           @yoy_date ||= case group_by
                         when 'week'
@@ -55,6 +55,7 @@ module Repositories
           yoy_first = stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f
 
           return 0.0 if yoy_first == 0.0
+
           (yoy_last / yoy_first * 100).round(1)
         end
 

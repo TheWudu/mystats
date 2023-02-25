@@ -11,9 +11,7 @@ describe Repositories::Statistics::MongoDb do
     )
   end
 
-  %w[possible_years
-     possible_sport_types
-     cnt_per_weekday_data
+  %w[cnt_per_weekday_data
      cnt_per_week_of_year
      data_per_year
      distance_bucket_data

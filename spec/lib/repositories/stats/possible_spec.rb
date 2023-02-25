@@ -2,21 +2,14 @@
 
 require 'rails_helper'
 
-describe Repositories::Statistics::MongoDb, :clear_db do
+describe Repositories::Stats::MongoDb::Possible, :clear_db do
   let(:instance) do
-    described_class.new(
-      years:,
-      sport_types:,
-      group_by:
-    )
+    described_class.new
   end
-  let(:years) { nil }
-  let(:sport_types) { nil }
-  let(:group_by) { { year: '$year' } }
 
   context 'without sessions available' do
-    it { expect(instance.possible_years).to eq([]) }
-    it { expect(instance.possible_sport_types).to eq([]) }
+    it { expect(instance.years).to eq([]) }
+    it { expect(instance.sport_types).to eq([]) }
   end
 
   context 'when multiple sessions exist' do
@@ -43,7 +36,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
                         start_time:     Time.parse('2021-04-12T07:12:32Z'))
     end
 
-    it { expect(instance.possible_years).to eq([2021, 2022]) }
-    it { expect(instance.possible_sport_types.sort).to eq(%w[running cycling].sort) }
+    it { expect(instance.years).to eq([2021, 2022]) }
+    it { expect(instance.sport_types.sort).to eq(%w[running cycling].sort) }
   end
 end

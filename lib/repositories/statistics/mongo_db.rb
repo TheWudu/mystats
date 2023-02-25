@@ -14,33 +14,13 @@ module Repositories
         self.group_by = group_by
       end
 
-      def possible_years
-        query = sessions.aggregate([
-                                     { '$group' => { _id: '$year', cnt: { "$sum": 1 } } },
-                                     { '$sort' => { _id: 1 } }
-                                   ])
-        query.map { |d| d['_id'] }
-      end
-
-      def possible_sport_types
-        query = sessions.aggregate([
-                                     { '$group' => { _id: '$sport_type', cnt: { "$sum": 1 } } },
-                                     { '$sort' => { cnt: -1 } }
-                                   ])
-        # query.each_with_object({}) do |d, h|
-        #   h[d['_id']] = SportType.name_for(id: d['_id'])
-        # end
-
-        query.map { |d| d['_id'] }
-      end
-
       def cnt_per_weekday_data
-        query = sessions.aggregate([
-                                     { '$match' => matcher },
-                                     { '$addFields' => { weekday: { '$dayOfWeek' => '$start_time' } } },
-                                     { '$group' => { _id: '$weekday', cnt: { '$sum' => 1 } } },
-                                     { '$sort' => { _id: 1 } }
-                                   ])
+        sessions.aggregate([
+                             { '$match' => matcher },
+                             { '$addFields' => { weekday: { '$dayOfWeek' => '$start_time' } } },
+                             { '$group' => { _id: '$weekday', cnt: { '$sum' => 1 } } },
+                             { '$sort' => { _id: 1 } }
+                           ])
 
         data = query.to_a.rotate(1)
         data.each_with_object({}) do |d, h|
