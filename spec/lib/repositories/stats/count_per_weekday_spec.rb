@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe Repositories::Statistics::MongoDb, :clear_db do
-  let(:instance) do
-    described_class.new(
+describe Repositories::Stats, :clear_db do
+  let(:subject) do
+    described_class.count_per_weekday(
       years:,
       sport_types:,
       group_by:
@@ -17,8 +17,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   let(:base_cnt_week_of_year_data) { (0..52).each_with_object({}) { |w, h| h[w] = 0 } }
 
   context 'without sessions available' do
-    it { expect(instance.cnt_per_week_of_year).to eq([]) }
-    it { expect(instance.hour_per_day_data).to eq({}) }
+    it { expect(subject).to eq({}) }
   end
 
   context 'when multiple sessions exist' do
@@ -77,8 +76,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
         12 => 1
       }
     end
-    it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
-    it { expect(instance.hour_per_day_data).to eq(expected_hour_per_day) }
+    it { expect(subject).to eq(expected_weekday_data) }
 
     context 'with filters' do
       let(:years) { [2021] }
@@ -100,8 +98,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
           11 => 1
         }
       end
-      it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
-      it { expect(instance.hour_per_day_data).to eq(expected_hour_per_day) }
+      it { expect(subject).to eq(expected_weekday_data) }
     end
 
     context 'with filters' do
@@ -111,8 +108,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       let(:expected_weekday_data) { {} }
       let(:expected_week_of_year) { [] }
       let(:expected_hour_per_day) { {} }
-      it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
-      it { expect(instance.hour_per_day_data).to eq(expected_hour_per_day) }
+      it { expect(subject).to eq(expected_weekday_data) }
     end
   end
 end

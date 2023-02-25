@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
-  let(:instance) do
-    described_class.new(
+describe Repositories::Stats, :clear_db do
+  subject do
+    described_class.year_over_year(
       years:,
       sport_types:,
       group_by:
@@ -12,8 +12,6 @@ describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
   end
   let(:years) { [2022, 2021] }
   let(:sport_types) { nil }
-
-  subject { instance.execute }
 
   context 'without sessions available' do
     context 'when group_by is week' do
@@ -203,7 +201,7 @@ describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
 
       describe 'value' do
         before do
-          allow_any_instance_of(described_class).to receive(:yoy_date)
+          allow_any_instance_of(Repositories::Stats::MongoDb::YearOverYear).to receive(:yoy_date)
             .and_return(8)
         end
 
@@ -256,7 +254,7 @@ describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
 
       describe 'value' do
         before do
-          allow_any_instance_of(described_class).to receive(:yoy_date)
+          allow_any_instance_of(Repositories::Stats::MongoDb::YearOverYear).to receive(:yoy_date)
             .and_return(2)
         end
 
@@ -294,7 +292,7 @@ describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
 
       describe 'value' do
         before do
-          allow_any_instance_of(described_class).to receive(:yoy_date)
+          allow_any_instance_of(Repositories::Stats::MongoDb::YearOverYear).to receive(:yoy_date)
             .and_return('25.2.')
         end
 

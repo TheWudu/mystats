@@ -11,8 +11,7 @@ describe Repositories::Statistics::MongoDb do
     )
   end
 
-  %w[cnt_per_weekday_data
-     cnt_per_week_of_year
+  %w[cnt_per_week_of_year
      data_per_year
      distance_bucket_data
      hour_per_day_data].each do |method|

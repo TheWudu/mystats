@@ -31,7 +31,11 @@ class ChartsController < ApplicationController
   end
 
   def cnt_per_weekday
-    render json: statistics.cnt_per_weekday_data
+    render json: Repositories::Stats.count_per_weekday(
+      years:,
+      sport_types:,
+      group_by:
+    )
   end
 
   def cnt_per_week_of_year

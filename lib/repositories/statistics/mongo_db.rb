@@ -14,21 +14,6 @@ module Repositories
         self.group_by = group_by
       end
 
-      def cnt_per_weekday_data
-        sessions.aggregate([
-                             { '$match' => matcher },
-                             { '$addFields' => { weekday: { '$dayOfWeek' => '$start_time' } } },
-                             { '$group' => { _id: '$weekday', cnt: { '$sum' => 1 } } },
-                             { '$sort' => { _id: 1 } }
-                           ])
-
-        data = query.to_a.rotate(1)
-        data.each_with_object({}) do |d, h|
-          name = MONGO_WEEKDAY_IDX_TO_NAME[d['_id']]
-          h[name] = d['cnt']
-        end
-      end
-
       def cnt_per_week_of_year
         docs = sessions.aggregate(cnt_per_week_of_year_query).to_a
 
@@ -126,16 +111,6 @@ module Repositories
       def sessions
         @sessions ||= Connections::MongoDb.connection[:sessions]
       end
-
-      MONGO_WEEKDAY_IDX_TO_NAME = {
-        1 => 'Sunday',
-        2 => 'Monday',
-        3 => 'Tuesday',
-        4 => 'Wednesday',
-        5 => 'Thursday',
-        6 => 'Friday',
-        7 => 'Saturday'
-      }.freeze
     end
   end
 end
