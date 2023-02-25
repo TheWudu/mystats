@@ -19,28 +19,37 @@ describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
     context 'when group_by is week' do
       let(:group_by) { 'week' }
 
-      it { expect(subject.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
-      it { expect(subject.first[:data].size).to eq(53) }
-      it { expect(subject.first[:data].values.uniq.size == 1) }
-      it { expect(subject.first[:data].values.uniq.first == 0) }
+      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
+      it { expect(subject.data.first[:data].size).to eq(53) }
+      it { expect(subject.data.first[:data].values.uniq.size == 1) }
+      it { expect(subject.data.first[:data].values.uniq.first == 0) }
+
+      it { expect(subject.value).to eq(0.0) }
+      it { expect(subject.years).to eq([2021,2022]) }
     end
 
     context 'when group_by is day' do
       let(:group_by) { 'day' }
 
-      it { expect(subject.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
-      it { expect(subject.first[:data].size).to eq(365) }
-      it { expect(subject.first[:data].values.uniq.size == 1) }
-      it { expect(subject.first[:data].values.uniq.first == 0) }
+      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
+      it { expect(subject.data.first[:data].size).to eq(365) }
+      it { expect(subject.data.first[:data].values.uniq.size == 1) }
+      it { expect(subject.data.first[:data].values.uniq.first == 0) }
+      
+      it { expect(subject.value).to eq(0.0) }
+      it { expect(subject.years).to eq([2021,2022]) }
     end
 
     context 'when group_by is month' do
       let(:group_by) { 'month' }
 
-      it { expect(subject.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
-      it { expect(subject.first[:data].size).to eq(12) }
-      it { expect(subject.first[:data].values.uniq.size == 1) }
-      it { expect(subject.first[:data].values.uniq.first == 0) }
+      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
+      it { expect(subject.data.first[:data].size).to eq(12) }
+      it { expect(subject.data.first[:data].values.uniq.size == 1) }
+      it { expect(subject.data.first[:data].values.uniq.first == 0) }
+      
+      it { expect(subject.value).to eq(0.0) }
+      it { expect(subject.years).to eq([2021,2022]) }
     end
   end
 
@@ -187,10 +196,20 @@ describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
         }
       end
 
-      it { expect(subject.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
+      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
 
-      it { expect(subject.first[:data]).to eq(expected_first) }
-      it { expect(subject.last[:data]).to eq(expected_last) }
+      it { expect(subject.data.first[:data]).to eq(expected_first) }
+      it { expect(subject.data.last[:data]).to eq(expected_last) }
+      
+      describe "value" do
+        before do 
+          allow_any_instance_of(described_class).to receive(:yoy_date)
+            .and_return(8)
+        end
+
+        it { expect(subject.value).to eq(65.4) }
+        it { expect(subject.years).to eq([2021,2022]) }
+      end
     end
 
     context 'when group_by is month' do
@@ -229,11 +248,22 @@ describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
           12 => 8.68
         }
       end
+      
 
-      it { expect(subject.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
+      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
 
-      it { expect(subject.first[:data]).to eq(expected_first) }
-      it { expect(subject.last[:data]).to eq(expected_last) }
+      it { expect(subject.data.first[:data]).to eq(expected_first) }
+      it { expect(subject.data.last[:data]).to eq(expected_last) }
+      
+      describe "value" do
+        before do 
+          allow_any_instance_of(described_class).to receive(:yoy_date)
+            .and_return(2)
+        end
+
+        it { expect(subject.value).to eq(65.4) }
+        it { expect(subject.years).to eq([2021,2022]) }
+      end
     end
 
     context 'when group_by is day' do
@@ -258,10 +288,20 @@ describe Repositories::Stats::MongoDb::YearOverYear, :clear_db do
         }
       end
 
-      it { expect(subject.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
+      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
 
-      it { expect(subject.first[:data]).to include(expected_first) }
-      it { expect(subject.last[:data]).to include(expected_last) }
+      it { expect(subject.data.first[:data]).to include(expected_first) }
+      it { expect(subject.data.last[:data]).to include(expected_last) }
+      
+      describe "value" do
+        before do 
+          allow_any_instance_of(described_class).to receive(:yoy_date)
+            .and_return("25.2.")
+        end
+
+        it { expect(subject.value).to eq(65.4) }
+        it { expect(subject.years).to eq([2021,2022]) }
+      end
     end
   end
 end

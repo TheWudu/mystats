@@ -55,12 +55,12 @@
   
   <div>
     <div style="font-size: 32px;">
-      Year over year, <%= @yoy_years&.last %> to <%= @yoy_years&.first %>
+      Year over year, <%= @yoy_stats.years&.last %> to <%= @yoy_stats.years&.first %>
       <div style="font-size: 24px;">
-        (until <%= @yoy_end %>)
+        (until <%= @yoy_stats.ending %>)
       </div>
       <div style="font-weight: bold;">
-        <%= @yoy_value %> %
+        <%= @yoy_stats.value %> %
       </div>
       <div>
         <%

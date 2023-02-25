@@ -9,9 +9,53 @@ module Repositories
         def execute
           data = yoy_aggregation
 
-          years.each_with_object([]) do |year, result|
+          res = years.each_with_object([]) do |year, result|
             result << { name: year, data: fill_days(year, data) }
           end
+
+          OpenStruct.new(
+            data:   res,
+            ending: yoy_end,
+            value:  yoy_value(res),
+            years:  yoy_years
+          )
+        end
+
+        private
+  
+        def yoy_end
+          @yoy_end ||= case group_by
+                       when 'week'
+                         "week #{yoy_date}"
+                       when 'month'
+                         "month #{yoy_date}"
+                       else
+                         "day: #{yoy_date}"
+                       end
+        end
+  
+        def yoy_date
+          @yoy_date ||= case group_by
+                        when 'week'
+                          Time.now.strftime('%-W').to_i
+                        when 'month'
+                          Time.now.strftime('%-m').to_i
+                        when 'day'
+                          Time.now.strftime('%-d.%-m.')
+                        end
+        end
+
+        def yoy_years
+          years_sorted = years.sort.last(2)
+          @yoy_years ||= [years_sorted.last, years_sorted.first].sort
+        end
+
+        def yoy_value(stats)
+          yoy_last  = stats.find { |s| s[:name] == yoy_years.last }[:data][yoy_date].to_f
+          yoy_first = stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f
+
+          return 0.0 if yoy_first == 0.0
+          (yoy_last / yoy_first * 100).round(1)
         end
 
         def yoy_aggregation

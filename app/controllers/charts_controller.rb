@@ -21,50 +21,13 @@ class ChartsController < ApplicationController
   end
 
   def index
-    @yoy_value = yoy_value
-    @yoy_end   = yoy_end
-  end
-
-  def yoy_end
-    @yoy_end ||= case @chart_params[:yoy_group]
-                 when 'week'
-                   "week #{yoy_date}"
-                 when 'month'
-                   "month #{yoy_date}"
-                 else
-                   "day: #{yoy_date}"
-                 end
-  end
-
-  def yoy_date
-    @yoy_date ||= case @chart_params[:yoy_group]
-                  when 'week'
-                    Time.now.strftime('%-W').to_i
-                  when 'month'
-                    Time.now.strftime('%-m').to_i
-                  when 'day'
-                    Time.now.strftime('%-d.%-m.')
-                  end
-  end
-
-  def yoy_years
-    years_sorted = years.sort.last(2)
-    @yoy_years ||= [years_sorted.last, years_sorted.first].sort
+    @yoy_stats ||= yoy_stats
   end
 
   def yoy_stats
     @yoy_stats ||= Repositories::Stats.year_over_year(years:,
                                                       sport_types:,
                                                       group_by:    @chart_params[:yoy_group])
-  end
-
-  def yoy_value
-    return '-' if yoy_stats.empty?
-
-    yoy_last = yoy_stats.find { |s| s[:name] == yoy_years.last }[:data][yoy_date].to_f
-    yoy_first = yoy_stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f
-
-    (yoy_last / yoy_first * 100).round(1)
   end
 
   def cnt_per_weekday
@@ -76,7 +39,7 @@ class ChartsController < ApplicationController
   end
 
   def yoy
-    render json: yoy_stats
+    render json: yoy_stats.data
   end
 
   def distance_per_year
