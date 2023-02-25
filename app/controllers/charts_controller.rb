@@ -26,17 +26,23 @@ class ChartsController < ApplicationController
   end
 
   def yoy_end
-    @yoy_end ||= if @chart_params[:yoy_group] == 'week'
+    @yoy_end ||= case @chart_params[:yoy_group]
+                 when 'week'
                    "week #{yoy_date}"
+                 when 'month'
+                   "month #{yoy_date}"
                  else
                    "day: #{yoy_date}"
                  end
   end
 
   def yoy_date
-    @yoy_date ||= if @chart_params[:yoy_group] == 'week'
+    @yoy_date ||= case @chart_params[:yoy_group]
+                  when 'week'
                     Time.now.strftime('%-W').to_i
-                  else
+                  when 'month'
+                    Time.now.strftime('%-m').to_i
+                  when 'day'
                     Time.now.strftime('%-d.%-m.')
                   end
   end

@@ -15,10 +15,13 @@ module Repositories
         end
 
         def yoy_aggregation
-          group = if group_by == 'week'
+          group = case group_by
+                  when 'week'
                     { year: '$iso_week_year', week: '$iso_week' }
-                  else
+                  when 'day'
                     { year: '$iso_week_year', day: '$date' }
+                  when 'month'
+                    { year: '$iso_week_year', month: '$month' }
                   end
           data = sessions.aggregate([
                                       { '$match' => matcher },
@@ -42,6 +45,8 @@ module Repositories
             Date.parse(doc['_id']['day']).strftime('%-d.%-m.')
           when 'week'
             doc['_id']['week']
+          when 'month'
+            doc['_id']['month']
           end
         end
 
@@ -60,6 +65,8 @@ module Repositories
                 initialize_days(year)
               when 'week'
                 initialize_weeks
+              when 'month'
+                initialize_months
               else
                 raise NotImplementedError
               end
@@ -76,6 +83,12 @@ module Repositories
 
         def initialize_weeks
           (0..52).each_with_object({}) do |week, hash|
+            hash[week] = 0
+          end
+        end
+
+        def initialize_months
+          (1..12).each_with_object({}) do |week, hash|
             hash[week] = 0
           end
         end

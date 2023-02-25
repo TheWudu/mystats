@@ -48,7 +48,7 @@
   
   <div class="chart">
     <%=
-      points = @chart_params[:yoy_group] == "week"
+      points = @chart_params[:yoy_group] != "day"
       line_chart charts_yoy_path(@chart_params), xtitle: "YoY distance", points: points, colors: ["#F00","#9CF"]
     %>
   </div>
@@ -83,6 +83,17 @@
           end
           path = send(@path_method, @chart_params.merge(yoy_group: "week"))
           title = "Week"
+        %>
+        <%=  link_to(title, path, { class: button }) %>
+
+        <%
+          button = if @chart_params[:yoy_group] == "month"
+            "button-green" 
+          else
+            "button-gray"
+          end
+          path = send(@path_method, @chart_params.merge(yoy_group: "month"))
+          title = "Month"
         %>
         <%=  link_to(title, path, { class: button }) %>
       </div>
