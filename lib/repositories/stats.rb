@@ -5,6 +5,7 @@ require_relative 'stats/mongo_db/year_over_year'
 require_relative 'stats/mongo_db/count_per_weekday'
 require_relative 'stats/mongo_db/possible'
 require_relative 'stats/mongo_db/distance_bucket'
+require_relative 'stats/mongo_db/count_per_hour_of_day'
 
 module Repositories
   module Stats
@@ -34,6 +35,14 @@ module Repositories
 
     def self.distance_bucket(years:, sport_types:, group_by:)
       Stats::MongoDb::DistanceBucket.new(
+        years:,
+        sport_types:,
+        group_by:
+      ).execute
+    end
+
+    def self.count_per_hour_of_day(years:, sport_types:, group_by:)
+      Stats::MongoDb::CountPerHourOfDay.new(
         years:,
         sport_types:,
         group_by:

@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe Repositories::Statistics::MongoDb, :clear_db do
-  let(:instance) do
-    described_class.new(
+describe Repositories::Stats, :clear_db do
+  subject do
+    described_class.count_per_hour_of_day(
       years:,
       sport_types:,
       group_by:
@@ -14,10 +14,8 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   let(:sport_types) { nil }
   let(:group_by) { { year: '$year' } }
 
-  let(:base_cnt_week_of_year_data) { (0..52).each_with_object({}) { |w, h| h[w] = 0 } }
-
   context 'without sessions available' do
-    it { expect(instance.cnt_per_week_of_year).to eq([]) }
+    it { expect(subject).to eq({}) }
   end
 
   context 'when multiple sessions exist' do
@@ -51,35 +49,33 @@ describe Repositories::Statistics::MongoDb, :clear_db do
                         start_time:     Time.parse('2021-04-12T09:12:32Z'))
     end
 
-    let(:expected_week_of_year) do
-      [
-        { name: 2021, data: base_cnt_week_of_year_data.merge({ 15 => 1 }) },
-        { name: 2022, data: base_cnt_week_of_year_data.merge({
-                                                               28 => 1,
-                                                               32 => 2
-                                                             }) }
-      ]
+    let(:expected_hour_per_day) do
+      {
+        9  => 2,
+        11 => 1,
+        12 => 1
+      }
     end
-    it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
+    it { expect(subject).to eq(expected_hour_per_day) }
 
     context 'with filters' do
       let(:years) { [2021] }
       let(:sport_types) { ['cycling'] }
 
-      let(:expected_week_of_year) do
-        [
-          { name: 2021, data: base_cnt_week_of_year_data.merge({ 15 => 1 }) }
-        ]
+      let(:expected_hour_per_day) do
+        {
+          11 => 1
+        }
       end
-      it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
+      it { expect(subject).to eq(expected_hour_per_day) }
     end
 
     context 'with filters' do
       let(:years) { [2021] }
       let(:sport_types) { ['running'] }
 
-      let(:expected_week_of_year) { [] }
-      it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
+      let(:expected_hour_per_day) { {} }
+      it { expect(subject).to eq(expected_hour_per_day) }
     end
   end
 end

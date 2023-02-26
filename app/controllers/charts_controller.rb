@@ -80,8 +80,12 @@ class ChartsController < ApplicationController
     )
   end
 
-  def hour_per_day
-    render json: statistics.hour_per_day_data
+  def count_per_hour_of_day
+    render json: Repositories::Stats.count_per_hour_of_day(
+      years:,
+      sport_types:,
+      group_by:
+    )
   end
 
   def statistics

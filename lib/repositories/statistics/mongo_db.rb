@@ -62,21 +62,6 @@ module Repositories
         end
       end
 
-      def hour_per_day_data
-        data = sessions.aggregate([
-                                    { '$match' => matcher },
-                                    { '$addFields' => { timezone: { '$ifNull' => ['$timezone', 'UTC'] } } },
-                                    { '$addFields' => { hour: { '$hour' => { date:     '$start_time',
-                                                                             timezone: '$timezone' } } } },
-                                    { '$group' => { _id: '$hour', count: { '$sum' => 1 } } },
-                                    { '$sort' => { _id: 1 } }
-                                  ])
-
-        data.each_with_object({}) do |d, h|
-          h[d['_id']] = d['count']
-        end
-      end
-
       private
 
       def matcher
