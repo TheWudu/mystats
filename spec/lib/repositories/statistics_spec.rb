@@ -13,7 +13,6 @@ describe Repositories::Statistics::MongoDb do
 
   %w[cnt_per_week_of_year
      data_per_year
-     distance_bucket_data
      hour_per_day_data].each do |method|
     it "responds to #{method}" do
       expect(instance.respond_to?(method)).to be_truthy

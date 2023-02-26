@@ -4,6 +4,7 @@ require_relative 'base'
 require_relative 'stats/mongo_db/year_over_year'
 require_relative 'stats/mongo_db/count_per_weekday'
 require_relative 'stats/mongo_db/possible'
+require_relative 'stats/mongo_db/distance_bucket'
 
 module Repositories
   module Stats
@@ -25,6 +26,14 @@ module Repositories
 
     def self.count_per_weekday(years:, sport_types:, group_by:)
       Stats::MongoDb::CountPerWeekday.new(
+        years:,
+        sport_types:,
+        group_by:
+      ).execute
+    end
+
+    def self.distance_bucket(years:, sport_types:, group_by:)
+      Stats::MongoDb::DistanceBucket.new(
         years:,
         sport_types:,
         group_by:

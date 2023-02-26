@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe Repositories::Statistics::MongoDb, :clear_db do
-  let(:instance) do
-    described_class.new(
+describe Repositories::Stats, :clear_db do
+  subject do
+    described_class.distance_bucket(
       years:,
       sport_types:,
       group_by:
@@ -14,8 +14,6 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   let(:sport_types) { nil }
   let(:group_by) { { year: '$year' } }
   let(:attr) { 'overall_distance' }
-
-  subject { instance.distance_bucket_data }
 
   context 'without sessions available' do
     it { expect(subject).to eq({}) }

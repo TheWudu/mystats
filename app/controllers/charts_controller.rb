@@ -73,7 +73,11 @@ class ChartsController < ApplicationController
   end
 
   def distance_buckets
-    render json: statistics.distance_bucket_data
+    render json: Repositories::Stats.distance_bucket(
+      years:,
+      sport_types:,
+      group_by:
+    )
   end
 
   def hour_per_day
