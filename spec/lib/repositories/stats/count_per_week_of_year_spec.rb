@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe Repositories::Statistics::MongoDb, :clear_db do
-  let(:instance) do
-    described_class.new(
+describe Repositories::Stats, :clear_db do
+  subject do
+    described_class.count_per_week_of_year(
       years:,
       sport_types:,
       group_by:
@@ -17,7 +17,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
   let(:base_cnt_week_of_year_data) { (0..52).each_with_object({}) { |w, h| h[w] = 0 } }
 
   context 'without sessions available' do
-    it { expect(instance.cnt_per_week_of_year).to eq([]) }
+    it { expect(subject).to eq([]) }
   end
 
   context 'when multiple sessions exist' do
@@ -60,7 +60,8 @@ describe Repositories::Statistics::MongoDb, :clear_db do
                                                              }) }
       ]
     end
-    it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
+
+    it { expect(subject).to eq(expected_week_of_year) }
 
     context 'with filters' do
       let(:years) { [2021] }
@@ -71,7 +72,8 @@ describe Repositories::Statistics::MongoDb, :clear_db do
           { name: 2021, data: base_cnt_week_of_year_data.merge({ 15 => 1 }) }
         ]
       end
-      it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
+
+      it { expect(subject).to eq(expected_week_of_year) }
     end
 
     context 'with filters' do
@@ -79,7 +81,8 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       let(:sport_types) { ['running'] }
 
       let(:expected_week_of_year) { [] }
-      it { expect(instance.cnt_per_week_of_year).to eq(expected_week_of_year) }
+
+      it { expect(subject).to eq(expected_week_of_year) }
     end
   end
 end

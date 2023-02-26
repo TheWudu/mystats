@@ -11,8 +11,7 @@ describe Repositories::Statistics::MongoDb do
     )
   end
 
-  %w[cnt_per_week_of_year
-     data_per_year].each do |method|
+  %w[data_per_year].each do |method|
     it "responds to #{method}" do
       expect(instance.respond_to?(method)).to be_truthy
     end
