@@ -7,6 +7,7 @@ require_relative 'stats/mongo_db/possible'
 require_relative 'stats/mongo_db/distance_bucket'
 require_relative 'stats/mongo_db/count_per_hour_of_day'
 require_relative 'stats/mongo_db/count_per_week_of_year'
+require_relative 'stats/mongo_db/overall_aggregations'
 
 module Repositories
   module Stats
@@ -56,6 +57,14 @@ module Repositories
         sport_types:,
         group_by:
       ).execute
+    end
+
+    def self.overall_aggregations(years:, sport_types:, group_by:, attribute:)
+      Stats::MongoDb::OverallAggregations.new(
+        years:,
+        sport_types:,
+        group_by:
+      ).execute(attribute)
     end
   end
 end

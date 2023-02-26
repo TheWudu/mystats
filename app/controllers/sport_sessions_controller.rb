@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'repositories/statistics/mongo_db'
 require 'repositories/sport_sessions'
 require 'sport_type'
 
@@ -105,13 +104,5 @@ class SportSessionsController < ApplicationController
     (params[:group_by]&.split(',') || ['year']).each_with_object({}) do |v, h|
       h[v] = "$#{v}"
     end
-  end
-
-  def statistics
-    @statistics ||= Repositories::Statistics::MongoDb.new(
-      years:,
-      sport_types:,
-      group_by:
-    )
   end
 end

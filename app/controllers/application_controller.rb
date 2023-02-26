@@ -12,14 +12,6 @@ class ApplicationController < ActionController::Base
     @possible_sport_types = Repositories::Stats.possible_sport_types
   end
 
-  def statistics
-    @statistics ||= Repositories::Statistics::MongoDb.new(
-      years:,
-      sport_types:,
-      group_by:    nil
-    )
-  end
-
   def filter_params
     params.reverse_merge!(
       month: Time.now.month.to_s,
