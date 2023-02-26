@@ -35,7 +35,7 @@ class RecordsController < ApplicationController
   def average_pace
     render json: Repositories::Records.average_pace(years:, sport_types:)
   end
-  
+
   def vam
     render json: Repositories::Records.vam(years:, sport_types:)
   end

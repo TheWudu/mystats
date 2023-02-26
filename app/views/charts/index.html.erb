@@ -36,10 +36,68 @@
   </div>
 
   <div class="chart">
-    <%= area_chart charts_hour_per_day_path(@chart_params), xtitle: "Count per start hour" %>
+    <%= area_chart charts_count_per_hour_of_day_path(@chart_params), xtitle: "Count per start hour" %>
   </div>
   
   <div class="chart">
     <%= line_chart charts_cnt_per_week_of_year_path(@chart_params), xtitle: "Count per week of year" %>
   </div>
+</div>
+
+<div class="flexbox">
+  
+  <div class="chart">
+    <%=
+      points = @chart_params[:yoy_group] != "day"
+      line_chart charts_yoy_path(@chart_params), xtitle: "YoY distance", points: points, colors: ["#F00","#9CF"]
+    %>
+  </div>
+  
+  <div>
+    <div style="font-size: 32px;">
+      Year over year, <%= @yoy_stats.years&.last %> to <%= @yoy_stats.years&.first %>
+      <div style="font-size: 24px;">
+        (until <%= @yoy_stats.ending %>)
+      </div>
+      <div style="font-weight: bold;">
+        <%= @yoy_stats.value %> %
+      </div>
+      <div>
+        <%
+          button = if @chart_params[:yoy_group] == "day"
+            "button-green" 
+          else
+            "button-gray"
+          end
+          
+          path = send(@path_method, @chart_params.merge(yoy_group: "day"))
+          title = "Day"
+        %>
+        <%= link_to(title, path, { class: button }) %>
+
+        <%
+          button = if @chart_params[:yoy_group] == "week"
+            "button-green" 
+          else
+            "button-gray"
+          end
+          path = send(@path_method, @chart_params.merge(yoy_group: "week"))
+          title = "Week"
+        %>
+        <%=  link_to(title, path, { class: button }) %>
+
+        <%
+          button = if @chart_params[:yoy_group] == "month"
+            "button-green" 
+          else
+            "button-gray"
+          end
+          path = send(@path_method, @chart_params.merge(yoy_group: "month"))
+          title = "Month"
+        %>
+        <%=  link_to(title, path, { class: button }) %>
+      </div>
+    </div>
+  </div>
+
 </div>

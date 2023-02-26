@@ -2,20 +2,19 @@
 
 require 'rails_helper'
 
-describe Repositories::Statistics::MongoDb, :clear_db do
-  let(:instance) do
-    described_class.new(
+describe Repositories::Stats, :clear_db do
+  subject do
+    described_class.overall_aggregations(
       years:,
       sport_types:,
-      group_by:
+      group_by:,
+      attribute:
     )
   end
   let(:years) { nil }
   let(:sport_types) { nil }
   let(:group_by) { { year: '$year' } }
-  let(:attr) { 'overall_distance' }
-
-  subject { instance.data_per_year(attr) }
+  let(:attribute) { 'overall_distance' }
 
   context 'without sessions available' do
     it { expect(subject).to eq({}) }
@@ -35,27 +34,27 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_distance' }
+      let(:attribute) { 'overall_distance' }
       let(:expected_stats) { { '2022' => 5678 } }
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_duration' }
+      let(:attribute) { 'overall_duration' }
       let(:expected_stats) { { '2022' => 1823 } }
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_elevation_gain' }
+      let(:attribute) { 'overall_elevation_gain' }
       let(:expected_stats) { { '2022' => 123 } }
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_cnt' }
+      let(:attribute) { 'overall_cnt' }
       let(:expected_stats) { { '2022' => 1 } }
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_pace' }
+      let(:attribute) { 'overall_pace' }
       let(:expected_stats) { { '2022' => (1823.0 / 5678) } }
     end
   end
@@ -89,7 +88,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_distance' }
+      let(:attribute) { 'overall_distance' }
       let(:expected_stats) do
         {
           '2022' => 5678 + 10_678,
@@ -99,7 +98,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_duration' }
+      let(:attribute) { 'overall_duration' }
       let(:expected_stats) do
         {
           '2022' => 1823 + 3689,
@@ -109,7 +108,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_elevation_gain' }
+      let(:attribute) { 'overall_elevation_gain' }
       let(:expected_stats) do
         {
           '2022' => 123 + 223,
@@ -119,7 +118,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_cnt' }
+      let(:attribute) { 'overall_cnt' }
       let(:expected_stats) do
         {
           '2022' => 2,
@@ -129,7 +128,7 @@ describe Repositories::Statistics::MongoDb, :clear_db do
     end
 
     it_behaves_like 'returning correct values' do
-      let(:attr) { 'overall_pace' }
+      let(:attribute) { 'overall_pace' }
       let(:expected_stats) do
         {
           '2022' => ((1823 + 3689).to_f / (5678 + 10_678)),
@@ -143,27 +142,27 @@ describe Repositories::Statistics::MongoDb, :clear_db do
       let(:group_by) { { year: '$year', month: '$month' } }
 
       it_behaves_like 'returning correct values' do
-        let(:attr) { 'overall_distance' }
+        let(:attribute) { 'overall_distance' }
         let(:expected_stats) { { '2021-4' => 8678 } }
       end
 
       it_behaves_like 'returning correct values' do
-        let(:attr) { 'overall_duration' }
+        let(:attribute) { 'overall_duration' }
         let(:expected_stats) { { '2021-4' => 3189 } }
       end
 
       it_behaves_like 'returning correct values' do
-        let(:attr) { 'overall_elevation_gain' }
+        let(:attribute) { 'overall_elevation_gain' }
         let(:expected_stats) { { '2021-4' => 524 } }
       end
 
       it_behaves_like 'returning correct values' do
-        let(:attr) { 'overall_cnt' }
+        let(:attribute) { 'overall_cnt' }
         let(:expected_stats) { { '2021-4' => 1 } }
       end
 
       it_behaves_like 'returning correct values' do
-        let(:attr) { 'overall_pace' }
+        let(:attribute) { 'overall_pace' }
         let(:expected_stats) { { '2021-4' => (3189.0 / 8678) } }
       end
     end

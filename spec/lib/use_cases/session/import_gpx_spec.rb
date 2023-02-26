@@ -5,7 +5,7 @@ require 'rails_helper'
 describe UseCases::Session::ImportFile, :clear_db do
   let(:input_file) { 'spec/fixtures/traces/running_8km.gpx' }
   let(:data) { File.read(input_file) }
-  let(:type) { input_file.split(".").last }
+  let(:type) { input_file.split('.').last }
 
   subject { described_class.new(data:, type:).run }
 

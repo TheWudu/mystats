@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
+require 'repositories/stats'
+
 class ApplicationController < ActionController::Base
   add_flash_types :warning, :success, :error
 
   def filters
     @show_filters         = { month: true }
     @filter_params        = filter_params
-    @possible_years       = statistics.possible_years
-    @possible_sport_types = statistics.possible_sport_types
-  end
-
-  def statistics
-    @statistics ||= Repositories::Statistics::MongoDb.new(
-      years:,
-      sport_types:,
-      group_by:    nil
-    )
+    @possible_years       = Repositories::Stats.possible_years
+    @possible_sport_types = Repositories::Stats.possible_sport_types
   end
 
   def filter_params

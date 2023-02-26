@@ -109,7 +109,7 @@ module Repositories
         _id id
       ].freeze
 
-      def prepare_for_update(id, session_hash)
+      def prepare_for_update(_id, session_hash)
         prepare_for_write(session_hash).except(*PROTECTED_ATTRIBUTES)
       end
 

@@ -6,7 +6,7 @@ describe Parser::Fit do
   let(:input_file) { 'spec/fixtures/traces/running_9653966916.fit' }
   let(:data) { File.read(input_file) }
 
-  subject { described_class.new(data: data).parse }
+  subject { described_class.new(data:).parse }
 
   let(:expected_data) do
     {
@@ -16,7 +16,7 @@ describe Parser::Fit do
       elevation_gain:             66,
       elevation_loss:             66,
       end_time:                   Time.parse('2022-09-22T10:42:02Z'),
-      notes:                      nil, 
+      notes:                      nil,
       # notes:                      'Lunchrun mit Gustavo und Sebastian',
       pause:                      297,
       sport_type:                 'running',
@@ -24,14 +24,14 @@ describe Parser::Fit do
       start_time_timezone_offset: 0,
       timezone:                   'UTC',
       heart_rate_avg:             156,
-      heart_rate_max:             176,
+      heart_rate_max:             176
       # trace:                      anything
     }
   end
 
   it { expect(subject.first).to include(expected_data) }
 
-  context "when file contains pause" do 
+  context 'when file contains pause' do
     let(:input_file) { 'spec/fixtures/traces/running_with_pause_9611115001.fit' }
 
     let(:expected_data) do
@@ -50,7 +50,7 @@ describe Parser::Fit do
         start_time_timezone_offset: 0,
         timezone:                   'UTC',
         heart_rate_avg:             152,
-        heart_rate_max:             180,
+        heart_rate_max:             180
         # trace:                      anything
       }
     end

@@ -51,14 +51,14 @@ module UseCases
       end
 
       def parser
-        @parser ||= case type 
-          when "gpx"
-            Parser::Gpx.new(data: data)
-          when "fit"
-            Parser::Fit.new(data: data) 
-          else
-            raise "Unknown type" 
-          end
+        @parser ||= case type
+                    when 'gpx'
+                      Parser::Gpx.new(data:)
+                    when 'fit'
+                      Parser::Fit.new(data:)
+                    else
+                      raise 'Unknown type'
+                    end
       end
     end
   end

@@ -12,7 +12,8 @@ Rails.application.routes.draw do
   get 'charts/pace_per_year'
   get 'charts/cnt_per_year'
   get 'charts/distance_buckets'
-  get 'charts/hour_per_day'
+  get 'charts/count_per_hour_of_day'
+  get 'charts/yoy'
 
   get 'records', to: 'records#index'
   get 'records/index'

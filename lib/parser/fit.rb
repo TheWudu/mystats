@@ -34,15 +34,15 @@ module Parser
         end_time:                   fit_file.timestamp,
         notes:                      nil,
         sport_type:                 fit_file.sport,
-        start_time:                 start_time,
+        start_time:,
         start_time_timezone_offset: timezone_offset(timezone, start_time),
-        timezone:                   timezone,
-        pause:                      pause,
+        timezone:,
+        pause:,
         heart_rate_avg:             0,
         heart_rate_max:             0,
         elevation_gain:             0,
         elevation_loss:             0,
-        trace:                      trace
+        trace:
       }
       calculate_trace_based_values(stats)
 
@@ -55,7 +55,6 @@ module Parser
       ((fit_file.records.last.timestamp - fit_file.records.first.timestamp - fit_file.total_timer_time) * 1000).to_i
     end
 
-    
     def timezone_for(point)
       city = Repositories::Cities.nearest(lat: point[:lat].to_f, lng: point[:lng].to_f)
       return city[:timezone] if city
@@ -77,7 +76,7 @@ module Parser
       stats[:heart_rate_max] = hr_values.max
       stats[:heart_rate_avg] = (hr_values.sum / hr_values.size).to_i
     end
-    
+
     def calculate_trace_based_values(stats)
       prev_point = trace.first
       trace[1..].each do |cur_point|
@@ -92,7 +91,7 @@ module Parser
 
       calc_hr_values(trace, stats)
     end
-    
+
     def calc_elevation(cur_point, prev_point, stats)
       elevation = cur_point[:ele] - prev_point[:ele]
       if elevation.negative?
@@ -103,17 +102,17 @@ module Parser
     end
 
     def trace
-      @trace ||= fit_file.records.map  do |r,| 
-        { 
-          time: r.timestamp, 
-          lat:  r.position_lat, 
-          lng:  r.position_long, 
-          ele:  refined_elevation(r.altitude, r.position_lat, r.position_long), 
+      @trace ||= fit_file.records.map do |r,|
+        {
+          time: r.timestamp,
+          lat:  r.position_lat,
+          lng:  r.position_long,
+          ele:  refined_elevation(r.altitude, r.position_lat, r.position_long),
           hr:   r.heart_rate
         }.compact
       end
     end
-    
+
     def refined_elevation(ele, lat, lng)
       return ele unless lat && lng
 
@@ -123,10 +122,9 @@ module Parser
       ele
     end
 
-
     def fit_file
       @fit_file ||= begin
-        file = Tempfile.new("fit_file")
+        file = Tempfile.new('fit_file')
         file.write(data)
 
         fit = Fit4Ruby.read(file)
@@ -134,6 +132,5 @@ module Parser
         fit
       end
     end
-
   end
 end

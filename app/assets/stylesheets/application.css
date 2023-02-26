@@ -74,6 +74,9 @@
 .button-red {
   background-color: #FF1200; /* Red */
 }
+.button-orange {
+  background-color: #F1AC57; /* Sand-Brown */
+}
 
 .container {
   border: 1px dotted black;
