@@ -10,21 +10,40 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
     <% if content_for? :for_head %>
       <%= yield :for_head %>
     <% end %>
+
+    <script>
+      function initCollapsibleButtons() {
+        var coll = document.getElementsByClassName("button-collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+              content.style.display = "none";
+            } else {
+              content.style.display = "block";
+            }
+          });
+        }
+      }
+    </script>
   </head>
 
-  <body>
+  <body class="body">
  
-<% 
-  selected_color   = "#81d99a"
-  deselected_color = "#bbbbbb"
+    <% 
+      selected_color   = "#81d99a"
+      deselected_color = "#bbbbbb"
 
-  colors = Hash.new(deselected_color)  
-  colors[params[:controller]] = selected_color
-%>
-
+      colors = Hash.new(deselected_color)  
+      colors[params[:controller]] = selected_color
+    %>
 
     <div class="flexbox" style="width:90%", align="center">
       <div class="flexbox" style="width:75%">
@@ -48,5 +67,9 @@
     </div>
     <p>
     <%= yield %>
+
+    <script>
+      initCollapsibleButtons()
+    </script>
   </body>
 </html>

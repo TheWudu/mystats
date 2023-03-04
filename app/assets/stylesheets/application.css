@@ -13,6 +13,10 @@
  *= require_tree .
  *= require_self
  */
+.body {
+  background-color: #FFFFFF;
+}
+
 .flexbox {
   display: flex;
 	flex-direction: row;
@@ -55,12 +59,12 @@
 [class*="button-"] {
   border: none;
   color: white;
-  padding: 10px;
+  padding: 6px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
-  border-radius: 12px;
+  border-radius: 10px;
   margin: 2px;
 }
 .button-base {
@@ -179,3 +183,33 @@ a:hover,
 a:focus {
   box-shadow: 5px 10px 18px #81d99a;
 }
+
+ /* Style the button that is used to open and close the collapsible content */
+.button-collapsible {
+  /*
+  background-color: #BBBBBB;
+  cursor: pointer;
+  padding: 5px;
+  width: 95%;
+  border: none;
+  text-align: left;
+  font-size: 15px;
+  align: center;
+  */
+  color: #444;
+  outline: none;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .button-collapsible:hover {
+  background-color: #ccc;
+  box-shadow: 5px 10px 18px #81d99a;
+  background-color: #81d99a; /* Green */
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+} 

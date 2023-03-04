@@ -1,15 +1,19 @@
-<div class="filters">
-  <%= render "shared/filters" %>
 
-  <div>
-    <%= form_with url: "/sport_sessions", method: :get do |form| %>
-      <%= form.hidden_field :year, value: @filter_params[:year] %>
-      <%= form.hidden_field :month, value: @filter_params[:month] %>
-      <%= form.hidden_field :sport_type, value: @filter_params[:sport_type] %>
-      <%= form.label :text, "Search for notes: " %>
-      <%= form.text_field :text, value: @session_params[:text] %>
-      <%= form.submit "Search" %>
-    <% end %>
+<div>
+  <button type="button" class="button-collapsible">Filters</button>
+  <div class="filter content">
+    <%= render "shared/filters" %>
+
+    <div>
+      <%= form_with url: "/sport_sessions", method: :get do |form| %>
+        <%= form.hidden_field :year, value: @filter_params[:year] %>
+        <%= form.hidden_field :month, value: @filter_params[:month] %>
+        <%= form.hidden_field :sport_type, value: @filter_params[:sport_type] %>
+        <%= form.label :text, "Search for notes: " %>
+        <%= form.text_field :text, value: @session_params[:text] %>
+        <%= form.submit "Search" %>
+      <% end %>
+    </div>
   </div>
 
 </div>
