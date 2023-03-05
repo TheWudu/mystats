@@ -3,6 +3,8 @@
 Rails.application.routes.draw do
   root controller: "charts", action: "index"
 
+  get 'playground', to: 'playground#index'
+
   get 'charts/index'
   get 'charts/cnt_per_weekday'
   get 'charts/cnt_per_week_of_year'
