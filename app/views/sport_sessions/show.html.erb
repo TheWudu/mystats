@@ -5,7 +5,7 @@
 
 
 <script>
-  function drawTrack(track) {
+  function drawTrack(L) {
     let coordinates = <%= @sport_session.trace.map { |p| [p["lat"].to_f.round(5), p["lng"].to_f.round(5)] } %>;
 
     var polyline = L.polyline(coordinates, { weight: 4, color: 'darkred' }).addTo(mymap);
@@ -84,6 +84,6 @@
     .bindPopup('Start')
     .openPopup();
 
-  drawTrack();
+  drawTrack(L);
 </script>
 

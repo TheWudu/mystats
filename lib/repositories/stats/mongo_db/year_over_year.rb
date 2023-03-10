@@ -9,7 +9,9 @@ module Repositories
         def execute
           data = yoy_aggregation
 
-          res = years.each_with_object([]) do |year, result|
+          found_years = years.empty? ? data.map { |entry| entry["_id"]["year"] }.uniq.sort : years
+
+          res = found_years.each_with_object([]) do |year, result|
             result << { name: year, data: fill_days(year, data) }
           end
 
@@ -17,7 +19,7 @@ module Repositories
             data:   res,
             ending: yoy_end,
             value:  yoy_value(res),
-            years:  yoy_years
+            years:  yoy_years(res)
           )
         end
 
@@ -45,14 +47,15 @@ module Repositories
                         end
         end
 
-        def yoy_years
-          years_sorted = years.sort.last(2)
-          @yoy_years ||= [years_sorted.last, years_sorted.first].sort
+        def yoy_years(stats)
+          @yoy_years ||= stats.map { |s| s[:name] }.sort.last(2)
         end
 
         def yoy_value(stats)
-          yoy_last  = stats.find { |s| s[:name] == yoy_years.last }[:data][yoy_date].to_f
-          yoy_first = stats.find { |s| s[:name] == yoy_years.first }[:data][yoy_date].to_f
+          return "-" if stats.empty?
+
+          yoy_last  = stats.find { |s| s[:name] == yoy_years(stats).last }[:data][yoy_date].to_f
+          yoy_first = stats.find { |s| s[:name] == yoy_years(stats).first }[:data][yoy_date].to_f
 
           return 0.0 if yoy_first == 0.0
 

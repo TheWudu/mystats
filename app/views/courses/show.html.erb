@@ -4,7 +4,7 @@
 <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
 
 <script>
-  function drawTrack(track) {
+  function drawTrack(L) {
     let coordinates = <%= @trace.map { |p| [p["lat"].to_f.round(5), p["lng"].to_f.round(5)] } %>;
 
     var polyline = L.polyline(coordinates, { weight: 4, color: 'darkred' }).addTo(mymap);
@@ -189,5 +189,5 @@ function sortTable(n) {
     .bindPopup('Start')
     .openPopup();
 
-  drawTrack();
+  drawTrack(L);
 </script>
