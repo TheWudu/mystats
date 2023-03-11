@@ -9,7 +9,7 @@ module Repositories
         def execute
           data = yoy_aggregation
 
-          found_years = years.empty? ? data.map { |entry| entry["_id"]["year"] }.uniq.sort : years
+          found_years = years.empty? ? data.map { |entry| entry["_id"]["year"] }.uniq.sort.reverse : years
 
           res = found_years.each_with_object([]) do |year, result|
             result << { name: year, data: fill_days(year, data) }
