@@ -3,6 +3,7 @@
 require 'repositories/stats'
 
 class ApplicationController < ActionController::Base
+  before_action :session_parameters
   add_flash_types :warning, :success, :error
 
   def filters
@@ -12,12 +13,18 @@ class ApplicationController < ActionController::Base
     @possible_sport_types = Repositories::Stats.possible_sport_types
   end
 
+  def session_parameters
+    return if session['filter_params'].nil? || session['filter_params'].empty?
+
+    params.reverse_merge!(session['filter_params'])
+  end
+
   def filter_params
     params.reverse_merge!(
       month: Time.now.month.to_s,
       year:  Time.now.year.to_s
     )
-    {
+    session['filter_params'] = {
       year:       params[:year],
       month:      params[:month],
       sport_type: params[:sport_type],
