@@ -5,7 +5,7 @@ require 'connections/mongo_db'
 module Repositories
   module Records
     class MongoDb
-      attr_accessor :years, :sport_types, :group_by
+      attr_accessor :years, :sport_types 
 
       def distance_per_month(years:, sport_types:)
         q = [{ '$match' => matcher(years:, sport_types:) }]

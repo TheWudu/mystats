@@ -9,7 +9,7 @@ class RecordsController < ApplicationController
   def records_filters
     @path_method = 'records_index_path'
     @show_filters[:month] = false
-    @show_filters[:group_by] = true
+    @show_filters[:group_by] = false
 
     @possible_groups = %w[year year,month year,sport_type sport_type]
   end
