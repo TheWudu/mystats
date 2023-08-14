@@ -44,6 +44,7 @@ class SportType
     74 => 'gymnastics',
     76 => 'standup-paddling',
     81 => 'training',
-    91 => 'body-weight training'
+    91 => 'body-weight training',
+    97 => 'stretching'
   }.freeze
 end

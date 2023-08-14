@@ -9,7 +9,8 @@ module Repositories
         def execute
           data = yoy_aggregation
 
-          found_years = years.empty? ? data.map { |entry| entry['_id']['year'] }.uniq.sort.reverse : years
+
+          found_years = data.map { |entry| entry['_id']['year'] }.uniq.sort.reverse
 
           res = found_years.each_with_object([]) do |year, result|
             result << { name: year, data: fill_days(year, data) }
@@ -60,6 +61,14 @@ module Repositories
           return 0.0 if yoy_first == 0.0
 
           (yoy_last / yoy_first * 100).round(1)
+        end
+        
+        def matcher
+          m = super()
+          if years.size == 1
+            m[:year] = { "$in" => years + [years.first - 1] }
+          end
+          m
         end
 
         def yoy_aggregation
