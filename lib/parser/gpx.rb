@@ -48,6 +48,8 @@ module Parser
     private
 
     def enhance_trace(points)
+      return [] if empty_trace?(points) 
+
       prev_point = points.first
       points[1..].each_with_object([]) do |cur_point, et|
         duration = cur_point[:time].to_f - prev_point[:time].to_f
@@ -63,7 +65,12 @@ module Parser
       end
     end
 
+    def empty_trace?(points)
+      points.nil? || points.size == 0
+    end
+
     def set_thresholds(points)
+      return if empty_trace?(points) 
       # calculate average speed
       # and assume to slow is 1/10th of it
       valid_points = points.select { |p| p[:speed] != Float::INFINITY && p[:speed] != 0 }
@@ -84,6 +91,8 @@ module Parser
     end
 
     def timezone_for(point)
+      return 'UTC' unless point
+
       city = Repositories::Cities.nearest(lat: point[:lat].to_f, lng: point[:lon].to_f)
       return city[:timezone] if city
 
@@ -107,6 +116,8 @@ module Parser
         heart_rate_avg: 0,
         heart_rate_max: 0
       }
+
+      return stats if empty_trace?(points)
 
       prev_point = points.first
       points[1..].each do |cur_point|

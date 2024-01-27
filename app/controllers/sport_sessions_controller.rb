@@ -69,7 +69,8 @@ class SportSessionsController < ApplicationController
     rolling_avg = {}
     hr = sport_session.trace.each_with_object({}) do |p, h|
       key = p['time'].in_time_zone(sport_session.timezone).strftime('%H:%M:%S')
-      h[key] = p['hr'] if p['hr']
+      next unless p['hr']
+      h[key] = p['hr']
       rolling_avg[key] = ((h.values.sum + p['hr']).to_f / (h.count + 1)).round(1)
     end
     avg_val = hr.values.sum / hr.count

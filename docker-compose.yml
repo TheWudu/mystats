@@ -16,5 +16,8 @@ services:
     environment:
       MONGODB_HOST: mongodb
       MONGODB_PORT: 27017
+      PIDFILE: /tmp/pids/server.pid
     volumes:
       - ./import:/data/import
+    tmpfs:
+      - /tmp/pids/
