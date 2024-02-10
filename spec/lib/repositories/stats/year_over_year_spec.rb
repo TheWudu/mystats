@@ -17,37 +17,30 @@ describe Repositories::Stats, :clear_db do
     context 'when group_by is week' do
       let(:group_by) { 'week' }
 
-      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
-      it { expect(subject.data.first[:data].size).to eq(53) }
-      it { expect(subject.data.first[:data].values.uniq.size == 1) }
-      it { expect(subject.data.first[:data].values.uniq.first == 0) }
+      it { expect(subject.data).to eq([]) }
+      it { expect(subject.years).to eq([]) }
 
-      it { expect(subject.value).to eq(0.0) }
-      it { expect(subject.years).to eq([2021, 2022]) }
+      it { expect(subject.value).to eq("-") }
     end
 
     context 'when group_by is day' do
       let(:group_by) { 'day' }
 
-      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
-      it { expect(subject.data.first[:data].size).to eq(365) }
-      it { expect(subject.data.first[:data].values.uniq.size == 1) }
-      it { expect(subject.data.first[:data].values.uniq.first == 0) }
+      it { expect(subject.ending).to eq("day: 10.2.") }
+      it { expect(subject.data).to eq([]) }
+      it { expect(subject.years).to eq([]) }
 
-      it { expect(subject.value).to eq(0.0) }
-      it { expect(subject.years).to eq([2021, 2022]) }
+      it { expect(subject.value).to eq("-") }
     end
 
     context 'when group_by is month' do
       let(:group_by) { 'month' }
 
-      it { expect(subject.data.map { |s| s[:name] }.sort).to eq([2021, 2022]) }
-      it { expect(subject.data.first[:data].size).to eq(12) }
-      it { expect(subject.data.first[:data].values.uniq.size == 1) }
-      it { expect(subject.data.first[:data].values.uniq.first == 0) }
+      it { expect(subject.ending).to eq("month 2") }
+      it { expect(subject.data).to eq([]) }
+      it { expect(subject.years).to eq([]) }
 
-      it { expect(subject.value).to eq(0.0) }
-      it { expect(subject.years).to eq([2021, 2022]) }
+      it { expect(subject.value).to eq("-") }
     end
   end
 
