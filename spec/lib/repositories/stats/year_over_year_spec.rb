@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'ostruct'
 
 describe Repositories::Stats, :clear_db do
   subject do
@@ -25,8 +26,9 @@ describe Repositories::Stats, :clear_db do
 
     context 'when group_by is day' do
       let(:group_by) { 'day' }
+      let(:day) { Time.now.strftime('%-d.%-m.') }
 
-      it { expect(subject.ending).to eq("day: 10.2.") }
+      it { expect(subject.ending).to eq("day: #{day}") }
       it { expect(subject.data).to eq([]) }
       it { expect(subject.years).to eq([]) }
 
@@ -35,8 +37,9 @@ describe Repositories::Stats, :clear_db do
 
     context 'when group_by is month' do
       let(:group_by) { 'month' }
+      let(:month) { Time.now.strftime('%-m') }
 
-      it { expect(subject.ending).to eq("month 2") }
+      it { expect(subject.ending).to eq("month #{month}") }
       it { expect(subject.data).to eq([]) }
       it { expect(subject.years).to eq([]) }
 
